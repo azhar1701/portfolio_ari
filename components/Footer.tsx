@@ -1,4 +1,5 @@
 import React from 'react';
+import DatabaseStatus from './DatabaseStatus';
 
 interface FooterProps {
   name: string;
@@ -17,6 +18,7 @@ const Footer: React.FC<FooterProps> = ({ name, onOpenAdmin }) => {
             </div>
             
             <div className="flex flex-col items-center md:items-end space-y-2">
+              <DatabaseStatus />
               <p className="text-xs text-slate-500">Built with React and Tailwind CSS</p>
               <button 
                 onClick={onOpenAdmin}

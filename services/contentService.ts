@@ -1,7 +1,9 @@
+import { SupabaseService } from './supabaseService';
 import { portfolioData as staticPortfolioData } from '../data/portfolioData';
 import type { PortfolioData } from '../types';
 
 const STORAGE_KEY = 'portfolioData';
+const USE_SUPABASE = import.meta.env.VITE_USE_SUPABASE === 'true';
 
 /**
  * Recursively validates and sanitizes a data object against a template.
@@ -71,7 +73,17 @@ const validateAndSanitizeData = (data: any): PortfolioData | null => {
  * @returns A promise that resolves with the valid portfolio data.
  */
 export const fetchPortfolioData = (): Promise<PortfolioData> => {
-  return new Promise((resolve) => {
+  return new Promise(async (resolve) => {
+    if (USE_SUPABASE) {
+      try {
+        const data = await SupabaseService.getPortfolioData();
+        resolve(data);
+        return;
+      } catch (error) {
+        console.warn('Supabase fetch failed, using localStorage:', error);
+      }
+    }
+    
     setTimeout(() => {
       try {
         const storedDataString = localStorage.getItem(STORAGE_KEY);
@@ -82,17 +94,14 @@ export const fetchPortfolioData = (): Promise<PortfolioData> => {
           if (validatedData) {
             resolve(validatedData);
           } else {
-            // Data is fundamentally corrupt (e.g., not an object), reset everything.
             console.error("Portfolio data from localStorage is severely corrupted. Resetting to default.");
             localStorage.removeItem(STORAGE_KEY);
             resolve(staticPortfolioData);
           }
         } else {
-          // No data in storage, use the default.
           resolve(staticPortfolioData);
         }
       } catch (error) {
-        // Any error during parsing or validation triggers a reset.
         console.error("Failed to parse or validate portfolio data from localStorage. Resetting to default.", error);
         localStorage.removeItem(STORAGE_KEY);
         resolve(staticPortfolioData);
@@ -105,12 +114,21 @@ export const fetchPortfolioData = (): Promise<PortfolioData> => {
  * Saves portfolio data to localStorage.
  * @param data The portfolio data to save.
  */
-export const savePortfolioData = (data: PortfolioData): void => {
+export const savePortfolioData = async (data: PortfolioData): Promise<void> => {
+  if (USE_SUPABASE) {
     try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      await SupabaseService.savePortfolioData(data);
+      return;
     } catch (error) {
-        console.error("Failed to save portfolio data to localStorage", error);
+      console.warn('Supabase save failed, using localStorage:', error);
     }
+  }
+  
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (error) {
+    console.error("Failed to save portfolio data to localStorage", error);
+  }
 };
 
 /**

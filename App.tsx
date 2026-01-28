@@ -70,25 +70,46 @@ const App: React.FC = () => {
 
   const handleSaveData = async (updatedData: PortfolioData) => {
     try {
+      setLoading(true);
       await savePortfolioData(updatedData);
       setData(updatedData);
+      
+      // Show success message
+      const message = import.meta.env.VITE_USE_SUPABASE === 'true' 
+        ? 'Data saved to Supabase successfully!' 
+        : 'Data saved to local storage successfully!';
+      window.alert(message);
     } catch (err) {
       console.error('Failed to save portfolio data:', err);
       const errorMessage = err instanceof Error ? err.message : 'Failed to save data. Please try again.';
       window.alert(`Save failed: ${errorMessage}`);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleResetData = () => {
+  const handleResetData = async () => {
     try {
+      setLoading(true);
       const defaultData = resetPortfolioData();
       setData(defaultData);
+      
+      // If using Supabase, also reset database
+      if (import.meta.env.VITE_USE_SUPABASE === 'true') {
+        await savePortfolioData(defaultData);
+        window.alert('Data reset and synced to Supabase successfully!');
+      } else {
+        window.alert('Data reset to default successfully!');
+      }
+      
       return defaultData;
     } catch (err) {
       console.error('Failed to reset portfolio data:', err);
       const errorMessage = err instanceof Error ? err.message : 'Failed to reset data. Please try again.';
       window.alert(`Reset failed: ${errorMessage}`);
       return null;
+    } finally {
+      setLoading(false);
     }
   };
 

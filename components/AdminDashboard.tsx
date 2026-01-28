@@ -470,8 +470,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
         className="bg-white rounded-lg shadow-2xl w-full max-w-6xl h-[90vh] flex flex-col"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center p-4 border-b border-slate-200 flex-shrink-0">
-          <h2 className="text-xl font-bold text-slate-800">Admin Dashboard</h2>
+        <div className="sticky top-0 bg-white border-b border-slate-200 p-4 flex justify-between items-center">
+          <div className="flex items-center space-x-4">
+            <h2 className="text-xl font-bold text-slate-800">Admin Dashboard</h2>
+            {import.meta.env.VITE_USE_SUPABASE === 'true' && (
+              <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                Supabase Connected
+              </span>
+            )}
+          </div>
           <button onClick={onClose} className="p-1 rounded-full text-slate-500 hover:bg-slate-100">
             <i className="fas fa-times text-xl"></i>
           </button>
