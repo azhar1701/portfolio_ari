@@ -1,67 +1,143 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Profile } from '../types';
-import ThemeToggle from './ThemeToggle';
+import SearchBar from './SearchBar';
+import type { PortfolioData } from '../types';
 
 interface HeaderProps {
   profile: Profile;
   navLinks: { name: string; href: string }[];
-  theme: 'light' | 'dark';
-  toggleTheme: () => void;
+  data: PortfolioData | null;
 }
 
-const Header: React.FC<HeaderProps> = ({ profile, navLinks, theme, toggleTheme }) => {
+const Header: React.FC<HeaderProps> = ({ profile, navLinks, data }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
+  const [isScrolled, setIsScrolled] = useState(false);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+      
+      // Update active section based on scroll position
+      const sections = navLinks.map(link => link.href.substring(1));
+      const currentSection = sections.find(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+      
+      if (currentSection) {
+        setActiveSection(`#${currentSection}`);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [navLinks]);
   
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shadow-md z-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <div className="flex-shrink-0">
-            <h1 className="text-xl font-bold text-slate-800 dark:text-slate-100">{profile.name}</h1>
-            <p className="text-sm text-cyan-700 dark:text-cyan-400">{profile.title}</p>
+    <header className={`fixed top-0 left-0 right-0 backdrop-blur-sm z-50 transition-all duration-300 ${
+      isScrolled ? 'bg-white/95 shadow-lg' : 'bg-slate-50/90 shadow-md'
+    }`}>
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
+        <div className="max-w-7xl mx-auto flex items-center justify-between h-16 sm:h-20">
+          <div className="flex-shrink-0 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <h1 className="text-lg sm:text-xl font-bold text-slate-800 hover:text-cyan-700 transition-colors">{profile.name}</h1>
+            <p className="text-xs sm:text-sm text-cyan-600">{profile.title}</p>
           </div>
-          <div className="hidden md:flex items-center">
-            <nav className="ml-10 flex items-baseline space-x-4">
+          
+          <div className="hidden lg:flex items-center space-x-6">
+            <nav className="flex items-center space-x-1">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="px-3 py-2 rounded-md text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-cyan-50 dark:hover:bg-slate-800 hover:text-cyan-700 dark:hover:text-cyan-400 transition-colors"
+                  className={`px-3 xl:px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    activeSection === link.href
+                      ? 'bg-cyan-100 text-cyan-700 shadow-sm'
+                      : 'text-slate-600 hover:bg-cyan-50 hover:text-cyan-700'
+                  }`}
                 >
                   {link.name}
                 </a>
               ))}
             </nav>
-            <div className="ml-4">
-              <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            
+            <div className="w-48 xl:w-64">
+              <SearchBar data={data} onResults={() => {}} />
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              <a
+                href={`mailto:${profile.email}`}
+                className="p-2 text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 rounded-lg transition-colors"
+                aria-label="Send email"
+              >
+                <i className="fas fa-envelope"></i>
+              </a>
+              <a
+                href={`tel:${profile.phone}`}
+                className="p-2 text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 rounded-lg transition-colors"
+                aria-label="Call phone"
+              >
+                <i className="fas fa-phone"></i>
+              </a>
             </div>
           </div>
-          <div className="md:hidden flex items-center">
-             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+          
+          <div className="lg:hidden flex items-center space-x-3">
+            <div className="w-40 sm:w-48">
+              <SearchBar data={data} onResults={() => {}} />
+            </div>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500 ml-2"
+              className="inline-flex items-center justify-center p-2 rounded-lg text-slate-600 hover:text-cyan-700 hover:bg-cyan-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-colors"
             >
-              <span className="sr-only">Open main menu</span>
-              <i className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
+              <span className="sr-only">{isMenuOpen ? 'Close menu' : 'Open menu'}</span>
+              <i className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'} transition-transform duration-200 ${isMenuOpen ? 'rotate-90' : ''}`}></i>
             </button>
           </div>
         </div>
       </div>
+      
       {isMenuOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <div className="lg:hidden bg-white/95 backdrop-blur-sm border-t border-slate-200 shadow-lg">
+          <div className="px-4 sm:px-6 pt-2 pb-3 space-y-1">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsMenuOpen(false)}
-                className="block px-3 py-2 rounded-md text-base font-medium text-slate-600 dark:text-slate-300 hover:bg-cyan-50 dark:hover:bg-slate-800 hover:text-cyan-700 dark:hover:text-cyan-400 transition-colors"
+                className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                  activeSection === link.href
+                    ? 'bg-cyan-100 text-cyan-700'
+                    : 'text-slate-600 hover:bg-cyan-50 hover:text-cyan-700'
+                }`}
               >
                 {link.name}
               </a>
             ))}
+            
+            <div className="flex justify-center space-x-4 pt-4 border-t border-slate-200 mt-4">
+              <a
+                href={`mailto:${profile.email}`}
+                className="flex items-center px-4 py-2 text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 rounded-lg transition-colors"
+              >
+                <i className="fas fa-envelope mr-2"></i>
+                Email
+              </a>
+              <a
+                href={`tel:${profile.phone}`}
+                className="flex items-center px-4 py-2 text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 rounded-lg transition-colors"
+              >
+                <i className="fas fa-phone mr-2"></i>
+                Call
+              </a>
+            </div>
           </div>
         </div>
       )}

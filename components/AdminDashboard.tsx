@@ -17,9 +17,12 @@ const sections = [
   { id: 'experience', name: 'Experience', icon: 'fa-briefcase' },
   { id: 'projects', name: 'Projects', icon: 'fa-project-diagram' },
   { id: 'skills', name: 'Skills', icon: 'fa-cogs' },
+  { id: 'testimonials', name: 'Testimonials', icon: 'fa-quote-left' },
+  { id: 'blog', name: 'Blog Posts', icon: 'fa-blog' },
+  { id: 'gallery', name: 'Gallery', icon: 'fa-images' },
   { id: 'education', name: 'Education', icon: 'fa-graduation-cap' },
   { id: 'stats', name: 'Stats', icon: 'fa-chart-line' },
-  { id: 'showcase', name: 'Showcase', icon: 'fa-images' },
+  { id: 'showcase', name: 'Showcase', icon: 'fa-star' },
   { id: 'locations', name: 'Locations', icon: 'fa-map-marked-alt' },
   { id: 'publications', name: 'Publications', icon: 'fa-book-open' },
   { id: 'certifications', name: 'Certifications', icon: 'fa-certificate' },
@@ -28,15 +31,15 @@ const sections = [
 
 const Input = ({ label, name, register, ...props }) => (
   <div>
-    <label htmlFor={name} className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{label}</label>
-    <input id={name} {...register(name)} {...props} className="block w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500" />
+    <label htmlFor={name} className="block text-sm font-medium text-slate-700 mb-1">{label}</label>
+    <input id={name} {...register(name)} {...props} className="block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500" />
   </div>
 );
 
 const Textarea = ({ label, name, register, ...props }) => (
     <div>
-      <label htmlFor={name} className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{label}</label>
-      <textarea id={name} {...register(name)} {...props} className="block w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500" />
+      <label htmlFor={name} className="block text-sm font-medium text-slate-700 mb-1">{label}</label>
+      <textarea id={name} {...register(name)} {...props} className="block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500" />
     </div>
   );
 
@@ -76,6 +79,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
     if (Array.isArray(formValues.certifications)) formValues.certifications = formValues.certifications.join('\n');
     if (Array.isArray(formValues.organizations)) formValues.organizations = formValues.organizations.join('\n');
 
+    // Ensure testimonials, blogPosts, and gallery are arrays
+    if (!Array.isArray(formValues.testimonials)) formValues.testimonials = [];
+    if (!Array.isArray(formValues.blogPosts)) formValues.blogPosts = [];
+    if (!Array.isArray(formValues.gallery)) formValues.gallery = [];
+
     // Ensure locations position arrays are properly handled
     if (Array.isArray(formValues.locations)) {
       formValues.locations.forEach(loc => {
@@ -88,6 +96,80 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
     }
 
     reset(formValues);
+    
+    // Reset field arrays after form reset
+    setTimeout(() => {
+      if (formValues.experience) {
+        formValues.experience.forEach((_, index) => {
+          if (index >= expFields.length) {
+            appendExp(formValues.experience[index]);
+          }
+        });
+      }
+      if (formValues.projects) {
+        formValues.projects.forEach((_, index) => {
+          if (index >= projFields.length) {
+            appendProj(formValues.projects[index]);
+          }
+        });
+      }
+      if (formValues.skills) {
+        formValues.skills.forEach((_, index) => {
+          if (index >= skillFields.length) {
+            appendSkill(formValues.skills[index]);
+          }
+        });
+      }
+      if (formValues.education) {
+        formValues.education.forEach((_, index) => {
+          if (index >= eduFields.length) {
+            appendEdu(formValues.education[index]);
+          }
+        });
+      }
+      if (formValues.publications) {
+        formValues.publications.forEach((_, index) => {
+          if (index >= pubFields.length) {
+            appendPub(formValues.publications[index]);
+          }
+        });
+      }
+      if (formValues.stats) {
+        formValues.stats.forEach((_, index) => {
+          if (index >= statsFields.length) {
+            appendStat(formValues.stats[index]);
+          }
+        });
+      }
+      if (formValues.locations) {
+        formValues.locations.forEach((_, index) => {
+          if (index >= locFields.length) {
+            appendLoc(formValues.locations[index]);
+          }
+        });
+      }
+      if (formValues.testimonials) {
+        formValues.testimonials.forEach((_, index) => {
+          if (index >= testimonialFields.length) {
+            appendTestimonial(formValues.testimonials[index]);
+          }
+        });
+      }
+      if (formValues.blogPosts) {
+        formValues.blogPosts.forEach((_, index) => {
+          if (index >= blogFields.length) {
+            appendBlog(formValues.blogPosts[index]);
+          }
+        });
+      }
+      if (formValues.gallery) {
+        formValues.gallery.forEach((_, index) => {
+          if (index >= galleryFields.length) {
+            appendGallery(formValues.gallery[index]);
+          }
+        });
+      }
+    }, 0);
   }, [data, reset]);
   
   useEffect(() => {
@@ -146,6 +228,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
         if (!stat.suffix) stat.suffix = '';
       });
     }
+
+    // Ensure testimonials have proper rating values
+    if (Array.isArray(processedData.testimonials)) {
+      processedData.testimonials.forEach(testimonial => {
+        testimonial.rating = parseInt(testimonial.rating) || 5;
+      });
+    }
+
+    // Ensure blog posts have proper readTime values
+    if (Array.isArray(processedData.blogPosts)) {
+      processedData.blogPosts.forEach(post => {
+        post.readTime = parseInt(post.readTime) || 5;
+      });
+    }
     
     onSave(processedData);
     onClose();
@@ -164,6 +260,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
   const { fields: pubFields, append: appendPub, remove: removePub } = useFieldArray({ control, name: "publications" });
   const { fields: statsFields, append: appendStat, remove: removeStat } = useFieldArray({ control, name: "stats" });
   const { fields: locFields, append: appendLoc, remove: removeLoc } = useFieldArray({ control, name: "locations" });
+  const { fields: testimonialFields, append: appendTestimonial, remove: removeTestimonial } = useFieldArray({ control, name: "testimonials" });
+  const { fields: blogFields, append: appendBlog, remove: removeBlog } = useFieldArray({ control, name: "blogPosts" });
+  const { fields: galleryFields, append: appendGallery, remove: removeGallery } = useFieldArray({ control, name: "gallery" });
 
   if (!isOpen) return null;
 
@@ -185,7 +284,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
         return (
             <div className="space-y-6">
             {expFields.map((field, index) => (
-                <div key={field.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg space-y-3">
+                <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
                     <Input label="Role" name={`experience.${index}.role`} register={register} />
                     <Input label="Company" name={`experience.${index}.company`} register={register} />
                     <Input label="Period" name={`experience.${index}.period`} register={register} />
@@ -201,7 +300,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
         return (
             <div className="space-y-6">
                 {projFields.map((field, index) => (
-                        <div key={field.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg space-y-3">
+                        <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
                             <Input label="Name" name={`projects.${index}.name`} register={register} />
                             <Textarea label="Description" name={`projects.${index}.description`} register={register} rows={3} />
                             <Textarea label="Challenge" name={`projects.${index}.challenge`} register={register} rows={3} />
@@ -219,7 +318,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
             return (
                 <div className="space-y-6">
                     {skillFields.map((field, index) => (
-                        <div key={field.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg space-y-3">
+                        <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
                             <Input label="Category" name={`skills.${index}.category`} register={register} />
                             <Input label="Skills (comma separated)" name={`skills.${index}.skills`} register={register} />
                             <button type="button" onClick={() => removeSkill(index)} className="text-red-500 text-sm">Remove Category</button>
@@ -232,7 +331,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
         return (
             <div className="space-y-6">
                 {eduFields.map((field, index) => (
-                    <div key={field.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg space-y-3">
+                    <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
                         <Input label="Institution" name={`education.${index}.institution`} register={register} />
                         <Input label="Degree" name={`education.${index}.degree`} register={register} />
                         <Input label="Period" name={`education.${index}.period`} register={register} />
@@ -247,7 +346,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
         return (
             <div className="space-y-6">
                 {pubFields.map((field, index) => (
-                    <div key={field.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg space-y-3">
+                    <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
                         <Input label="Title" name={`publications.${index}.title`} register={register} />
                         <Input label="Details" name={`publications.${index}.details`} register={register} />
                         <Input label="Link" name={`publications.${index}.link`} register={register} />
@@ -261,7 +360,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
             return (
                 <div className="space-y-6">
                     {statsFields.map((field, index) => (
-                        <div key={field.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg space-y-3 grid grid-cols-3 gap-2">
+                        <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 grid grid-cols-3 gap-2 bg-slate-50">
                             <Input label="Label" name={`stats.${index}.label`} register={register} />
                             <Input label="Value" name={`stats.${index}.value`} register={register} type="number"/>
                             <Input label="Suffix" name={`stats.${index}.suffix`} register={register} />
@@ -274,16 +373,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
         case 'showcase':
             return (
                 <div className="space-y-4">
-                    <h3 className="font-semibold text-lg">Project Showcase</h3>
+                    <h3 className="font-semibold text-lg text-slate-800">Project Showcase</h3>
                     <Input label="Title" name="showcase.title" register={register} />
                     <Textarea label="Description" name="showcase.description" register={register} />
-                    <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg space-y-3">
-                        <h4 className="font-semibold">Before</h4>
+                    <div className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+                        <h4 className="font-semibold text-slate-700">Before</h4>
                         <Textarea label="Description" name="showcase.before.description" register={register} />
                         <Input label="Image URLs (comma separated)" name="showcase.before.imageUrls" register={register} />
                     </div>
-                    <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg space-y-3">
-                        <h4 className="font-semibold">After</h4>
+                    <div className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+                        <h4 className="font-semibold text-slate-700">After</h4>
                         <Textarea label="Description" name="showcase.after.description" register={register} />
                         <Input label="Image URLs (comma separated)" name="showcase.after.imageUrls" register={register} />
                     </div>
@@ -293,7 +392,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
             return (
                 <div className="space-y-6">
                     {locFields.map((field, index) => (
-                        <div key={field.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg space-y-3">
+                        <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
                             <Input label="Name" name={`locations.${index}.name`} register={register} />
                             <Input label="Latitude" name={`locations.${index}.position.0`} register={register} type="number" step="any"/>
                             <Input label="Longitude" name={`locations.${index}.position.1`} register={register} type="number" step="any"/>
@@ -302,6 +401,57 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
                         </div>
                     ))}
                     <button type="button" onClick={() => appendLoc({ name: '', position: [0,0], description: '' })} className="text-cyan-600">Add Location</button>
+                </div>
+            );
+        case 'testimonials':
+            return (
+                <div className="space-y-6">
+                    {testimonialFields.map((field, index) => (
+                        <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+                            <Input label="Name" name={`testimonials.${index}.name`} register={register} />
+                            <Input label="Role" name={`testimonials.${index}.role`} register={register} />
+                            <Input label="Company" name={`testimonials.${index}.company`} register={register} />
+                            <Textarea label="Content" name={`testimonials.${index}.content`} register={register} rows={4} />
+                            <Input label="Avatar URL" name={`testimonials.${index}.avatar`} register={register} />
+                            <Input label="Rating (1-5)" name={`testimonials.${index}.rating`} register={register} type="number" min="1" max="5" />
+                            <button type="button" onClick={() => removeTestimonial(index)} className="text-red-500 text-sm">Remove Testimonial</button>
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => appendTestimonial({ name: '', role: '', company: '', content: '', avatar: '', rating: 5 })} className="text-cyan-600">Add Testimonial</button>
+                </div>
+            );
+        case 'blog':
+            return (
+                <div className="space-y-6">
+                    {blogFields.map((field, index) => (
+                        <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+                            <Input label="Title" name={`blogPosts.${index}.title`} register={register} />
+                            <Textarea label="Excerpt" name={`blogPosts.${index}.excerpt`} register={register} rows={3} />
+                            <Textarea label="Content" name={`blogPosts.${index}.content`} register={register} rows={6} />
+                            <Input label="Date (YYYY-MM-DD)" name={`blogPosts.${index}.date`} register={register} type="date" />
+                            <Input label="Author" name={`blogPosts.${index}.author`} register={register} />
+                            <Input label="Category" name={`blogPosts.${index}.category`} register={register} />
+                            <Input label="Image URL" name={`blogPosts.${index}.image`} register={register} />
+                            <Input label="Read Time (minutes)" name={`blogPosts.${index}.readTime`} register={register} type="number" />
+                            <button type="button" onClick={() => removeBlog(index)} className="text-red-500 text-sm">Remove Blog Post</button>
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => appendBlog({ id: `blog-${Date.now()}`, title: '', excerpt: '', content: '', date: new Date().toISOString().split('T')[0], author: '', category: '', image: '', readTime: 5 })} className="text-cyan-600">Add Blog Post</button>
+                </div>
+            );
+        case 'gallery':
+            return (
+                <div className="space-y-6">
+                    {galleryFields.map((field, index) => (
+                        <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+                            <Input label="Title" name={`gallery.${index}.title`} register={register} />
+                            <Textarea label="Description" name={`gallery.${index}.description`} register={register} rows={3} />
+                            <Input label="Image URL" name={`gallery.${index}.image`} register={register} />
+                            <Input label="Category" name={`gallery.${index}.category`} register={register} />
+                            <button type="button" onClick={() => removeGallery(index)} className="text-red-500 text-sm">Remove Gallery Item</button>
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => appendGallery({ id: `gallery-${Date.now()}`, title: '', description: '', image: '', category: '' })} className="text-cyan-600">Add Gallery Item</button>
                 </div>
             );
         case 'certifications':
@@ -317,19 +467,19 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
       <div 
-        className="bg-white dark:bg-slate-800 rounded-lg shadow-2xl w-full max-w-6xl h-[90vh] flex flex-col"
+        className="bg-white rounded-lg shadow-2xl w-full max-w-6xl h-[90vh] flex flex-col"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center p-4 border-b border-slate-200 dark:border-slate-700 flex-shrink-0">
-          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Admin Dashboard</h2>
-          <button onClick={onClose} className="p-1 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <div className="flex justify-between items-center p-4 border-b border-slate-200 flex-shrink-0">
+          <h2 className="text-xl font-bold text-slate-800">Admin Dashboard</h2>
+          <button onClick={onClose} className="p-1 rounded-full text-slate-500 hover:bg-slate-100">
             <i className="fas fa-times text-xl"></i>
           </button>
         </div>
 
         <div className="flex flex-grow overflow-hidden">
           {/* Sidebar */}
-          <aside className="w-1/4 border-r border-slate-200 dark:border-slate-700 overflow-y-auto p-4">
+          <aside className="w-1/4 border-r border-slate-200 overflow-y-auto p-4 bg-slate-50">
             <nav className="space-y-1">
               {sections.map(section => (
                 <button
@@ -337,8 +487,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
                   onClick={() => setActiveTab(section.id)}
                   className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-left transition-colors ${
                     activeTab === section.id
-                      ? 'bg-cyan-100 dark:bg-cyan-900/50 text-cyan-700 dark:text-cyan-300'
-                      : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+                      ? 'bg-cyan-100 text-cyan-700'
+                      : 'text-slate-600 hover:bg-slate-100'
                   }`}
                 >
                   <i className={`fas ${section.icon} mr-3 w-5 text-center`}></i>
@@ -349,14 +499,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
           </aside>
 
           {/* Main Content */}
-          <main className="w-3/4 overflow-y-auto p-6">
+          <main className="w-3/4 overflow-y-auto p-6 bg-white">
             <form id="admin-form" onSubmit={handleSubmit(onSubmit)}>
               {renderContent()}
             </form>
           </main>
         </div>
 
-        <div className="flex justify-between items-center p-4 border-t border-slate-200 dark:border-slate-700 flex-shrink-0">
+        <div className="flex justify-between items-center p-4 border-t border-slate-200 flex-shrink-0 bg-slate-50">
             <button
                 type="button"
                 onClick={handleReset}
@@ -368,7 +518,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
                 <button
                     type="button"
                     onClick={onClose}
-                    className="px-4 py-2 text-sm font-medium rounded-md text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600"
+                    className="px-4 py-2 text-sm font-medium rounded-md text-slate-700 bg-slate-100 hover:bg-slate-200"
                 >
                     Cancel
                 </button>

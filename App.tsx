@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
-import { useTheme } from './hooks/useTheme';
 import { fetchPortfolioData, savePortfolioData, resetPortfolioData } from './services/contentService';
 import type { PortfolioData } from './types';
 
@@ -22,9 +21,12 @@ import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
 import BackToTopButton from './components/BackToTopButton';
 import AdminDashboard from './components/AdminDashboard';
+import Testimonials from './components/Testimonials';
+import Blog from './components/Blog';
+import Gallery from './components/Gallery';
+import InteractiveResume from './components/InteractiveResume';
 
 const App: React.FC = () => {
-  const [theme, toggleTheme] = useTheme();
   const [data, setData] = useState<PortfolioData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -61,6 +63,8 @@ const App: React.FC = () => {
     { name: 'Showcase', href: '#showcase' },
     { name: 'Projects', href: '#projects' },
     { name: 'Skills', href: '#skills' },
+    { name: 'Blog', href: '#blog' },
+    { name: 'Gallery', href: '#gallery' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -133,12 +137,16 @@ const App: React.FC = () => {
     certifications,
     publications,
     organizations,
+    testimonials,
+    blogPosts,
+    gallery,
   } = data;
 
   return (
-    <div className="font-sans text-slate-700 dark:text-slate-300">
-      <Header profile={profile} navLinks={navLinks} theme={theme} toggleTheme={toggleTheme} />
-      <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 pt-24">
+    <div className="font-sans text-slate-700 bg-slate-50 min-h-screen">
+      <Header profile={profile} navLinks={navLinks} data={data} />
+      <main className="w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pt-32">
+        <div className="max-w-7xl mx-auto space-y-12 md:space-y-16 lg:space-y-20">
         <Summary content={summary} />
         <Stats stats={stats} />
         <ExperienceComponent experience={experience} />
@@ -146,11 +154,16 @@ const App: React.FC = () => {
         <MapSection locations={locations} />
         <Projects projects={projects} />
         <Skills skills={skills} />
+        <Testimonials testimonials={testimonials} />
+        <Blog blogPosts={blogPosts} />
+        <Gallery gallery={gallery} />
+        <InteractiveResume data={data} />
         <EducationComponent education={education} />
         <Certifications certifications={certifications} />
         <Publications publications={publications} />
         <Organizations organizations={organizations} />
         <ContactForm />
+        </div>
       </main>
       <Footer name={profile.name} onOpenAdmin={handleOpenAdminPanel} />
       <BackToTopButton />

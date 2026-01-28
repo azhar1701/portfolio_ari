@@ -10,9 +10,9 @@ interface ProjectsProps {
 }
 
 const ProjectsSkeleton: React.FC = () => (
-    <div className="grid md:grid-cols-2 gap-6">
+    <div className="space-y-6">
         {[...Array(2)].map((_, i) => (
-            <div key={i} className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm space-y-3">
+            <div key={i} className="bg-slate-50 border border-slate-200 p-6 rounded-lg space-y-3">
                 <SkeletonLoader className="h-6 w-3/4 rounded" />
                 <SkeletonLoader className="h-4 w-full rounded" />
                 <SkeletonLoader className="h-4 w-5/6 rounded" />
@@ -41,7 +41,7 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           {projects.map((project) => {
              const isExpanded = expandedProjectId === project.id;
              return (
-                <div key={project.id} className="bg-white dark:bg-slate-800 rounded-lg shadow-sm flex flex-col transition-all duration-300 hover:shadow-lg dark:hover:shadow-cyan-500/10">
+                <div key={project.id} className="bg-slate-50 border border-slate-200 rounded-lg flex flex-col transition-all duration-300 hover:shadow-md hover:border-cyan-300">
                     <div
                         className="p-6 cursor-pointer"
                         onClick={() => handleToggleDetails(project.id)}
@@ -50,10 +50,10 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                         aria-controls={`project-details-${project.id}`}
                     >
                         <div className="flex justify-between items-start">
-                            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2 pr-4">{project.name}</h3>
+                            <h3 className="text-lg font-bold text-slate-800 mb-2 pr-4">{project.name}</h3>
                             <i className={`fas fa-chevron-down text-slate-500 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}></i>
                         </div>
-                        <p className="text-slate-600 dark:text-slate-300 text-sm">{project.description}</p>
+                        <p className="text-slate-600 text-sm">{project.description}</p>
                     </div>
 
                     <div
@@ -64,21 +64,21 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                             {isExpanded && project.images && project.images.length > 0 && (
                                 <ImageCarousel images={project.images} projectName={project.name} />
                             )}
-                            <div className="border-t border-slate-200 dark:border-slate-700 pt-4 text-slate-600 dark:text-slate-300">
+                            <div className="border-t border-slate-200 pt-4 text-slate-600">
                                 <div className="space-y-4">
                                     <div>
-                                        <h4 className="text-md font-semibold text-slate-700 dark:text-slate-200 mb-2">The Challenge</h4>
+                                        <h4 className="text-md font-semibold text-slate-700 mb-2">The Challenge</h4>
                                         <p className="text-sm">{project.challenge}</p>
                                     </div>
                                     <div>
-                                        <h4 className="text-md font-semibold text-slate-700 dark:text-slate-200 mb-2">The Solution</h4>
+                                        <h4 className="text-md font-semibold text-slate-700 mb-2">The Solution</h4>
                                         <p className="text-sm">{project.solution}</p>
                                     </div>
                                     <div>
-                                        <h4 className="text-md font-semibold text-slate-700 dark:text-slate-200 mb-2">Technologies Used</h4>
+                                        <h4 className="text-md font-semibold text-slate-700 mb-2">Technologies Used</h4>
                                         <div className="flex flex-wrap gap-2">
                                             {project.technologies.map((tech, index) => (
-                                                <span key={index} className="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-medium px-2.5 py-1 rounded-full">
+                                                <span key={index} className="bg-cyan-100 text-cyan-800 text-xs font-medium px-2.5 py-1 rounded-full">
                                                     {tech}
                                                 </span>
                                             ))}

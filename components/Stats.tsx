@@ -55,21 +55,21 @@ const useCountUp = (end: number, duration: number = 2000) => {
 const StatItem: React.FC<{ stat: Stat }> = ({ stat }) => {
     const { count, ref } = useCountUp(stat.value);
     return (
-        <div className="text-center p-4">
-            <span ref={ref} className="text-4xl md:text-5xl font-bold text-cyan-600 dark:text-cyan-400">
+        <div className="text-center p-3 sm:p-4">
+            <span ref={ref} className="text-3xl sm:text-4xl lg:text-5xl font-bold text-cyan-600">
                 {count}{stat.suffix || ''}
             </span>
-            <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 mt-2">{stat.label}</p>
+            <p className="text-xs sm:text-sm lg:text-base text-slate-600 mt-2">{stat.label}</p>
         </div>
     );
 };
 
 const StatsSkeleton: React.FC = () => (
-    <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-200 dark:divide-slate-700">
+    <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-slate-200 gap-y-4 lg:gap-y-0">
         {[...Array(4)].map((_, i) => (
-            <div key={i} className="text-center p-4">
-                <SkeletonLoader className="h-10 w-20 mx-auto rounded" />
-                <SkeletonLoader className="h-4 w-24 mx-auto mt-3 rounded" />
+            <div key={i} className="text-center p-3 sm:p-4">
+                <SkeletonLoader className="h-8 sm:h-10 w-16 sm:w-20 mx-auto rounded" />
+                <SkeletonLoader className="h-3 sm:h-4 w-20 sm:w-24 mx-auto mt-3 rounded" />
             </div>
         ))}
     </div>
@@ -78,15 +78,13 @@ const StatsSkeleton: React.FC = () => (
 const Stats: React.FC<{ stats: Stat[] | null }> = ({ stats }) => {
     return (
         <Section id="stats" title="Key Metrics" iconClass="fas fa-chart-line">
-            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4">
-                {stats ? (
-                     <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-200 dark:divide-slate-700">
-                        {stats.map((stat, index) => (
-                            <StatItem key={index} stat={stat} />
-                        ))}
-                    </div>
-                ) : <StatsSkeleton />}
-            </div>
+            {stats ? (
+                 <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-slate-200 gap-y-4 lg:gap-y-0">
+                    {stats.map((stat, index) => (
+                        <StatItem key={index} stat={stat} />
+                    ))}
+                </div>
+            ) : <StatsSkeleton />}
         </Section>
     );
 };

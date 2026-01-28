@@ -19,7 +19,7 @@ const RecenterAutomatically = ({ locations }: { locations: LocationPoint[] }) =>
 
 
 const MapSkeleton: React.FC = () => (
-    <SkeletonLoader className="h-96 w-full bg-slate-200 dark:bg-slate-700 rounded-lg" />
+    <SkeletonLoader className="h-96 w-full bg-slate-200 rounded-lg" />
 );
 
 
@@ -39,7 +39,7 @@ const MapSection: React.FC<{ locations: LocationPoint[] | null }> = ({ locations
 
     return (
         <Section id="locations" title="Project Locations" iconClass="fas fa-map-marked-alt">
-            <div className="h-96 w-full rounded-lg overflow-hidden shadow-lg border-2 border-slate-200 dark:border-slate-700">
+            <div className="h-96 w-full rounded-lg overflow-hidden shadow-sm border border-slate-200">
                 {locations ? (
                      <MapContainer center={defaultCenter} zoom={10} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
                         <TileLayer

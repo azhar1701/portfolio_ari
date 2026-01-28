@@ -11,7 +11,7 @@ const Summary: React.FC<SummaryProps> = ({ content }) => {
   return (
     <Section id="summary" title="Professional Summary" iconClass="fas fa-user-tie">
       {content ? (
-        <p className="text-base md:text-lg leading-relaxed text-slate-600 dark:text-slate-300">
+        <p className="text-base md:text-lg leading-relaxed text-slate-600">
           {content}
         </p>
       ) : (

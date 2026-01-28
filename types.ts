@@ -1,4 +1,40 @@
 
+export interface Testimonial {
+  id?: string;
+  name: string;
+  role?: string;
+  position?: string;
+  company: string;
+  content: string;
+  rating: number;
+  avatar?: string;
+  image?: string;
+}
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  date: string;
+  author?: string;
+  category?: string;
+  image?: string;
+  tags?: string[];
+  readTime: number;
+  featured?: boolean;
+}
+
+export interface GalleryImage {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  url?: string;
+  category: string;
+  projectId?: string;
+}
+
 export interface Profile {
   name: string;
   title: string;
@@ -83,4 +119,7 @@ export interface PortfolioData {
   stats: Stat[];
   locations: LocationPoint[];
   showcase: ProjectShowcase;
+  testimonials: Testimonial[];
+  blogPosts: BlogPost[];
+  gallery: GalleryImage[];
 }
