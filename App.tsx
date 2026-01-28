@@ -115,25 +115,26 @@ const App: React.FC = () => {
 
   const handleOpenAdminPanel = () => {
     try {
-      // Get admin password from environment variable
       const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
+      
+      console.log('Admin password from env:', ADMIN_PASSWORD); // Debug log
       
       if (!ADMIN_PASSWORD) {
         console.error('Admin password not configured');
-        window.alert('Admin access is not properly configured.');
+        window.alert('Admin access is not properly configured. Please check environment variables.');
         return;
       }
 
       const password = window.prompt('Enter admin password:');
       
       if (password === null) {
-        // User clicked "Cancel", do nothing
         return;
       }
       
       if (password === ADMIN_PASSWORD) {
         setIsAdminOpen(true);
       } else {
+        console.log('Password mismatch. Expected:', ADMIN_PASSWORD, 'Got:', password);
         window.alert('Incorrect password. Access denied.');
       }
     } catch (err) {
