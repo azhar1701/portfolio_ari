@@ -57,7 +57,7 @@ const StatItem: React.FC<{ stat: Stat }> = ({ stat }) => {
     return (
         <div className="text-center p-4">
             <span ref={ref} className="text-4xl md:text-5xl font-bold text-cyan-600 dark:text-cyan-400">
-                {count}{stat.suffix}
+                {count}{stat.suffix || ''}
             </span>
             <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 mt-2">{stat.label}</p>
         </div>

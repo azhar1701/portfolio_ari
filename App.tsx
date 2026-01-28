@@ -34,10 +34,13 @@ const App: React.FC = () => {
     const loadData = async () => {
       try {
         setLoading(true);
+        setError(null);
         const portfolioData = await fetchPortfolioData();
         setData(portfolioData);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred.');
+        console.error('Failed to load portfolio data:', err);
+        const errorMessage = err instanceof Error ? err.message : 'Failed to load portfolio data. Please try again later.';
+        setError(errorMessage);
       } finally {
         setLoading(false);
       }
@@ -61,32 +64,57 @@ const App: React.FC = () => {
     { name: 'Contact', href: '#contact' },
   ];
 
-  const handleSaveData = (updatedData: PortfolioData) => {
-    savePortfolioData(updatedData);
-    setData(updatedData);
+  const handleSaveData = async (updatedData: PortfolioData) => {
+    try {
+      await savePortfolioData(updatedData);
+      setData(updatedData);
+    } catch (err) {
+      console.error('Failed to save portfolio data:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to save data. Please try again.';
+      window.alert(`Save failed: ${errorMessage}`);
+    }
   };
 
   const handleResetData = () => {
-    const defaultData = resetPortfolioData();
-    setData(defaultData);
-    // The form inside AdminDashboard will also need to be reset
-    // We can achieve this by re-creating it with the new key or passing a reset handler
-    return defaultData;
+    try {
+      const defaultData = resetPortfolioData();
+      setData(defaultData);
+      return defaultData;
+    } catch (err) {
+      console.error('Failed to reset portfolio data:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to reset data. Please try again.';
+      window.alert(`Reset failed: ${errorMessage}`);
+      return null;
+    }
   };
 
   const handleOpenAdminPanel = () => {
-    // NOTE: In a real-world application, authentication should be handled by a secure backend system.
-    // For this client-side-only project, a simple prompt with a hardcoded password provides a basic layer of security.
-    const ADMIN_PASSWORD = 'admin';
+    try {
+      // Get admin password from environment variable
+      const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
+      
+      if (!ADMIN_PASSWORD) {
+        console.error('Admin password not configured');
+        window.alert('Admin access is not properly configured.');
+        return;
+      }
 
-    const password = window.prompt('Enter admin password:');
-    
-    if (password === ADMIN_PASSWORD) {
-      setIsAdminOpen(true);
-    } else if (password !== null) { // User entered something, but it was incorrect
-      window.alert('Incorrect password. Access denied.');
+      const password = window.prompt('Enter admin password:');
+      
+      if (password === null) {
+        // User clicked "Cancel", do nothing
+        return;
+      }
+      
+      if (password === ADMIN_PASSWORD) {
+        setIsAdminOpen(true);
+      } else {
+        window.alert('Incorrect password. Access denied.');
+      }
+    } catch (err) {
+      console.error('Admin panel access error:', err);
+      window.alert('Unable to access admin panel. Please try again.');
     }
-    // If password is null, the user clicked "Cancel", so we do nothing.
   };
   
   if (loading) return <Loader />;

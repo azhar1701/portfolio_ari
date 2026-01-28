@@ -160,8 +160,8 @@ export const portfolioData: PortfolioData = {
   ],
   stats: [
     { label: "Years of Experience", value: 6, suffix: "+" },
-    { label: "Published Papers", value: 3 },
-    { label: "Certifications", value: 6 },
+    { label: "Published Papers", value: 3, suffix: "" },
+    { label: "Certifications", value: 6, suffix: "" },
     { label: "GIS Tools Proficient", value: 4, suffix: "+" },
   ],
   locations: [

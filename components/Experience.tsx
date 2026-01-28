@@ -89,7 +89,7 @@ const Experience: React.FC<ExperienceProps> = ({ experience }) => {
               </div>
           ) : <ExperienceSkeleton />}
       </div>
-    </section>
+    </Section>
   );
 };
 

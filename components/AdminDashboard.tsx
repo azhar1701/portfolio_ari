@@ -76,6 +76,17 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
     if (Array.isArray(formValues.certifications)) formValues.certifications = formValues.certifications.join('\n');
     if (Array.isArray(formValues.organizations)) formValues.organizations = formValues.organizations.join('\n');
 
+    // Ensure locations position arrays are properly handled
+    if (Array.isArray(formValues.locations)) {
+      formValues.locations.forEach(loc => {
+        if (Array.isArray(loc.position) && loc.position.length >= 2) {
+          // Keep position as array for form handling
+        } else {
+          loc.position = [0, 0]; // Default fallback
+        }
+      });
+    }
+
     reset(formValues);
   }, [data, reset]);
   
@@ -118,6 +129,23 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
     }
     if (typeof processedData.certifications === 'string') processedData.certifications = processedData.certifications.split('\n').filter(Boolean);
     if (typeof processedData.organizations === 'string') processedData.organizations = processedData.organizations.split('\n').filter(Boolean);
+    
+    // Ensure locations position arrays are properly converted
+    if (Array.isArray(processedData.locations)) {
+      processedData.locations.forEach(loc => {
+        if (loc.position && Array.isArray(loc.position)) {
+          loc.position = [parseFloat(loc.position[0]) || 0, parseFloat(loc.position[1]) || 0];
+        }
+      });
+    }
+
+    // Ensure stats values are numbers and suffix is handled properly
+    if (Array.isArray(processedData.stats)) {
+      processedData.stats.forEach(stat => {
+        stat.value = parseInt(stat.value) || 0;
+        if (!stat.suffix) stat.suffix = '';
+      });
+    }
     
     onSave(processedData);
     onClose();
@@ -173,18 +201,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
         return (
             <div className="space-y-6">
                 {projFields.map((field, index) => (
-                    <div key={field.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg space-y-3">
-                        <Input label="ID" name={`projects.${index}.id`} register={register} />
-                        <Input label="Name" name={`projects.${index}.name`} register={register} />
-                        <Textarea label="Description" name={`projects.${index}.description`} register={register} />
-                        <Textarea label="Challenge" name={`projects.${index}.challenge`} register={register} />
-                        <Textarea label="Solution" name={`projects.${index}.solution`} register={register} />
-                        <Input label="Technologies (comma separated)" name={`projects.${index}.technologies`} register={register} />
-                        <Input label="Images (comma separated URLs)" name={`projects.${index}.images`} register={register} />
-                        <button type="button" onClick={() => removeProj(index)} className="text-red-500 text-sm">Remove Project</button>
-                    </div>
+                        <div key={field.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg space-y-3">
+                            <Input label="Name" name={`projects.${index}.name`} register={register} />
+                            <Textarea label="Description" name={`projects.${index}.description`} register={register} rows={3} />
+                            <Textarea label="Challenge" name={`projects.${index}.challenge`} register={register} rows={3} />
+                            <Textarea label="Solution" name={`projects.${index}.solution`} register={register} rows={3} />
+                            <Input label="Technologies (comma separated)" name={`projects.${index}.technologies`} register={register} />
+                            <Input label="Images (comma separated URLs)" name={`projects.${index}.images`} register={register} />
+                            <Input label="Link (optional)" name={`projects.${index}.link`} register={register} />
+                            <button type="button" onClick={() => removeProj(index)} className="text-red-500 text-sm">Remove Project</button>
+                        </div>
                 ))}
-                <button type="button" onClick={() => appendProj({ id: `proj-${Date.now()}`, name: '', description: '', technologies: [], challenge: '', solution: '', images: []})} className="text-cyan-600">Add Project</button>
+                <button type="button" onClick={() => appendProj({ id: `proj-${Date.now()}`, name: '', description: '', technologies: [], challenge: '', solution: '', images: [], link: ''})} className="text-cyan-600">Add Project</button>
             </div>
         );
       case 'skills':

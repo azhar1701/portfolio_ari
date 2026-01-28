@@ -41,7 +41,7 @@ const Publications: React.FC<PublicationsProps> = ({ publications }) => {
           ))}
         </div>
       ) : <PublicationsSkeleton />}
-    </section>
+    </Section>
   );
 };
 

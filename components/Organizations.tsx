@@ -26,7 +26,7 @@ const Organizations: React.FC<OrganizationsProps> = ({ organizations }) => {
           ))}
         </ul>
       ) : <OrganizationsSkeleton />}
-    </section>
+    </Section>
   );
 };
 

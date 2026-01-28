@@ -22,7 +22,7 @@ const Summary: React.FC<SummaryProps> = ({ content }) => {
           <SkeletonLoader className="h-4 rounded w-3/4" />
         </div>
       )}
-    </section>
+    </Section>
   );
 };
 
