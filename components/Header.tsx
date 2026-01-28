@@ -44,10 +44,10 @@ const Header: React.FC<HeaderProps> = ({ profile, navLinks, data }) => {
       isScrolled ? 'bg-white/95 shadow-lg' : 'bg-slate-50/90 shadow-md'
     }`}>
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-        <div className="max-w-7xl mx-auto flex items-center justify-between h-16 sm:h-20">
-          <div className="flex-shrink-0 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <h1 className="text-lg sm:text-xl font-bold text-slate-800 hover:text-cyan-700 transition-colors">{profile.name}</h1>
-            <p className="text-xs sm:text-sm text-cyan-600">{profile.title}</p>
+        <div className="max-w-7xl mx-auto flex items-center justify-between h-14 sm:h-16 lg:h-20">
+          <div className="flex-shrink-0 cursor-pointer min-w-0" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <h1 className="text-sm sm:text-lg lg:text-xl font-bold text-slate-800 hover:text-cyan-700 transition-colors truncate">{profile.name}</h1>
+            <p className="text-xs sm:text-sm text-cyan-600 truncate">{profile.title}</p>
           </div>
           
           <div className="hidden lg:flex items-center space-x-6">
@@ -89,16 +89,16 @@ const Header: React.FC<HeaderProps> = ({ profile, navLinks, data }) => {
             </div>
           </div>
           
-          <div className="lg:hidden flex items-center space-x-3">
-            <div className="w-40 sm:w-48">
+          <div className="lg:hidden flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+            <div className="w-32 sm:w-40">
               <SearchBar data={data} onResults={() => {}} />
             </div>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-lg text-slate-600 hover:text-cyan-700 hover:bg-cyan-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-colors"
+              className="inline-flex items-center justify-center p-1.5 sm:p-2 rounded-lg text-slate-600 hover:text-cyan-700 hover:bg-cyan-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-colors flex-shrink-0"
             >
               <span className="sr-only">{isMenuOpen ? 'Close menu' : 'Open menu'}</span>
-              <i className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'} transition-transform duration-200 ${isMenuOpen ? 'rotate-90' : ''}`}></i>
+              <i className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'} text-sm transition-transform duration-200 ${isMenuOpen ? 'rotate-90' : ''}`}></i>
             </button>
           </div>
         </div>
