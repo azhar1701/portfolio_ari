@@ -14,11 +14,11 @@ const Header: React.FC<HeaderProps> = ({ profile, navLinks, data }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
-  
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
-      
+
       // Update active section based on scroll position
       const sections = navLinks.map(link => link.href.substring(1));
       const currentSection = sections.find(section => {
@@ -29,7 +29,7 @@ const Header: React.FC<HeaderProps> = ({ profile, navLinks, data }) => {
         }
         return false;
       });
-      
+
       if (currentSection) {
         setActiveSection(`#${currentSection}`);
       }
@@ -38,109 +38,83 @@ const Header: React.FC<HeaderProps> = ({ profile, navLinks, data }) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [navLinks]);
-  
+
   return (
-    <header className={`fixed top-0 left-0 right-0 backdrop-blur-sm z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white/95 shadow-lg' : 'bg-slate-50/90 shadow-md'
-    }`}>
-      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-        <div className="max-w-7xl mx-auto flex items-center justify-between h-14 sm:h-16 lg:h-20">
-          <div className="flex-shrink-0 cursor-pointer min-w-0" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <h1 className="text-sm sm:text-lg lg:text-xl font-bold text-slate-800 hover:text-cyan-700 transition-colors truncate">{profile.name}</h1>
-            <p className="text-xs sm:text-sm text-cyan-600 truncate">{profile.title}</p>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-bg-canvas/90 backdrop-blur-md shadow-subtle py-2 sm:py-3' : 'bg-transparent py-4 sm:py-5'}`}>
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 h-full flex items-center justify-between">
+        {/* Brand */}
+        <div className="flex items-center space-x-2 sm:space-x-3 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-brand-accent rounded-lg flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform duration-300">
+            <span className="font-bold text-lg sm:text-xl">{profile.name.charAt(0)}</span>
           </div>
-          
-          <div className="hidden lg:flex items-center space-x-6">
-            <nav className="flex items-center space-x-1">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className={`px-3 xl:px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    activeSection === link.href
-                      ? 'bg-cyan-100 text-cyan-700 shadow-sm'
-                      : 'text-slate-600 hover:bg-cyan-50 hover:text-cyan-700'
-                  }`}
-                >
-                  {link.name}
-                </a>
-              ))}
-            </nav>
-            
-            <div className="w-48 xl:w-64">
-              <SearchBar data={data} onResults={() => {}} />
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <a
-                href={`mailto:${profile.email}`}
-                className="p-2 text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 rounded-lg transition-colors"
-                aria-label="Send email"
-              >
-                <i className="fas fa-envelope"></i>
-              </a>
-              <a
-                href={`tel:${profile.phone}`}
-                className="p-2 text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 rounded-lg transition-colors"
-                aria-label="Call phone"
-              >
-                <i className="fas fa-phone"></i>
-              </a>
-            </div>
+          <div className="hidden sm:block">
+            <h1 className="text-base sm:text-lg font-extrabold text-text-primary leading-tight tracking-tight">{profile.name}</h1>
+            <p className="text-[10px] sm:text-xs text-brand-accent font-bold uppercase tracking-widest">{profile.title}</p>
           </div>
-          
-          <div className="lg:hidden flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
-            <div className="w-32 sm:w-40">
-              <SearchBar data={data} onResults={() => {}} />
-            </div>
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-1.5 sm:p-2 rounded-lg text-slate-600 hover:text-cyan-700 hover:bg-cyan-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-colors flex-shrink-0"
+        </div>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className={`px-3 py-2 rounded-md text-xs xl:text-sm font-bold uppercase tracking-wider transition-all duration-200 ${activeSection === link.href
+                ? 'text-brand-accent bg-brand-accent-soft'
+                : 'text-text-secondary hover:text-brand-accent hover:bg-bg-app'
+                }`}
             >
-              <span className="sr-only">{isMenuOpen ? 'Close menu' : 'Open menu'}</span>
-              <i className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'} text-sm transition-transform duration-200 ${isMenuOpen ? 'rotate-90' : ''}`}></i>
-            </button>
+              {link.name}
+            </a>
+          ))}
+        </nav>
+
+        {/* Right side Utility Area */}
+        <div className="flex items-center space-x-2 sm:space-x-4">
+          {/* Search bar */}
+          <div className="relative hidden md:block">
+            <SearchBar data={data} onResults={() => { }} />
           </div>
+
+          <a
+            href={`mailto:${profile.email}`}
+            className="bg-brand-accent hover:bg-brand-accent-hover text-white px-3 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-sm font-bold rounded-full shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95 duration-200"
+          >
+            Contact Me
+          </a>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="lg:hidden p-1.5 sm:p-2 rounded-md text-text-secondary hover:text-brand-accent hover:bg-bg-app focus:outline-none transition-colors"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <i className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'} text-xl`}></i>
+          </button>
         </div>
       </div>
-      
-      {isMenuOpen && (
-        <div className="lg:hidden bg-white/95 backdrop-blur-sm border-t border-slate-200 shadow-lg">
-          <div className="px-4 sm:px-6 pt-2 pb-3 space-y-1">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setIsMenuOpen(false)}
-                className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${
-                  activeSection === link.href
-                    ? 'bg-cyan-100 text-cyan-700'
-                    : 'text-slate-600 hover:bg-cyan-50 hover:text-cyan-700'
+
+      {/* Mobile Navigation */}
+      <div
+        className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out bg-bg-canvas border-t border-border-subtle ${isMenuOpen ? 'max-h-screen opacity-100 py-4 sm:py-6 shadow-xl' : 'max-h-0 opacity-0'
+          }`}
+      >
+        <div className="px-4 space-y-1 sm:space-y-2">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className={`block px-3 py-2.5 rounded-md text-base font-bold transition-all ${activeSection === link.href
+                ? 'text-brand-accent bg-brand-accent-soft'
+                : 'text-text-secondary hover:text-brand-accent hover:bg-bg-app'
                 }`}
-              >
-                {link.name}
-              </a>
-            ))}
-            
-            <div className="flex justify-center space-x-4 pt-4 border-t border-slate-200 mt-4">
-              <a
-                href={`mailto:${profile.email}`}
-                className="flex items-center px-4 py-2 text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 rounded-lg transition-colors"
-              >
-                <i className="fas fa-envelope mr-2"></i>
-                Email
-              </a>
-              <a
-                href={`tel:${profile.phone}`}
-                className="flex items-center px-4 py-2 text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 rounded-lg transition-colors"
-              >
-                <i className="fas fa-phone mr-2"></i>
-                Call
-              </a>
-            </div>
-          </div>
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {link.name}
+            </a>
+          ))}
         </div>
-      )}
+      </div>
     </header>
   );
 };

@@ -20,41 +20,36 @@ const BlogSkeleton: React.FC = () => (
 );
 
 const BlogModal: React.FC<{ post: BlogPost; onClose: () => void }> = ({ post, onClose }) => (
-  <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-    <div className="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-      <div className="sticky top-0 bg-white border-b border-slate-200 p-4 flex justify-between items-center">
-        <h2 className="text-xl font-bold text-slate-800">{post.title}</h2>
-        <button onClick={onClose} className="p-1 rounded-full text-slate-500 hover:bg-slate-100">
+  <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
+    <div className="bg-bg-canvas rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-border-subtle">
+      <div className="sticky top-0 bg-bg-canvas/80 backdrop-blur-md border-b border-border-subtle p-5 flex justify-between items-center z-10">
+        <h2 className="text-xl sm:text-2xl font-extrabold text-text-primary tracking-tight">{post.title}</h2>
+        <button onClick={onClose} className="p-2 rounded-full text-text-muted hover:bg-bg-app transition-colors" aria-label="Close modal">
           <i className="fas fa-times text-xl"></i>
         </button>
       </div>
-      <div className="p-6">
-        <div className="flex items-center text-sm text-slate-500 mb-4">
-          <span>{new Date(post.date).toLocaleDateString()}</span>
-          <span className="mx-2">•</span>
-          <span>{post.readTime} min read</span>
+      <div className="p-6 sm:p-8">
+        <div className="flex flex-wrap items-center text-sm text-text-secondary mb-6 gap-x-4 gap-y-2">
+          <span className="flex items-center"><i className="far fa-calendar-alt mr-2"></i>{new Date(post.date).toLocaleDateString()}</span>
+          <span className="flex items-center"><i className="far fa-clock mr-2"></i>{post.readTime} min read</span>
           {post.author && (
-            <>
-              <span className="mx-2">•</span>
-              <span>by {post.author}</span>
-            </>
+            <span className="flex items-center"><i className="far fa-user mr-2"></i>{post.author}</span>
           )}
           {post.category && (
-            <>
-              <span className="mx-2">•</span>
-              <span className="bg-slate-100 text-slate-700 px-2 py-1 rounded text-xs">{post.category}</span>
-            </>
+            <span className="bg-brand-accent-soft text-brand-accent-text px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-widest">
+              {post.category}
+            </span>
           )}
         </div>
-        <div className="prose max-w-none text-slate-600">
+        <div className="prose prose-slate dark:prose-invert max-w-none text-text-secondary leading-relaxed">
           {post.content.split('\n').map((paragraph, index) => (
             <p key={index} className="mb-4">{paragraph}</p>
           ))}
         </div>
-        <div className="flex flex-wrap gap-2 mt-6">
+        <div className="flex flex-wrap gap-2 mt-8 pt-6 border-t border-border-subtle/50">
           {post.tags?.map((tag) => (
-            <span key={tag} className="bg-cyan-100 text-cyan-800 text-xs px-2 py-1 rounded-full">
-              {tag}
+            <span key={tag} className="bg-bg-app text-text-secondary text-[10px] px-3 py-1 rounded-full border border-border-subtle font-extrabold uppercase tracking-widest">
+              #{tag}
             </span>
           ))}
         </div>
@@ -70,27 +65,29 @@ const Blog: React.FC<BlogProps> = ({ blogPosts }) => {
     <>
       <Section id="blog" title="Blog & Articles" iconClass="fas fa-pen-alt">
         {blogPosts ? (
-          <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
             {blogPosts.map((post) => (
-              <article key={post.id} className="bg-slate-50 p-4 sm:p-6 rounded-lg border border-slate-200 hover:shadow-md transition-shadow cursor-pointer"
+              <article key={post.id} className="bg-bg-canvas p-6 rounded-xl border border-border-subtle hover:shadow-lg hover:border-brand-accent/50 transition-all duration-300 cursor-pointer group flex flex-col"
                 onClick={() => setSelectedPost(post)}>
                 {post.featured && (
-                  <span className="inline-block bg-cyan-100 text-cyan-800 text-xs px-2 py-1 rounded-full mb-3">
+                  <span className="inline-block bg-brand-accent text-white text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md mb-4 self-start">
                     Featured
                   </span>
                 )}
-                <h3 className="text-base sm:text-lg font-semibold text-slate-800 mb-2">{post.title}</h3>
-                <p className="text-slate-600 mb-4 text-sm sm:text-base">{post.excerpt}</p>
-                <div className="flex items-center justify-between text-xs sm:text-sm text-slate-500">
-                  <span>{new Date(post.date).toLocaleDateString()}</span>
-                  <span>{post.readTime} min read</span>
-                </div>
-                <div className="flex flex-wrap gap-1 mt-3">
-                  {post.tags?.map((tag) => (
-                    <span key={tag} className="bg-slate-200 text-slate-700 text-xs px-2 py-1 rounded">
-                      {tag}
-                    </span>
-                  ))}
+                <h3 className="text-lg font-extrabold text-text-primary mb-2 group-hover:text-brand-accent transition-colors leading-tight tracking-tight">{post.title}</h3>
+                <p className="text-text-secondary mb-6 text-sm flex-grow line-clamp-3 leading-relaxed">{post.excerpt}</p>
+                <div className="mt-auto">
+                  <div className="flex items-center justify-between text-xs text-text-muted font-medium mb-3">
+                    <span>{new Date(post.date).toLocaleDateString()}</span>
+                    <span>{post.readTime} min read</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {post.tags?.slice(0, 3).map((tag) => (
+                      <span key={tag} className="text-[10px] font-bold text-text-muted uppercase tracking-wider">
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </article>
             ))}
@@ -99,7 +96,7 @@ const Blog: React.FC<BlogProps> = ({ blogPosts }) => {
           <BlogSkeleton />
         )}
       </Section>
-      
+
       {selectedPost && (
         <BlogModal post={selectedPost} onClose={() => setSelectedPost(null)} />
       )}

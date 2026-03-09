@@ -47,17 +47,16 @@ const Gallery: React.FC<GalleryProps> = ({ gallery }) => {
                 <button
                   key={category}
                   onClick={() => setFilter(category)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    filter === category
-                      ? 'bg-cyan-100 text-cyan-700'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
+                  className={`px-4 py-2 rounded-lg text-xs font-extrabold uppercase tracking-widest transition-all ${filter === category
+                      ? 'bg-brand-accent-soft text-brand-accent-text border border-brand-accent/20'
+                      : 'bg-bg-app text-text-secondary hover:bg-border-subtle/50 border border-transparent'
+                    }`}
                 >
                   {category}
                 </button>
               ))}
             </div>
-            
+
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
               {filteredImages.map((image) => (
                 <div
@@ -74,8 +73,8 @@ const Gallery: React.FC<GalleryProps> = ({ gallery }) => {
                     <i className="fas fa-expand text-white opacity-0 group-hover:opacity-100 transition-opacity text-xl"></i>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
-                    <h4 className="text-white font-medium text-sm">{image.title}</h4>
-                    <span className="text-cyan-300 text-xs">{image.category}</span>
+                    <h4 className="text-white font-extrabold text-sm tracking-tight">{image.title}</h4>
+                    <span className="text-brand-accent-text text-[10px] font-extrabold uppercase tracking-widest">{image.category}</span>
                   </div>
                 </div>
               ))}
@@ -85,7 +84,7 @@ const Gallery: React.FC<GalleryProps> = ({ gallery }) => {
           <GallerySkeleton />
         )}
       </Section>
-      
+
       {selectedImage && (
         <ImageModal image={selectedImage} onClose={() => setSelectedImage(null)} />
       )}

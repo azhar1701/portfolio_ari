@@ -24,9 +24,8 @@ const StarRating: React.FC<{ rating: number }> = ({ rating }) => (
     {[...Array(5)].map((_, i) => (
       <i
         key={i}
-        className={`fas fa-star text-sm ${
-          i < rating ? 'text-yellow-400' : 'text-slate-300'
-        }`}
+        className={`fas fa-star text-sm ${i < rating ? 'text-yellow-400' : 'text-slate-300'
+          }`}
       ></i>
     ))}
   </div>
@@ -36,27 +35,28 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
   return (
     <Section id="testimonials" title="Testimonials" iconClass="fas fa-quote-left">
       {testimonials ? (
-        <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
           {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="bg-slate-50 p-4 sm:p-6 rounded-lg border border-slate-200">
-              <div className="mb-4">
+            <div key={testimonial.id} className="bg-bg-canvas p-6 sm:p-8 rounded-xl border border-border-subtle shadow-subtle hover:shadow-md transition-all duration-300 flex flex-col">
+              <div className="mb-6 flex justify-between items-start">
                 <StarRating rating={testimonial.rating} />
+                <i className="fas fa-quote-right text-brand-accent/20 text-3xl"></i>
               </div>
-              <blockquote className="text-slate-600 mb-4 italic text-sm sm:text-base">
+              <blockquote className="text-text-secondary mb-8 italic text-sm sm:text-base leading-relaxed flex-grow">
                 "{testimonial.content}"
               </blockquote>
-              <div className="flex items-center">
+              <div className="flex items-center pt-6 border-t border-border-subtle/50">
                 {(testimonial.avatar || testimonial.image) && (
                   <img
                     src={testimonial.avatar || testimonial.image}
                     alt={testimonial.name}
-                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full mr-3 sm:mr-4 object-cover"
+                    className="w-12 h-12 rounded-full mr-4 object-cover ring-2 ring-brand-accent-soft shadow-sm"
                   />
                 )}
                 <div>
-                  <h4 className="font-semibold text-slate-800 text-sm sm:text-base">{testimonial.name}</h4>
-                  <p className="text-xs sm:text-sm text-slate-600">{testimonial.role || testimonial.position}</p>
-                  <p className="text-xs sm:text-sm text-cyan-600">{testimonial.company}</p>
+                  <h4 className="font-extrabold text-text-primary text-sm sm:text-base leading-tight tracking-tight">{testimonial.name}</h4>
+                  <p className="text-xs sm:text-sm text-text-muted mt-0.5 font-bold uppercase tracking-widest opacity-80">{testimonial.role || testimonial.position}</p>
+                  <p className="text-xs sm:text-sm text-brand-accent font-extrabold mt-2 uppercase tracking-widest">{testimonial.company}</p>
                 </div>
               </div>
             </div>

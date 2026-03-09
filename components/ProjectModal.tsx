@@ -30,7 +30,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project })
 
   useEffect(() => {
     if (project?.images?.[0]) {
-        setMainImage(project.images[0]);
+      setMainImage(project.images[0]);
     }
   }, [project]);
 
@@ -53,68 +53,86 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project })
     >
       <div className="fixed inset-0 bg-black/70 backdrop-blur-sm" aria-hidden="true"></div>
       <div
-        className={`relative w-full max-w-4xl max-h-[90vh] bg-white dark:bg-slate-800 rounded-lg shadow-xl overflow-y-auto transform transition-all duration-300 ${isOpen && show ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
+        className={`relative w-full max-w-4xl max-h-[90vh] bg-bg-canvas rounded-2xl shadow-2xl overflow-y-auto transform transition-all duration-300 border border-border-subtle ${isOpen && show ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-6 md:p-8">
-            <div className="flex justify-between items-start">
-                <h2 id="project-modal-title" className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-slate-100">
-                    {project.name}
-                </h2>
-                <button
-                    onClick={onClose}
-                    className="p-1 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                    aria-label="Close project details"
-                >
-                    <i className="fas fa-times text-xl"></i>
-                </button>
+        <div className="p-6 md:p-10">
+          <div className="flex justify-between items-start mb-8">
+            <h2 id="project-modal-title" className="text-2xl md:text-4xl font-extrabold text-text-primary tracking-tight pr-8">
+              {project.name}
+            </h2>
+            <button
+              onClick={onClose}
+              className="p-2 rounded-full text-text-muted hover:bg-bg-app transition-colors focus:outline-none focus:ring-2 focus:ring-brand-accent"
+              aria-label="Close project details"
+            >
+              <i className="fas fa-times text-2xl"></i>
+            </button>
+          </div>
+
+          <div className="space-y-10">
+            {/* Image Gallery */}
+            <div>
+              <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-md border border-border-subtle mb-4">
+                <img src={mainImage} alt={project.name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+              </div>
+              {project.images.length > 1 && (
+                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                  {project.images.map((img, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setMainImage(img)}
+                      className="flex-shrink-0"
+                    >
+                      <div className={`w-24 h-16 rounded-lg overflow-hidden border-2 transition-all ${mainImage === img ? 'border-brand-accent shadow-md scale-95' : 'border-transparent hover:border-border-subtle hover:scale-105'}`}>
+                        <img
+                          src={img}
+                          alt={`Thumbnail ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
-            <div className="mt-6">
-                {/* Image Gallery */}
-                <div className="mb-8">
-                    <img src={mainImage} alt={project.name} className="w-full h-auto max-h-80 object-cover rounded-lg shadow-md mb-2" />
-                    {project.images.length > 1 && (
-                        <div className="flex space-x-2">
-                            {project.images.map((img, index) => (
-                                <button key={index} onClick={() => setMainImage(img)}>
-                                    <img
-                                        src={img}
-                                        alt={`Thumbnail ${index + 1}`}
-                                        className={`w-20 h-14 object-cover rounded-md cursor-pointer border-2 transition ${mainImage === img ? 'border-cyan-500' : 'border-transparent hover:border-slate-300'}`}
-                                    />
-                                </button>
-                            ))}
-                        </div>
-                    )}
+            {/* Details */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              {/* Main content: Challenge and Solution */}
+              <div className="md:col-span-2 space-y-8">
+                <div>
+                  <h3 className="text-sm font-extrabold text-brand-accent uppercase tracking-widest mb-4 flex items-center">
+                    <i className="fas fa-exclamation-triangle mr-2 text-xs"></i>
+                    The Challenge
+                  </h3>
+                  <p className="text-text-secondary leading-relaxed font-medium">{project.challenge}</p>
                 </div>
-
-                {/* Details */}
-                <div className="grid grid-cols-1 md:grid-cols-3 md:gap-8 text-slate-600 dark:text-slate-300">
-                    {/* Main content: Challenge and Solution */}
-                    <div className="md:col-span-2 space-y-6">
-                        <div>
-                            <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-2">The Challenge</h3>
-                            <p>{project.challenge}</p>
-                        </div>
-                        <div>
-                            <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-2">The Solution</h3>
-                            <p>{project.solution}</p>
-                        </div>
-                    </div>
-                    {/* Sidebar: Technologies */}
-                    <div className="md:col-span-1 mt-6 md:mt-0">
-                        <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-2">Technologies Used</h3>
-                        <div className="flex flex-wrap gap-2">
-                            {project.technologies.map((tech, index) => (
-                                <span key={index} className="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-medium px-3 py-1.5 rounded-full">
-                                    {tech}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
+                <div>
+                  <h3 className="text-sm font-extrabold text-brand-accent uppercase tracking-widest mb-4 flex items-center">
+                    <i className="fas fa-lightbulb mr-2 text-xs"></i>
+                    The Solution
+                  </h3>
+                  <p className="text-text-secondary leading-relaxed font-medium">{project.solution}</p>
                 </div>
+              </div>
+              {/* Sidebar: Technologies */}
+              <div className="md:col-span-1">
+                <div className="bg-bg-app p-6 rounded-2xl border border-border-subtle h-fit">
+                  <h3 className="text-sm font-extrabold text-text-primary uppercase tracking-widest mb-6 border-b border-border-subtle pb-3">
+                    Technologies
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech, index) => (
+                      <span key={index} className="bg-bg-canvas text-text-primary text-[11px] font-bold px-3 py-1.5 rounded-lg border border-border-subtle shadow-sm uppercase tracking-wider">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
       </div>
     </div>

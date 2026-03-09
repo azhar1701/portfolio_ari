@@ -31,9 +31,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResults }) => {
 
     // Search in experience
     data.experience.forEach((exp, index) => {
-      if (exp.role.toLowerCase().includes(searchTerm) || 
-          exp.company.toLowerCase().includes(searchTerm) ||
-          exp.responsibilities.some(r => r.toLowerCase().includes(searchTerm))) {
+      if (exp.role.toLowerCase().includes(searchTerm) ||
+        exp.company.toLowerCase().includes(searchTerm) ||
+        exp.responsibilities.some(r => r.toLowerCase().includes(searchTerm))) {
         searchResults.push({
           id: `exp-${index}`,
           title: exp.role,
@@ -47,8 +47,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResults }) => {
     // Search in projects
     data.projects.forEach((project) => {
       if (project.name.toLowerCase().includes(searchTerm) ||
-          project.description.toLowerCase().includes(searchTerm) ||
-          project.technologies.some(t => t.toLowerCase().includes(searchTerm))) {
+        project.description.toLowerCase().includes(searchTerm) ||
+        project.technologies.some(t => t.toLowerCase().includes(searchTerm))) {
         searchResults.push({
           id: project.id,
           title: project.name,
@@ -62,7 +62,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResults }) => {
     // Search in skills
     data.skills.forEach((skillCat, index) => {
       if (skillCat.category.toLowerCase().includes(searchTerm) ||
-          skillCat.skills.some(s => s.toLowerCase().includes(searchTerm))) {
+        skillCat.skills.some(s => s.toLowerCase().includes(searchTerm))) {
         searchResults.push({
           id: `skill-${index}`,
           title: skillCat.category,
@@ -76,7 +76,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResults }) => {
     // Search in publications
     data.publications.forEach((pub, index) => {
       if (pub.title.toLowerCase().includes(searchTerm) ||
-          pub.details.toLowerCase().includes(searchTerm)) {
+        pub.details.toLowerCase().includes(searchTerm)) {
         searchResults.push({
           id: `pub-${index}`,
           title: pub.title,
@@ -91,8 +91,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResults }) => {
     if (data.blogPosts) {
       data.blogPosts.forEach((post) => {
         if (post.title.toLowerCase().includes(searchTerm) ||
-            post.excerpt.toLowerCase().includes(searchTerm) ||
-            post.tags.some(t => t.toLowerCase().includes(searchTerm))) {
+          post.excerpt.toLowerCase().includes(searchTerm) ||
+          post.tags.some(t => t.toLowerCase().includes(searchTerm))) {
           searchResults.push({
             id: post.id,
             title: post.title,
@@ -126,16 +126,16 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResults }) => {
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setIsOpen(true)}
           placeholder="Search portfolio..."
-          className="w-full px-4 py-2 pl-10 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+          className="w-full px-4 py-2 pl-10 bg-bg-app border border-border-subtle rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all duration-300"
         />
-        <i className="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+        <i className="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted"></i>
         {query && (
           <button
             onClick={() => {
               setQuery('');
               setIsOpen(false);
             }}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-muted hover:text-text-secondary transition-colors"
           >
             <i className="fas fa-times"></i>
           </button>
@@ -143,19 +143,19 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResults }) => {
       </div>
 
       {isOpen && results.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-bg-canvas border border-border-subtle rounded-lg shadow-md z-50 max-h-96 overflow-y-auto divide-y divide-border-subtle">
           {results.map((result) => (
             <button
               key={result.id}
               onClick={() => handleResultClick(result)}
-              className="w-full text-left px-4 py-3 hover:bg-slate-50 border-b border-slate-100 last:border-b-0"
+              className="w-full text-left px-4 py-3 hover:bg-bg-app transition-colors"
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h4 className="font-medium text-slate-800 text-sm">{result.title}</h4>
-                  <p className="text-slate-600 text-xs mt-1 line-clamp-2">{result.content}</p>
+                  <h4 className="font-bold text-text-primary text-sm tracking-tight">{result.title}</h4>
+                  <p className="text-text-secondary text-xs mt-1 line-clamp-2 leading-relaxed">{result.content}</p>
                 </div>
-                <span className="text-xs text-cyan-600 bg-cyan-50 px-2 py-1 rounded ml-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-brand-accent bg-brand-accent-soft px-2 py-0.5 rounded ml-3">
                   {result.type}
                 </span>
               </div>
@@ -165,8 +165,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResults }) => {
       )}
 
       {isOpen && query.length >= 2 && results.length === 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-lg z-50 p-4 text-center">
-          <p className="text-slate-500 text-sm">No results found for "{query}"</p>
+        <div className="absolute top-full left-0 right-0 mt-2 bg-bg-canvas border border-border-subtle rounded-lg shadow-md z-50 p-6 text-center">
+          <p className="text-text-secondary text-sm">No results found for "<span className="text-text-primary font-bold">{query}</span>"</p>
         </div>
       )}
     </div>

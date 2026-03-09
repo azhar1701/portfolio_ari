@@ -16,60 +16,70 @@ const ShowcaseSkeleton: React.FC = () => (
 );
 
 interface CarouselProps {
-    images: string[];
-    title: string;
-    description: string;
+  images: string[];
+  title: string;
+  description: string;
 }
 
 const Carousel: React.FC<CarouselProps> = ({ images, title, description }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-    const goToPrevious = () => {
-        const isFirstSlide = currentIndex === 0;
-        const newIndex = isFirstSlide ? images.length - 1 : currentIndex - 1;
-        setCurrentIndex(newIndex);
-    };
+  const goToPrevious = () => {
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? images.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
+  };
 
-    const goToNext = () => {
-        const isLastSlide = currentIndex === images.length - 1;
-        const newIndex = isLastSlide ? 0 : currentIndex + 1;
-        setCurrentIndex(newIndex);
-    };
-    
-    const goToSlide = (slideIndex: number) => {
-        setCurrentIndex(slideIndex);
-    }
+  const goToNext = () => {
+    const isLastSlide = currentIndex === images.length - 1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
 
-    return (
-        <div className="w-full">
-            <h4 className="font-bold text-xl text-slate-700 mb-2">{title}</h4>
-            <div className="relative group aspect-video w-full rounded-lg overflow-hidden shadow-sm border border-slate-200">
-                <div 
-                    style={{ backgroundImage: `url(${images[currentIndex]})` }} 
-                    className="w-full h-full bg-center bg-cover duration-500 transition-all"
-                ></div>
-                {/* Left Arrow */}
-                <div className="hidden group-hover:block absolute top-1/2 -translate-y-1/2 left-3 text-2xl rounded-full p-2 bg-black/40 text-white cursor-pointer">
-                    <button onClick={goToPrevious} aria-label="Previous image"><i className="fas fa-chevron-left"></i></button>
-                </div>
-                {/* Right Arrow */}
-                <div className="hidden group-hover:block absolute top-1/2 -translate-y-1/2 right-3 text-2xl rounded-full p-2 bg-black/40 text-white cursor-pointer">
-                    <button onClick={goToNext} aria-label="Next image"><i className="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-            <div className="flex justify-center py-3 space-x-2">
-                {images.map((_, slideIndex) => (
-                    <button 
-                        key={slideIndex} 
-                        onClick={() => goToSlide(slideIndex)}
-                        className={`w-3 h-3 rounded-full transition-colors ${currentIndex === slideIndex ? 'bg-cyan-600' : 'bg-slate-300 hover:bg-cyan-400'}`}
-                        aria-label={`Go to image ${slideIndex + 1}`}
-                    ></button>
-                ))}
-            </div>
-            <p className="text-slate-600 text-sm mt-1">{description}</p>
-        </div>
-    );
+  const goToSlide = (slideIndex: number) => {
+    setCurrentIndex(slideIndex);
+  }
+
+  return (
+    <div className="w-full group/carousel">
+      <h4 className="font-bold text-lg text-text-primary mb-3 flex items-center">
+        <i className="fas fa-camera mr-2 text-brand-accent/50 text-xs"></i>
+        {title}
+      </h4>
+      <div className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-subtle border border-border-subtle group">
+        <div
+          style={{ backgroundImage: `url(${images[currentIndex]})` }}
+          className="w-full h-full bg-center bg-cover duration-500 transition-all hover:scale-105"
+        ></div>
+        {/* Navigation Arrows */}
+        <button
+          onClick={goToPrevious}
+          className="absolute top-1/2 -translate-y-1/2 left-4 text-xl rounded-full p-2 bg-black/40 text-white backdrop-blur-sm opacity-0 group-hover/carousel:opacity-100 transition-all hover:bg-black/60"
+          aria-label="Previous image"
+        >
+          <i className="fas fa-chevron-left"></i>
+        </button>
+        <button
+          onClick={goToNext}
+          className="absolute top-1/2 -translate-y-1/2 right-4 text-xl rounded-full p-2 bg-black/40 text-white backdrop-blur-sm opacity-0 group-hover/carousel:opacity-100 transition-all hover:bg-black/60"
+          aria-label="Next image"
+        >
+          <i className="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      <div className="flex justify-center py-4 space-x-2.5">
+        {images.map((_, slideIndex) => (
+          <button
+            key={slideIndex}
+            onClick={() => goToSlide(slideIndex)}
+            className={`transition-all duration-300 ${currentIndex === slideIndex ? 'w-8 h-2 bg-brand-accent rounded-full' : 'w-2 h-2 bg-text-muted/30 rounded-full hover:bg-brand-accent/50 hover:w-4'}`}
+            aria-label={`Go to image ${slideIndex + 1}`}
+          ></button>
+        ))}
+      </div>
+      <p className="text-text-secondary text-sm font-medium leading-relaxed italic">{description}</p>
+    </div>
+  );
 };
 
 const ProjectShowcase: React.FC<{ showcase: ShowcaseType | null }> = ({ showcase }) => {
@@ -78,20 +88,22 @@ const ProjectShowcase: React.FC<{ showcase: ShowcaseType | null }> = ({ showcase
   return (
     <Section id="showcase" title="Project Showcase" iconClass="fas fa-images">
       {showcase ? (
-        <div className="space-y-6">
-          <h3 className="text-xl md:text-2xl font-bold text-slate-800 mb-2">{showcase.title}</h3>
-          <p className="text-slate-600 mb-6">{showcase.description}</p>
-          <div className="grid md:grid-cols-2 gap-8">
-              <Carousel 
-                title="Before"
-                images={showcase.before.imageUrls}
-                description={showcase.before.description}
-              />
-              <Carousel 
-                title="After"
-                images={showcase.after.imageUrls}
-                description={showcase.after.description}
-              />
+        <div className="space-y-8 bg-bg-canvas p-6 sm:p-10 rounded-2xl border border-border-subtle shadow-subtle">
+          <div className="max-w-3xl">
+            <h3 className="text-2xl md:text-4xl font-extrabold text-text-primary mb-4 tracking-tight">{showcase.title}</h3>
+            <p className="text-text-secondary md:text-lg leading-relaxed font-medium">{showcase.description}</p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-10 pt-6 border-t border-border-subtle/50">
+            <Carousel
+              title="Legacy System"
+              images={showcase.before.imageUrls}
+              description={showcase.before.description}
+            />
+            <Carousel
+              title="Modernized Platform"
+              images={showcase.after.imageUrls}
+              description={showcase.after.description}
+            />
           </div>
         </div>
       ) : (

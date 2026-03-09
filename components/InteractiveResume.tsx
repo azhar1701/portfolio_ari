@@ -28,19 +28,22 @@ const InteractiveResume: React.FC<InteractiveResumeProps> = ({ data }) => {
   return (
     <Section id="resume" title="Interactive Resume" iconClass="fas fa-file-download">
       <div className="space-y-6">
-        <div className="bg-slate-50 p-6 rounded-lg border border-slate-200">
-          <h3 className="text-lg font-semibold text-slate-800 mb-4">Download Options</h3>
+        <div className="bg-bg-canvas p-6 sm:p-8 rounded-xl border border-border-subtle shadow-subtle">
+          <h3 className="text-lg font-extrabold text-text-primary mb-6 flex items-center tracking-tight">
+            <i className="fas fa-download mr-2 text-brand-accent/50 text-sm"></i>
+            Download Options
+          </h3>
           <div className="flex flex-wrap gap-4">
             <button
               onClick={downloadPDF}
-              className="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              className="flex items-center px-5 py-2.5 bg-red-600 text-white font-extrabold text-xs uppercase tracking-widest rounded-lg hover:bg-red-700 transition-all shadow-sm hover:shadow-md focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
             >
               <i className="fas fa-file-pdf mr-2"></i>
               Download PDF
             </button>
             <button
               onClick={downloadJSON}
-              className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="flex items-center px-5 py-2.5 bg-brand-accent text-white font-extrabold text-xs uppercase tracking-widest rounded-lg hover:bg-brand-accent-hover transition-all shadow-sm hover:shadow-md focus:ring-2 focus:ring-brand-accent focus:ring-offset-2"
             >
               <i className="fas fa-code mr-2"></i>
               Download Data
@@ -120,15 +123,18 @@ const InteractiveResume: React.FC<InteractiveResumeProps> = ({ data }) => {
           </div>
         </div>
 
-        <div className="bg-slate-50 p-6 rounded-lg border border-slate-200">
-          <h3 className="text-lg font-semibold text-slate-800 mb-4">Resume Preview</h3>
-          <p className="text-slate-600 mb-4">
-            Click "Download PDF" to generate a print-friendly version of the resume, or "Download Data" to get the structured data in JSON format.
+        <div className="bg-bg-canvas p-6 sm:p-8 rounded-xl border border-border-subtle shadow-subtle">
+          <h3 className="text-lg font-extrabold text-text-primary mb-4 flex items-center tracking-tight">
+            <i className="fas fa-info-circle mr-2 text-brand-accent/50 text-sm"></i>
+            Resume Preview
+          </h3>
+          <p className="text-text-secondary mb-6 leading-relaxed">
+            Click <span className="font-bold text-text-primary">"Download PDF"</span> to generate a print-friendly version of the resume, or <span className="font-bold text-accent-primary text-brand-accent">"Download Data"</span> to get the structured data in JSON format.
           </p>
-          <div className="text-sm text-slate-500">
-            <p>• PDF version optimized for ATS systems</p>
-            <p>• JSON data for integration with other systems</p>
-            <p>• Print-friendly formatting</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-[10px] font-extrabold text-text-muted uppercase tracking-widest">
+            <div className="flex items-center"><i className="fas fa-check-circle text-brand-accent mr-2"></i> ATS Optimized</div>
+            <div className="flex items-center"><i className="fas fa-check-circle text-brand-accent mr-2"></i> JSON Integration</div>
+            <div className="flex items-center"><i className="fas fa-check-circle text-brand-accent mr-2"></i> Print Ready</div>
           </div>
         </div>
       </div>

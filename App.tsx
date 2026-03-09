@@ -56,7 +56,7 @@ const App: React.FC = () => {
       once: true,
     });
   }, []);
-  
+
   const navLinks = [
     { name: 'Summary', href: '#summary' },
     { name: 'Experience', href: '#experience' },
@@ -73,10 +73,10 @@ const App: React.FC = () => {
       setLoading(true);
       await savePortfolioData(updatedData);
       setData(updatedData);
-      
+
       // Show success message
-      const message = import.meta.env.VITE_USE_SUPABASE === 'true' 
-        ? 'Data saved to Supabase successfully!' 
+      const message = import.meta.env.VITE_USE_SUPABASE === 'true'
+        ? 'Data saved to Supabase successfully!'
         : 'Data saved to local storage successfully!';
       window.alert(message);
     } catch (err) {
@@ -93,7 +93,7 @@ const App: React.FC = () => {
       setLoading(true);
       const defaultData = resetPortfolioData();
       setData(defaultData);
-      
+
       // If using Supabase, also reset database
       if (import.meta.env.VITE_USE_SUPABASE === 'true') {
         await savePortfolioData(defaultData);
@@ -101,7 +101,7 @@ const App: React.FC = () => {
       } else {
         window.alert('Data reset to default successfully!');
       }
-      
+
       return defaultData;
     } catch (err) {
       console.error('Failed to reset portfolio data:', err);
@@ -116,9 +116,9 @@ const App: React.FC = () => {
   const handleOpenAdminPanel = () => {
     try {
       const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
-      
+
       console.log('Admin password from env:', ADMIN_PASSWORD); // Debug log
-      
+
       if (!ADMIN_PASSWORD) {
         console.error('Admin password not configured');
         window.alert('Admin access is not properly configured. Please check environment variables.');
@@ -126,11 +126,11 @@ const App: React.FC = () => {
       }
 
       const password = window.prompt('Enter admin password:');
-      
+
       if (password === null) {
         return;
       }
-      
+
       if (password === ADMIN_PASSWORD) {
         setIsAdminOpen(true);
       } else {
@@ -142,7 +142,7 @@ const App: React.FC = () => {
       window.alert('Unable to access admin panel. Please try again.');
     }
   };
-  
+
   if (loading) return <Loader />;
   if (error || !data) return <Error message={error || "Portfolio data could not be loaded."} />;
 
@@ -165,31 +165,31 @@ const App: React.FC = () => {
   } = data;
 
   return (
-    <div className="font-sans text-slate-700 bg-slate-50 min-h-screen">
+    <div className="min-h-screen">
       <Header profile={profile} navLinks={navLinks} data={data} />
       <main className="w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pt-32">
         <div className="max-w-7xl mx-auto space-y-12 md:space-y-16 lg:space-y-20">
-        <Summary content={summary} />
-        <Stats stats={stats} />
-        <ExperienceComponent experience={experience} />
-        <ProjectShowcase showcase={showcase} />
-        <MapSection locations={locations} />
-        <Projects projects={projects} />
-        <Skills skills={skills} />
-        <Testimonials testimonials={testimonials} />
-        <Blog blogPosts={blogPosts} />
-        <Gallery gallery={gallery} />
-        <InteractiveResume data={data} />
-        <EducationComponent education={education} />
-        <Certifications certifications={certifications} />
-        <Publications publications={publications} />
-        <Organizations organizations={organizations} />
-        <ContactForm />
+          <Summary content={summary} />
+          <Stats stats={stats} />
+          <ExperienceComponent experience={experience} />
+          <ProjectShowcase showcase={showcase} />
+          <MapSection locations={locations} />
+          <Projects projects={projects} />
+          <Skills skills={skills} />
+          <Testimonials testimonials={testimonials} />
+          <Blog blogPosts={blogPosts} />
+          <Gallery gallery={gallery} />
+          <InteractiveResume data={data} />
+          <EducationComponent education={education} />
+          <Certifications certifications={certifications} />
+          <Publications publications={publications} />
+          <Organizations organizations={organizations} />
+          <ContactForm />
         </div>
       </main>
       <Footer name={profile.name} onOpenAdmin={handleOpenAdminPanel} />
       <BackToTopButton />
-      <AdminDashboard 
+      <AdminDashboard
         isOpen={isAdminOpen}
         onClose={() => setIsAdminOpen(false)}
         data={data}

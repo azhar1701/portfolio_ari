@@ -1,1 +1,121 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&display=swap');
+
+@theme {
+    /* Font Families */
+    --font-heading: "Outfit", sans-serif;
+    --font-body: "Hanken Grotesk", sans-serif;
+
+    /* Fluid Type Scale (Modular Scale) */
+    /* Mobile: 16px, Desktop: 18px base */
+    --text-xs: clamp(0.69rem, 0.05cqi + 0.68rem, 0.72rem);
+    --text-sm: clamp(0.78rem, 0.13cqi + 0.75rem, 0.85rem);
+    --text-base: clamp(0.88rem, 0.25cqi + 0.81rem, 1rem);
+    --text-lg: clamp(1.1rem, 0.44cqi + 0.99rem, 1.31rem);
+    --text-xl: clamp(1.38rem, 0.74cqi + 1.19rem, 1.72rem);
+    --text-2xl: clamp(1.72rem, 1.19cqi + 1.42rem, 2.26rem);
+    --text-3xl: clamp(2.15rem, 1.86cqi + 1.68rem, 2.96rem);
+    --text-4xl: clamp(2.69rem, 2.87cqi + 1.97rem, 3.89rem);
+    --text-5xl: clamp(3.36rem, 4.34cqi + 2.27rem, 5.11rem);
+
+    /* Semantic Colors */
+    --color-bg-app: light-dark(#f8fafc, #0f172a);
+    --color-bg-canvas: light-dark(#ffffff, #1e293b);
+    --color-text-primary: light-dark(#1e293b, #f1f5f9);
+    --color-text-secondary: light-dark(#475569, #94a3b8);
+    --color-text-muted: light-dark(#64748b, #64748b);
+
+    --color-brand-accent: #0891b2;
+    --color-brand-accent-hover: #0e7490;
+    --color-brand-accent-soft: light-dark(#ecfeff, #164e63);
+    --color-brand-accent-text: light-dark(#0e7490, #22d3ee);
+
+    --color-border-subtle: light-dark(#e2e8f0, #334155);
+    --color-border-accent: light-dark(#67e8f9, #0891b2);
+
+    --shadow-subtle: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+@layer base {
+
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+
+        *,
+        ::before,
+        ::after {
+            animation-delay: -1ms !important;
+            animation-duration: 1ms !important;
+            animation-iteration-count: 1 !important;
+            background-attachment: initial !important;
+            scroll-behavior: auto !important;
+            transition-duration: 0s !important;
+            transition-delay: 0s !important;
+        }
+    }
+
+    /* Robust text handling */
+    html {
+        -webkit-text-size-adjust: 100%;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        background-color: var(--color-bg-app);
+        color: var(--color-text-primary);
+        color-scheme: light dark;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        font-family: var(--font-body);
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+    }
+
+    /* Sync .dark class with color-scheme */
+    html.dark {
+        color-scheme: dark;
+    }
+
+    body {
+        background-color: var(--color-bg-app);
+        color: var(--color-text-primary);
+        min-height: 100vh;
+    }
+
+    /* Prevent focus content shift */
+    :focus-visible {
+        outline: 2px solid var(--color-brand-accent);
+        outline-offset: 2px;
+    }
+}
+
+@layer utilities {
+
+    /* Logical properties for i18n resilience */
+    .ms-auto {
+        margin-inline-start: auto;
+    }
+
+    .me-auto {
+        margin-inline-end: auto;
+    }
+
+    .ps-4 {
+        padding-inline-start: 1rem;
+    }
+
+    .pe-4 {
+        padding-inline-end: 1rem;
+    }
+}
