@@ -13,54 +13,54 @@ interface AdminDashboardProps {
 }
 
 const sections = [
-  { id: 'profile', name: 'Profile', icon: 'fa-user' },
-  { id: 'summary', name: 'Summary', icon: 'fa-file-alt' },
-  { id: 'experience', name: 'Experience', icon: 'fa-briefcase' },
-  { id: 'projects', name: 'Projects', icon: 'fa-project-diagram' },
-  { id: 'skills', name: 'Skills', icon: 'fa-cogs' },
-  { id: 'testimonials', name: 'Testimonials', icon: 'fa-quote-left' },
-  { id: 'blog', name: 'Blog Posts', icon: 'fa-blog' },
-  { id: 'gallery', name: 'Gallery', icon: 'fa-images' },
-  { id: 'education', name: 'Education', icon: 'fa-graduation-cap' },
-  { id: 'stats', name: 'Stats', icon: 'fa-chart-line' },
-  { id: 'showcase', name: 'Showcase', icon: 'fa-star' },
-  { id: 'locations', name: 'Locations', icon: 'fa-map-marked-alt' },
-  { id: 'publications', name: 'Publications', icon: 'fa-book-open' },
-  { id: 'certifications', name: 'Certifications', icon: 'fa-certificate' },
-  { id: 'organizations', name: 'Organizations', icon: 'fa-users' },
+  { id: 'profile', name: 'Identity', icon: 'fa-id-card' },
+  { id: 'summary', name: 'Summary', icon: 'fa-compass-drafting' },
+  { id: 'experience', name: 'Trajectory', icon: 'fa-route' },
+  { id: 'projects', name: 'Portfolio', icon: 'fa-diagram-project' },
+  { id: 'skills', name: 'Arsenal', icon: 'fa-gears' },
+  { id: 'testimonials', name: 'Feedback', icon: 'fa-quote-left' },
+  { id: 'blog', name: 'Insights', icon: 'fa-lightbulb' },
+  { id: 'gallery', name: 'Visual Docs', icon: 'fa-microscope' },
+  { id: 'education', name: 'Background', icon: 'fa-user-graduate' },
+  { id: 'stats', name: 'Metrics', icon: 'fa-wave-square' },
+  { id: 'showcase', name: 'Showcase', icon: 'fa-eye' },
+  { id: 'locations', name: 'Geospatial', icon: 'fa-location-dot' },
+  { id: 'publications', name: 'Publications', icon: 'fa-file-lines' },
+  { id: 'certifications', name: 'Credentials', icon: 'fa-award' },
+  { id: 'organizations', name: 'Institutions', icon: 'fa-building-columns' },
 ];
 
 const Input = ({ label, name, register, help, ...props }: { label: string, name: string, register: any, help?: string, [key: string]: any }) => (
   <div className="group/input relative">
-    <div className="flex items-center justify-between mb-1">
-      <label htmlFor={name} className="block text-sm font-medium text-slate-700">{label}</label>
+    <div className="flex items-center justify-between mb-1.5">
+      <label htmlFor={name} className="block text-xs font-bold text-text-muted uppercase tracking-widest">{label}</label>
       {help && (
         <div className="relative group/help">
-          <i className="fas fa-question-circle text-slate-300 hover:text-cyan-500 cursor-help transition-colors text-xs"></i>
-          <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-slate-800 text-white text-xs rounded shadow-xl opacity-0 group-hover/help:opacity-100 transition-opacity pointer-events-none z-20 leading-relaxed font-normal">
+          <i className="fas fa-question-circle text-text-muted/30 hover:text-brand-accent cursor-help transition-colors text-xs"></i>
+          <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-text-primary text-white text-[10px] rounded-lg shadow-xl opacity-0 group-hover/help:opacity-100 transition-opacity pointer-events-none z-20 leading-relaxed font-medium">
             {help}
           </div>
         </div>
       )}
     </div>
-    <input id={name} {...register(name)} {...props} className="block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 transition-all group-hover/input:border-slate-400" />
+    <input id={name} {...register(name)} {...props} className="block w-full px-4 py-2.5 bg-bg-app border border-border-subtle rounded-xl text-sm font-medium text-text-primary placeholder-text-muted/40 focus:outline-none focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all group-hover/input:border-border-subtle/80" />
   </div>
 );
 
 const Textarea = ({ label, name, register, help, ...props }: { label: string, name: string, register: any, help?: string, [key: string]: any }) => (
   <div className="group/input relative">
-    <div className="flex items-center justify-between mb-1">
-      <label htmlFor={name} className="block text-sm font-medium text-slate-700">{label}</label>
+    <div className="flex items-center justify-between mb-1.5">
+      <label htmlFor={name} className="block text-xs font-bold text-text-muted uppercase tracking-widest">{label}</label>
       {help && (
         <div className="relative group/help">
-          <i className="fas fa-question-circle text-slate-300 hover:text-cyan-500 cursor-help transition-colors text-xs"></i>
-          <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-slate-800 text-white text-xs rounded shadow-xl opacity-0 group-hover/help:opacity-100 transition-opacity pointer-events-none z-20 leading-relaxed font-normal">
+          <i className="fas fa-question-circle text-text-muted/30 hover:text-brand-accent cursor-help transition-colors text-xs"></i>
+          <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-text-primary text-white text-[10px] rounded-lg shadow-xl opacity-0 group-hover/help:opacity-100 transition-opacity pointer-events-none z-20 leading-relaxed font-medium">
             {help}
           </div>
         </div>
       )}
     </div>
-    <textarea id={name} {...register(name)} {...props} className="block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 transition-all group-hover/input:border-slate-400" />
+    <textarea id={name} {...register(name)} {...props} className="block w-full px-4 py-3 bg-bg-app border border-border-subtle rounded-xl text-sm font-medium text-text-primary placeholder-text-muted/40 focus:outline-none focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all group-hover/input:border-border-subtle/80" />
   </div>
 );
 
@@ -304,12 +304,26 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
     switch (activeTab) {
       case 'profile':
         return (
-          <div className="space-y-4">
-            <Input label="Full Name" name="profile.name" register={register} />
-            <Input label="Title" name="profile.title" register={register} />
-            <Input label="Location" name="profile.location" register={register} />
-            <Input label="Phone" name="profile.phone" register={register} />
-            <Input label="Email" name="profile.email" register={register} />
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Input label="Full Name" name="profile.name" register={register} />
+              <Input label="Professional Title" name="profile.title" register={register} />
+              <Input label="Location" name="profile.location" register={register} />
+              <Input label="Phone" name="profile.phone" register={register} />
+              <div className="md:col-span-2">
+                <Input label="Primary Contact Email" name="profile.email" register={register} />
+              </div>
+            </div>
+            
+            <div className="pt-6 border-t border-slate-100">
+              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-6">Technical Ecosystem</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Input label="LinkedIn Profile URL" name="profile.socials.linkedin" register={register} placeholder="https://linkedin.com/in/..." />
+                <Input label="GitHub Handle URL" name="profile.socials.github" register={register} placeholder="https://github.com/..." />
+                <Input label="YouTube Channel URL" name="profile.socials.youtube" register={register} placeholder="https://youtube.com/@..." />
+                <Input label="Instagram Handle URL" name="profile.socials.instagram" register={register} placeholder="https://instagram.com/..." />
+              </div>
+            </div>
           </div>
         );
       case 'summary':
