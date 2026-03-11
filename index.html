@@ -4,7 +4,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Portfolio of Ari Azhar Maulana, Junior Expert Irrigation Engineer specializing in Water Resources, GIS, and Civil Engineering projects in Indonesia." />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" content="Portfolio of Ari Azhar Maulana, Water Resources Engineer specializing in Water Resources, GIS, and Civil Engineering projects in Indonesia." />
     <meta name="keywords" content="Water Resources Engineer, Irrigation Engineer, GIS, Civil Engineering, Indonesia, Ari Azhar Maulana" />
     <meta name="author" content="Ari Azhar Maulana" />
     <title>Ari Azhar Maulana - Water Resources Engineer Portfolio</title>
@@ -30,16 +31,8 @@
   }
 }
 </script>
-<script>
-  // Prevent FOUC (Flash of Unstyled Content) for dark mode
-  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-  }
-</script>
 </head>
-  <body class="bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+  <body class="bg-[#f8fafc] transition-colors duration-300">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
     <!-- AOS JS must be loaded after the app -->

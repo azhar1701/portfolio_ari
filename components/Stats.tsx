@@ -65,22 +65,23 @@ const useCountUp = (end: number, duration: number = 2000) => {
 
 const StatItem: React.FC<{ stat: Stat }> = ({ stat }) => {
   const { count, ref } = useCountUp(stat.value);
+
   return (
-    <div className="text-center p-3 sm:p-4">
-      <span ref={ref} className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-accent tracking-tighter">
+    <div className="flex flex-col items-start px-6 first:pl-0 border-l border-border-subtle/30 first:border-0">
+      <span ref={ref} className="text-4xl sm:text-5xl lg:text-6xl font-bold text-brand-accent tracking-tighter leading-none mb-2">
         {count}{stat.suffix || ''}
       </span>
-      <p className="text-xs sm:text-sm lg:text-base text-text-secondary mt-2 font-bold uppercase tracking-widest">{stat.label}</p>
+      <p className="text-[10px] sm:text-xs text-text-muted font-bold uppercase tracking-widest opacity-70">{stat.label}</p>
     </div>
   );
 };
 
 const StatsSkeleton: React.FC = () => (
-  <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-slate-200 gap-y-4 lg:gap-y-0">
+  <div className="flex flex-wrap gap-12">
     {[...Array(4)].map((_, i) => (
-      <div key={i} className="text-center p-3 sm:p-4">
-        <SkeletonLoader className="h-8 sm:h-10 w-16 sm:w-20 mx-auto rounded" />
-        <SkeletonLoader className="h-3 sm:h-4 w-20 sm:w-24 mx-auto mt-3 rounded" />
+      <div key={i} className="w-32">
+        <SkeletonLoader className="h-10 w-20 rounded" />
+        <SkeletonLoader className="h-3 w-24 mt-4 rounded" />
       </div>
     ))}
   </div>
@@ -88,11 +89,14 @@ const StatsSkeleton: React.FC = () => (
 
 const Stats: React.FC<{ stats: Stat[] | null }> = ({ stats }) => {
   return (
-    <Section id="stats" title="Key Metrics" iconClass="fas fa-chart-line">
+    <Section id="stats" title="Metrics" iconClass="fas fa-wave-square" noContainer>
       {stats ? (
-        <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-slate-200 gap-y-4 lg:gap-y-0">
+        <div className="flex flex-wrap gap-y-8">
           {stats.map((stat, index) => (
-            <StatItem key={index} stat={stat} />
+            <StatItem
+              key={index}
+              stat={stat}
+            />
           ))}
         </div>
       ) : <StatsSkeleton />}

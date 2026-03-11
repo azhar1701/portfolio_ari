@@ -1,7 +1,8 @@
-
 import React from 'react';
 import Section from './Section';
 import SkeletonLoader from './SkeletonLoader';
+import Card from './ui/Card';
+import Badge from './ui/Badge';
 
 interface CertificationsProps {
   certifications: string[] | null;
@@ -20,16 +21,21 @@ const CertificationsSkeleton: React.FC = () => (
 
 const Certifications: React.FC<CertificationsProps> = ({ certifications }) => {
   return (
-    <Section id="certifications" title="Certifications" iconClass="fas fa-certificate">
+    <Section id="certifications" title="Certifications" iconClass="fas fa-award">
       {certifications ? (
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {certifications.map((cert, index) => (
-            <li key={index} className="flex items-start bg-bg-app p-4 rounded-xl border border-border-subtle hover:border-brand-accent/30 transition-all duration-300 group">
-              <i className="fas fa-certificate text-brand-accent mt-1 mr-3 text-xs group-hover:scale-110 transition-transform"></i>
+            <Card
+              key={index}
+              variant="soft"
+              padding="sm"
+              className="group hover:border-brand-accent/30 flex items-start"
+            >
+              <i className="fas fa-shield-halved text-brand-accent mt-1 mr-3 text-xs group-hover:scale-110 transition-transform"></i>
               <span className="text-sm font-bold text-text-secondary group-hover:text-text-primary transition-colors leading-snug tracking-tight">{cert}</span>
-            </li>
+            </Card>
           ))}
-        </ul>
+        </div>
       ) : <CertificationsSkeleton />}
     </Section>
   );

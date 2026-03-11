@@ -54,9 +54,9 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
                   />
                 )}
                 <div>
-                  <h4 className="font-extrabold text-text-primary text-sm sm:text-base leading-tight tracking-tight">{testimonial.name}</h4>
+                  <h4 className="font-bold text-text-primary text-sm sm:text-base leading-tight tracking-tight">{testimonial.name}</h4>
                   <p className="text-xs sm:text-sm text-text-muted mt-0.5 font-bold uppercase tracking-widest opacity-80">{testimonial.role || testimonial.position}</p>
-                  <p className="text-xs sm:text-sm text-brand-accent font-extrabold mt-2 uppercase tracking-widest">{testimonial.company}</p>
+                  <p className="text-xs sm:text-sm text-brand-accent font-bold mt-2 uppercase tracking-widest">{testimonial.company}</p>
                 </div>
               </div>
             </div>

@@ -41,6 +41,12 @@ export interface Profile {
   location: string;
   phone: string;
   email: string;
+  socials?: {
+    linkedin?: string;
+    github?: string;
+    twitter?: string;
+    instagram?: string;
+  };
 }
 
 export interface Experience {

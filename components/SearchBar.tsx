@@ -155,7 +155,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ data, onResults }) => {
                   <h4 className="font-bold text-text-primary text-sm tracking-tight">{result.title}</h4>
                   <p className="text-text-secondary text-xs mt-1 line-clamp-2 leading-relaxed">{result.content}</p>
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-brand-accent bg-brand-accent-soft px-2 py-0.5 rounded ml-3">
+                <span className="text-xs font-bold uppercase tracking-wider text-brand-accent bg-brand-accent-soft px-2 py-0.5 rounded ml-3">
                   {result.type}
                 </span>
               </div>

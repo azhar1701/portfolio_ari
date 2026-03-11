@@ -22,12 +22,12 @@ const PublicationsSkeleton: React.FC = () => (
 
 const Publications: React.FC<PublicationsProps> = ({ publications }) => {
   return (
-    <Section id="publications" title="Publications" iconClass="fas fa-book-open">
+    <Section id="publications" title="Publications" iconClass="fas fa-file-lines">
       {publications ? (
         <div className="space-y-4">
           {publications.map((pub, index) => (
             <div key={index} className="p-5 border-l-4 border-brand-accent bg-bg-canvas rounded-r-lg border border-border-subtle shadow-subtle hover:shadow-md transition-all duration-300">
-              <h3 className="font-extrabold text-text-primary text-lg leading-tight mb-2 tracking-tight">{pub.title}</h3>
+              <h3 className="font-bold text-text-primary text-lg leading-tight mb-2 tracking-tight">{pub.title}</h3>
               <p className="text-sm text-text-secondary leading-relaxed mb-4">{pub.details}</p>
               <a
                 href={pub.link}
@@ -36,7 +36,7 @@ const Publications: React.FC<PublicationsProps> = ({ publications }) => {
                 className="inline-flex items-center text-sm font-bold text-brand-accent hover:text-brand-accent-hover transition-colors group"
               >
                 View Publication
-                <i className="fas fa-external-link-alt ml-2 text-[10px] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
+                <i className="fas fa-external-link-alt ml-2 text-xs transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
               </a>
             </div>
           ))}

@@ -13,18 +13,19 @@ type Inputs = {
 type FormStatus = 'idle' | 'loading' | 'success' | 'error';
 
 const ContactForm: React.FC = () => {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>();
+  const { register, handleSubmit, formState: { errors }, reset, watch } = useForm<Inputs>();
   const [status, setStatus] = useState<FormStatus>('idle');
+  
+  const hasName = !!watch('name');
+  const hasEmail = !!watch('email');
+  const hasMessage = !!watch('message');
 
   const onSubmit: SubmitHandler<Inputs> = data => {
     setStatus('loading');
-
-    // IMPORTANT: Replace with your EmailJS Service ID, Template ID, and Public Key
     const serviceID = 'YOUR_SERVICE_ID';
     const templateID = 'YOUR_TEMPLATE_ID';
     const publicKey = 'YOUR_PUBLIC_KEY';
 
-    // A simple check to prevent submission if placeholder values are used
     if (serviceID === 'YOUR_SERVICE_ID' || templateID === 'YOUR_TEMPLATE_ID') {
       console.error("EmailJS credentials are not configured.");
       setStatus('error');
@@ -39,95 +40,111 @@ const ContactForm: React.FC = () => {
       .then(() => {
         setStatus('success');
         reset();
-        setTimeout(() => setStatus('idle'), 5000); // Reset form status after 5s
+        setTimeout(() => setStatus('idle'), 5000);
       }, (error) => {
-        console.error('EmailJS failed...', error);
         setStatus('error');
         setTimeout(() => setStatus('idle'), 5000);
       });
   };
 
   return (
-    <Section id="contact" title="Get In Touch" iconClass="fas fa-paper-plane">
-      <div className="space-y-6">
-        <p className="text-slate-600 mb-6">
-          Have a question or want to work together? Leave your details and I'll get back to you as soon as possible.
-        </p>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-bold text-text-primary mb-1">Full Name</label>
-            <input
-              type="text"
-              id="name"
-              {...register('name', { required: 'Full name is required' })}
-              className="block w-full px-4 py-2.5 bg-bg-app border border-border-subtle rounded-lg shadow-sm placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all text-sm font-medium"
-              aria-invalid={errors.name ? "true" : "false"}
-              aria-describedby={errors.name ? "name-error" : undefined}
-              placeholder="Ex: John Doe"
-            />
-            {errors.name && <p id="name-error" className="mt-1.5 text-xs text-red-500 font-bold" role="alert">{errors.name.message}</p>}
-          </div>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-bold text-text-primary mb-1">Email Address</label>
-            <input
-              type="email"
-              id="email"
-              {...register('email', {
-                required: 'Email is required',
-                pattern: { value: /^\S+@\S+$/i, message: "Please enter a valid email address" }
-              })}
-              className="block w-full px-4 py-2.5 bg-bg-app border border-border-subtle rounded-lg shadow-sm placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all text-sm font-medium"
-              aria-invalid={errors.email ? "true" : "false"}
-              aria-describedby={errors.email ? "email-error" : undefined}
-              placeholder="john@example.com"
-            />
-            {errors.email && <p id="email-error" className="mt-1.5 text-xs text-red-500 font-bold" role="alert">{errors.email.message}</p>}
-          </div>
-          <div className="mb-6">
-            <label htmlFor="message" className="block text-sm font-bold text-text-primary mb-1">Message</label>
-            <textarea
-              id="message"
-              rows={4}
-              {...register('message', { required: 'Message cannot be empty' })}
-              className="block w-full px-4 py-2.5 bg-bg-app border border-border-subtle rounded-lg shadow-sm placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent transition-all text-sm font-medium resize-none"
-              aria-invalid={errors.message ? "true" : "false"}
-              aria-describedby={errors.message ? "message-error" : undefined}
-              placeholder="How can I help you?"
-            />
-            {errors.message && <p id="message-error" className="mt-1.5 text-xs text-red-500 font-bold" role="alert">{errors.message.message}</p>}
-          </div>
+    <Section id="contact" title="Collaboration" iconClass="fas fa-handshake-angle" noContainer>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 max-w-6xl mx-auto">
+        {/* Left Side: Professional Metadata */}
+        <div className="lg:col-span-5 space-y-10" data-aos="fade-right">
           <div>
+            <h3 className="text-2xl font-bold text-text-primary tracking-tight mb-4">Let's build the future of water resources together.</h3>
+            <p className="text-text-secondary leading-relaxed font-medium">
+              I am currently open to technical consultations, research partnerships, and project collaborations in water resource engineering and GIS innovation.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            <div className="flex items-center group">
+              <div className="w-12 h-12 bg-bg-app border border-border-subtle rounded-xl flex items-center justify-center text-brand-accent mr-4 group-hover:border-brand-accent/30 transition-colors">
+                <i className="fas fa-envelope"></i>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-0.5">Email Address</p>
+                <p className="text-sm font-bold text-text-primary">ti3.ari170197@gmail.com</p>
+              </div>
+            </div>
+
+            <div className="flex items-center group">
+              <div className="w-12 h-12 bg-bg-app border border-border-subtle rounded-xl flex items-center justify-center text-brand-accent mr-4 group-hover:border-brand-accent/30 transition-colors">
+                <i className="fas fa-location-dot"></i>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-0.5">Primary Location</p>
+                <p className="text-sm font-bold text-text-primary">Ciamis, Jawa Barat, ID</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side: Precision Form */}
+        <div className="lg:col-span-7" data-aos="fade-left">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8" noValidate>
+            <div className="relative group">
+              <label htmlFor="name" className={`absolute left-0 transition-all duration-300 pointer-events-none ${hasName ? '-top-6 text-[10px] text-brand-accent font-bold uppercase tracking-widest' : 'top-3 text-sm text-text-muted'}`}>
+                Full Professional Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                {...register('name', { required: 'Name is required' })}
+                className="w-full bg-transparent border-b border-border-subtle py-3 text-text-primary focus:outline-none focus:border-brand-accent transition-colors font-medium"
+              />
+              {errors.name && <p className="mt-1 text-[10px] text-red-500 font-bold uppercase tracking-wider">{errors.name.message}</p>}
+            </div>
+
+            <div className="relative group">
+              <label htmlFor="email" className={`absolute left-0 transition-all duration-300 pointer-events-none ${hasEmail ? '-top-6 text-[10px] text-brand-accent font-bold uppercase tracking-widest' : 'top-3 text-sm text-text-muted'}`}>
+                Email for Technical Brief
+              </label>
+              <input
+                type="email"
+                id="email"
+                {...register('email', { 
+                  required: 'Email is required',
+                  pattern: { value: /^\S+@\S+$/i, message: "Invalid email format" }
+                })}
+                className="w-full bg-transparent border-b border-border-subtle py-3 text-text-primary focus:outline-none focus:border-brand-accent transition-colors font-medium"
+              />
+              {errors.email && <p className="mt-1 text-[10px] text-red-500 font-bold uppercase tracking-wider">{errors.email.message}</p>}
+            </div>
+
+            <div className="relative group">
+              <label htmlFor="message" className={`absolute left-0 transition-all duration-300 pointer-events-none ${hasMessage ? '-top-6 text-[10px] text-brand-accent font-bold uppercase tracking-widest' : 'top-3 text-sm text-text-muted'}`}>
+                Collaboration Proposal / Inquiry
+              </label>
+              <textarea
+                id="message"
+                rows={4}
+                {...register('message', { required: 'Message required' })}
+                className="w-full bg-transparent border-b border-border-subtle py-3 text-text-primary focus:outline-none focus:border-brand-accent transition-colors font-medium resize-none"
+              />
+              {errors.message && <p className="mt-1 text-[10px] text-red-500 font-bold uppercase tracking-wider">{errors.message.message}</p>}
+            </div>
+
             <button
               type="submit"
               disabled={status === 'loading'}
-              className="w-full inline-flex justify-center py-3 px-4 border border-transparent shadow-md text-sm font-bold rounded-lg text-white bg-brand-accent hover:bg-brand-accent-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-accent disabled:bg-text-muted disabled:cursor-not-allowed transition-all duration-200 transform active:scale-95"
-              aria-disabled={status === 'loading'}
+              className="relative w-full lg:w-fit px-12 py-4 bg-brand-accent text-white font-bold text-xs uppercase tracking-[0.2em] rounded-xl shadow-md hover:shadow-xl hover:bg-brand-accent-hover transition-all transform active:scale-95 disabled:bg-text-muted overflow-hidden"
             >
-              {status === 'loading' ? (
-                <>
-                  <i className="fas fa-spinner fa-spin mr-2" aria-hidden="true"></i>
-                  Sending...
-                </>
-              ) : status === 'success' ? (
-                'Message Sent!'
-              ) : status === 'error' ? (
-                'Try Again'
-              ) : (
-                'Send Message Now'
-              )}
+              <span className="relative z-10 flex items-center justify-center">
+                {status === 'loading' ? 'Processing...' : status === 'success' ? 'Verified' : 'Initiate Connection'}
+                <i className={`fas ${status === 'loading' ? 'fa-spinner fa-spin' : status === 'success' ? 'fa-check-double' : 'fa-arrow-right'} ml-3`}></i>
+              </span>
             </button>
+
             {status === 'success' && (
-              <p className="mt-4 text-sm text-center text-green-600 font-bold animate-fade-in" role="status">
-                Thank you! Your message has been sent successfully.
-              </p>
+              <div className="p-4 bg-green-500/5 border border-green-500/20 rounded-xl">
+                <p className="text-xs text-green-600 font-bold text-center">Inquiry logged successfully.</p>
+              </div>
             )}
-            {status === 'error' && (
-              <p className="mt-4 text-sm text-center text-red-500 font-bold" role="alert">
-                Something went wrong. Please check your connection and try again.
-              </p>
-            )}
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </Section>
   );

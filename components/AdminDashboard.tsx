@@ -1,14 +1,15 @@
-// Fix: Corrected the React import statement by removing the typo 'a,'.
 import React, { useState, useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import type { PortfolioData } from '../types';
+import EmptyState from './ui/EmptyState';
+import Button from './ui/Button';
 
 interface AdminDashboardProps {
   isOpen: boolean;
   onClose: () => void;
   data: PortfolioData;
   onSave: (data: PortfolioData) => void;
-  onReset: () => PortfolioData;
+  onReset: () => PortfolioData | Promise<PortfolioData | null>;
 }
 
 const sections = [
@@ -29,23 +30,56 @@ const sections = [
   { id: 'organizations', name: 'Organizations', icon: 'fa-users' },
 ];
 
-const Input = ({ label, name, register, ...props }) => (
-  <div>
-    <label htmlFor={name} className="block text-sm font-medium text-slate-700 mb-1">{label}</label>
-    <input id={name} {...register(name)} {...props} className="block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500" />
+const Input = ({ label, name, register, help, ...props }: { label: string, name: string, register: any, help?: string, [key: string]: any }) => (
+  <div className="group/input relative">
+    <div className="flex items-center justify-between mb-1">
+      <label htmlFor={name} className="block text-sm font-medium text-slate-700">{label}</label>
+      {help && (
+        <div className="relative group/help">
+          <i className="fas fa-question-circle text-slate-300 hover:text-cyan-500 cursor-help transition-colors text-xs"></i>
+          <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-slate-800 text-white text-xs rounded shadow-xl opacity-0 group-hover/help:opacity-100 transition-opacity pointer-events-none z-20 leading-relaxed font-normal">
+            {help}
+          </div>
+        </div>
+      )}
+    </div>
+    <input id={name} {...register(name)} {...props} className="block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 transition-all group-hover/input:border-slate-400" />
   </div>
 );
 
-const Textarea = ({ label, name, register, ...props }) => (
-    <div>
-      <label htmlFor={name} className="block text-sm font-medium text-slate-700 mb-1">{label}</label>
-      <textarea id={name} {...register(name)} {...props} className="block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500" />
+const Textarea = ({ label, name, register, help, ...props }: { label: string, name: string, register: any, help?: string, [key: string]: any }) => (
+  <div className="group/input relative">
+    <div className="flex items-center justify-between mb-1">
+      <label htmlFor={name} className="block text-sm font-medium text-slate-700">{label}</label>
+      {help && (
+        <div className="relative group/help">
+          <i className="fas fa-question-circle text-slate-300 hover:text-cyan-500 cursor-help transition-colors text-xs"></i>
+          <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-slate-800 text-white text-xs rounded shadow-xl opacity-0 group-hover/help:opacity-100 transition-opacity pointer-events-none z-20 leading-relaxed font-normal">
+            {help}
+          </div>
+        </div>
+      )}
     </div>
-  );
+    <textarea id={name} {...register(name)} {...props} className="block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 transition-all group-hover/input:border-slate-400" />
+  </div>
+);
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, onSave, onReset }) => {
   const [activeTab, setActiveTab] = useState('profile');
+  const [showWelcome, setShowWelcome] = useState(false);
   const { register, control, handleSubmit, reset } = useForm<PortfolioData>();
+
+  useEffect(() => {
+    const hasSeenAdminWelcome = localStorage.getItem('ari_portfolio_admin_welcome_seen');
+    if (isOpen && !hasSeenAdminWelcome) {
+      setShowWelcome(true);
+    }
+  }, [isOpen]);
+
+  const dismissWelcome = () => {
+    localStorage.setItem('ari_portfolio_admin_welcome_seen', 'true');
+    setShowWelcome(false);
+  };
 
   useEffect(() => {
     // Deep copy data to avoid mutating the original state
@@ -54,27 +88,27 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
     // Transform array data into strings for form inputs, with defensive checks for data integrity
     if (Array.isArray(formValues.experience)) {
       formValues.experience.forEach(exp => {
-          if (Array.isArray(exp.responsibilities)) exp.responsibilities = exp.responsibilities.join('\n');
-          if (Array.isArray(exp.achievements)) exp.achievements = exp.achievements.join('\n');
+        if (Array.isArray(exp.responsibilities)) exp.responsibilities = exp.responsibilities.join('\n');
+        if (Array.isArray(exp.achievements)) exp.achievements = exp.achievements.join('\n');
       });
     }
     if (Array.isArray(formValues.projects)) {
       formValues.projects.forEach(proj => {
-          if (Array.isArray(proj.technologies)) proj.technologies = proj.technologies.join(', ');
-          if (Array.isArray(proj.images)) proj.images = proj.images.join(', ');
+        if (Array.isArray(proj.technologies)) proj.technologies = proj.technologies.join(', ');
+        if (Array.isArray(proj.images)) proj.images = proj.images.join(', ');
       });
     }
     if (Array.isArray(formValues.skills)) {
       formValues.skills.forEach(skillCat => {
-          if (Array.isArray(skillCat.skills)) skillCat.skills = skillCat.skills.join(', ');
+        if (Array.isArray(skillCat.skills)) skillCat.skills = skillCat.skills.join(', ');
       });
     }
 
     if (formValues.showcase?.before?.imageUrls && Array.isArray(formValues.showcase.before.imageUrls)) {
-        formValues.showcase.before.imageUrls = formValues.showcase.before.imageUrls.join(', ');
+      formValues.showcase.before.imageUrls = formValues.showcase.before.imageUrls.join(', ');
     }
     if (formValues.showcase?.after?.imageUrls && Array.isArray(formValues.showcase.after.imageUrls)) {
-        formValues.showcase.after.imageUrls = formValues.showcase.after.imageUrls.join(', ');
+      formValues.showcase.after.imageUrls = formValues.showcase.after.imageUrls.join(', ');
     }
     if (Array.isArray(formValues.certifications)) formValues.certifications = formValues.certifications.join('\n');
     if (Array.isArray(formValues.organizations)) formValues.organizations = formValues.organizations.join('\n');
@@ -96,7 +130,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
     }
 
     reset(formValues);
-    
+
     // Reset field arrays after form reset
     setTimeout(() => {
       if (formValues.experience) {
@@ -171,12 +205,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
       }
     }, 0);
   }, [data, reset]);
-  
+
   useEffect(() => {
     if (isOpen) {
-        document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
     } else {
-        document.body.style.overflow = 'auto';
+      document.body.style.overflow = 'auto';
     }
     return () => { document.body.style.overflow = 'auto'; };
   }, [isOpen]);
@@ -188,30 +222,30 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
     // Transform string fields back into arrays, ensuring no corruption occurs.
     if (Array.isArray(processedData.experience)) {
       processedData.experience.forEach(exp => {
-          if (typeof exp.responsibilities === 'string') exp.responsibilities = exp.responsibilities.split('\n').filter(Boolean);
-          if (typeof exp.achievements === 'string') exp.achievements = exp.achievements.split('\n').filter(Boolean);
+        if (typeof exp.responsibilities === 'string') exp.responsibilities = exp.responsibilities.split('\n').filter(Boolean);
+        if (typeof exp.achievements === 'string') exp.achievements = exp.achievements.split('\n').filter(Boolean);
       });
     }
     if (Array.isArray(processedData.projects)) {
       processedData.projects.forEach(proj => {
-          if (typeof proj.technologies === 'string') proj.technologies = proj.technologies.split(',').map(s => s.trim()).filter(Boolean);
-          if (typeof proj.images === 'string') proj.images = proj.images.split(',').map(s => s.trim()).filter(Boolean);
+        if (typeof proj.technologies === 'string') proj.technologies = proj.technologies.split(',').map(s => s.trim()).filter(Boolean);
+        if (typeof proj.images === 'string') proj.images = proj.images.split(',').map(s => s.trim()).filter(Boolean);
       });
     }
     if (Array.isArray(processedData.skills)) {
       processedData.skills.forEach(skillCat => {
-          if (typeof skillCat.skills === 'string') skillCat.skills = skillCat.skills.split(',').map(s => s.trim()).filter(Boolean);
+        if (typeof skillCat.skills === 'string') skillCat.skills = skillCat.skills.split(',').map(s => s.trim()).filter(Boolean);
       });
     }
     if (processedData.showcase?.before?.imageUrls && typeof processedData.showcase.before.imageUrls === 'string') {
-        processedData.showcase.before.imageUrls = processedData.showcase.before.imageUrls.split(',').map(s => s.trim()).filter(Boolean);
+      processedData.showcase.before.imageUrls = processedData.showcase.before.imageUrls.split(',').map(s => s.trim()).filter(Boolean);
     }
     if (processedData.showcase?.after?.imageUrls && typeof processedData.showcase.after.imageUrls === 'string') {
-        processedData.showcase.after.imageUrls = processedData.showcase.after.imageUrls.split(',').map(s => s.trim()).filter(Boolean);
+      processedData.showcase.after.imageUrls = processedData.showcase.after.imageUrls.split(',').map(s => s.trim()).filter(Boolean);
     }
     if (typeof processedData.certifications === 'string') processedData.certifications = processedData.certifications.split('\n').filter(Boolean);
     if (typeof processedData.organizations === 'string') processedData.organizations = processedData.organizations.split('\n').filter(Boolean);
-    
+
     // Ensure locations position arrays are properly converted
     if (Array.isArray(processedData.locations)) {
       processedData.locations.forEach(loc => {
@@ -242,14 +276,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
         post.readTime = parseInt(post.readTime) || 5;
       });
     }
-    
+
     onSave(processedData);
     onClose();
   };
 
-  const handleReset = () => {
+  const handleReset = async () => {
     if (window.confirm('Are you sure you want to reset all data to default? This action cannot be undone.')) {
-        onReset();
+      await onReset();
     }
   };
 
@@ -282,182 +316,248 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
         return <Textarea label="Professional Summary" name="summary" register={register} rows={10} />;
       case 'experience':
         return (
-            <div className="space-y-6">
+          <div className="space-y-6">
             {expFields.map((field, index) => (
-                <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
-                    <Input label="Role" name={`experience.${index}.role`} register={register} />
-                    <Input label="Company" name={`experience.${index}.company`} register={register} />
-                    <Input label="Period" name={`experience.${index}.period`} register={register} />
-                    <Textarea label="Responsibilities (one per line)" name={`experience.${index}.responsibilities`} register={register} rows={4} />
-                    <Textarea label="Achievements (one per line)" name={`experience.${index}.achievements`} register={register} rows={4} />
-                    <button type="button" onClick={() => removeExp(index)} className="text-red-500 text-sm">Remove Experience</button>
-                </div>
+              <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+                <Input label="Role" name={`experience.${index}.role`} register={register} />
+                <Input label="Company" name={`experience.${index}.company`} register={register} />
+                <Input label="Period" name={`experience.${index}.period`} register={register} />
+                <Textarea label="Responsibilities (one per line)" name={`experience.${index}.responsibilities`} register={register} rows={4} />
+                <Textarea label="Achievements (one per line)" name={`experience.${index}.achievements`} register={register} rows={4} />
+                <button type="button" onClick={() => removeExp(index)} className="text-red-500 text-sm">Remove Experience</button>
+              </div>
             ))}
             <button type="button" onClick={() => appendExp({ role: '', company: '', period: '', responsibilities: [], achievements: [] })} className="text-cyan-600">Add Experience</button>
-            </div>
+          </div>
         );
       case 'projects':
         return (
-            <div className="space-y-6">
-                {projFields.map((field, index) => (
-                        <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
-                            <Input label="Name" name={`projects.${index}.name`} register={register} />
-                            <Textarea label="Description" name={`projects.${index}.description`} register={register} rows={3} />
-                            <Textarea label="Challenge" name={`projects.${index}.challenge`} register={register} rows={3} />
-                            <Textarea label="Solution" name={`projects.${index}.solution`} register={register} rows={3} />
-                            <Input label="Technologies (comma separated)" name={`projects.${index}.technologies`} register={register} />
-                            <Input label="Images (comma separated URLs)" name={`projects.${index}.images`} register={register} />
-                            <Input label="Link (optional)" name={`projects.${index}.link`} register={register} />
-                            <button type="button" onClick={() => removeProj(index)} className="text-red-500 text-sm">Remove Project</button>
-                        </div>
-                ))}
-                <button type="button" onClick={() => appendProj({ id: `proj-${Date.now()}`, name: '', description: '', technologies: [], challenge: '', solution: '', images: [], link: ''})} className="text-cyan-600">Add Project</button>
-            </div>
+          <div className="space-y-6">
+            {projFields.map((field, index) => (
+              <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+                <Input label="Name" name={`projects.${index}.name`} register={register} />
+                <Textarea label="Description" name={`projects.${index}.description`} register={register} rows={3} />
+                <Textarea label="Challenge" name={`projects.${index}.challenge`} register={register} rows={3} />
+                <Textarea label="Solution" name={`projects.${index}.solution`} register={register} rows={3} />
+                <Input label="Technologies (comma separated)" name={`projects.${index}.technologies`} register={register} />
+                <Input label="Images (comma separated URLs)" name={`projects.${index}.images`} register={register} />
+                <Input label="Link (optional)" name={`projects.${index}.link`} register={register} />
+                <button type="button" onClick={() => removeProj(index)} className="text-red-500 text-sm">Remove Project</button>
+              </div>
+            ))}
+            <button type="button" onClick={() => appendProj({ id: `proj-${Date.now()}`, name: '', description: '', technologies: [], challenge: '', solution: '', images: [], link: '' })} className="text-cyan-600">Add Project</button>
+          </div>
         );
       case 'skills':
-            return (
-                <div className="space-y-6">
-                    {skillFields.map((field, index) => (
-                        <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
-                            <Input label="Category" name={`skills.${index}.category`} register={register} />
-                            <Input label="Skills (comma separated)" name={`skills.${index}.skills`} register={register} />
-                            <button type="button" onClick={() => removeSkill(index)} className="text-red-500 text-sm">Remove Category</button>
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => appendSkill({ category: '', skills: [] })} className="text-cyan-600">Add Skill Category</button>
-                </div>
-            );
+        return (
+          <div className="space-y-6">
+            {skillFields.map((field, index) => (
+              <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+                <Input label="Category" name={`skills.${index}.category`} register={register} />
+                <Input label="Skills (comma separated)" name={`skills.${index}.skills`} register={register} />
+                <button type="button" onClick={() => removeSkill(index)} className="text-red-500 text-sm">Remove Category</button>
+              </div>
+            ))}
+            <button type="button" onClick={() => appendSkill({ category: '', skills: [] })} className="text-cyan-600">Add Skill Category</button>
+          </div>
+        );
       case 'education':
         return (
-            <div className="space-y-6">
+          <div className="space-y-6">
+            {eduFields.length > 0 ? (
+              <>
                 {eduFields.map((field, index) => (
-                    <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
-                        <Input label="Institution" name={`education.${index}.institution`} register={register} />
-                        <Input label="Degree" name={`education.${index}.degree`} register={register} />
-                        <Input label="Period" name={`education.${index}.period`} register={register} />
-                        <Input label="GPA" name={`education.${index}.gpa`} register={register} />
-                        <button type="button" onClick={() => removeEdu(index)} className="text-red-500 text-sm">Remove Education</button>
-                    </div>
+                  <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+                    <Input label="Institution" name={`education.${index}.institution`} register={register} />
+                    <Input label="Degree" name={`education.${index}.degree`} register={register} help="e.g., Bachelor of Science in Civil Engineering" />
+                    <Input label="Period" name={`education.${index}.period`} register={register} help="e.g., 2015 - 2019" />
+                    <Input label="GPA" name={`education.${index}.gpa`} register={register} help="Optional: Your academic performance score." />
+                    <button type="button" onClick={() => removeEdu(index)} className="text-red-500 text-sm">Remove Education</button>
+                  </div>
                 ))}
                 <button type="button" onClick={() => appendEdu({ institution: '', degree: '', period: '', gpa: '' })} className="text-cyan-600">Add Education</button>
-            </div>
+              </>
+            ) : (
+              <EmptyState
+                title="No Education history"
+                description="List your degrees and certifications to build academic credibility."
+                icon="fa-graduation-cap"
+                onAction={() => appendEdu({ institution: '', degree: '', period: '', gpa: '' })}
+              />
+            )}
+          </div>
         );
       case 'publications':
         return (
-            <div className="space-y-6">
+          <div className="space-y-6">
+            {pubFields.length > 0 ? (
+              <>
                 {pubFields.map((field, index) => (
-                    <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
-                        <Input label="Title" name={`publications.${index}.title`} register={register} />
-                        <Input label="Details" name={`publications.${index}.details`} register={register} />
-                        <Input label="Link" name={`publications.${index}.link`} register={register} />
-                        <button type="button" onClick={() => removePub(index)} className="text-red-500 text-sm">Remove Publication</button>
-                    </div>
+                  <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+                    <Input label="Title" name={`publications.${index}.title`} register={register} />
+                    <Input label="Details" name={`publications.${index}.details`} register={register} help="Journal name, date, or collaborators." />
+                    <Input label="Link" name={`publications.${index}.link`} register={register} help="Direct URL to the publication or PDF." />
+                    <button type="button" onClick={() => removePub(index)} className="text-red-500 text-sm">Remove Publication</button>
+                  </div>
                 ))}
                 <button type="button" onClick={() => appendPub({ title: '', details: '', link: '' })} className="text-cyan-600">Add Publication</button>
-            </div>
+              </>
+            ) : (
+              <EmptyState
+                title="No Publications"
+                description="Share your research papers, articles, or books with the world."
+                icon="fa-book-open"
+                onAction={() => appendPub({ title: '', details: '', link: '' })}
+              />
+            )}
+          </div>
         );
-        case 'stats':
-            return (
-                <div className="space-y-6">
-                    {statsFields.map((field, index) => (
-                        <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 grid grid-cols-3 gap-2 bg-slate-50">
-                            <Input label="Label" name={`stats.${index}.label`} register={register} />
-                            <Input label="Value" name={`stats.${index}.value`} register={register} type="number"/>
-                            <Input label="Suffix" name={`stats.${index}.suffix`} register={register} />
-                            <button type="button" onClick={() => removeStat(index)} className="text-red-500 text-sm col-span-3">Remove Stat</button>
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => appendStat({ label: '', value: 0, suffix: '' })} className="text-cyan-600">Add Stat</button>
-                </div>
-            );
-        case 'showcase':
-            return (
-                <div className="space-y-4">
-                    <h3 className="font-semibold text-lg text-slate-800">Project Showcase</h3>
-                    <Input label="Title" name="showcase.title" register={register} />
-                    <Textarea label="Description" name="showcase.description" register={register} />
-                    <div className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
-                        <h4 className="font-semibold text-slate-700">Before</h4>
-                        <Textarea label="Description" name="showcase.before.description" register={register} />
-                        <Input label="Image URLs (comma separated)" name="showcase.before.imageUrls" register={register} />
-                    </div>
-                    <div className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
-                        <h4 className="font-semibold text-slate-700">After</h4>
-                        <Textarea label="Description" name="showcase.after.description" register={register} />
-                        <Input label="Image URLs (comma separated)" name="showcase.after.imageUrls" register={register} />
-                    </div>
-                </div>
-            )
-        case 'locations':
-            return (
-                <div className="space-y-6">
-                    {locFields.map((field, index) => (
-                        <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
-                            <Input label="Name" name={`locations.${index}.name`} register={register} />
-                            <Input label="Latitude" name={`locations.${index}.position.0`} register={register} type="number" step="any"/>
-                            <Input label="Longitude" name={`locations.${index}.position.1`} register={register} type="number" step="any"/>
-                            <Textarea label="Description" name={`locations.${index}.description`} register={register} />
-                            <button type="button" onClick={() => removeLoc(index)} className="text-red-500 text-sm">Remove Location</button>
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => appendLoc({ name: '', position: [0,0], description: '' })} className="text-cyan-600">Add Location</button>
-                </div>
-            );
-        case 'testimonials':
-            return (
-                <div className="space-y-6">
-                    {testimonialFields.map((field, index) => (
-                        <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
-                            <Input label="Name" name={`testimonials.${index}.name`} register={register} />
-                            <Input label="Role" name={`testimonials.${index}.role`} register={register} />
-                            <Input label="Company" name={`testimonials.${index}.company`} register={register} />
-                            <Textarea label="Content" name={`testimonials.${index}.content`} register={register} rows={4} />
-                            <Input label="Avatar URL" name={`testimonials.${index}.avatar`} register={register} />
-                            <Input label="Rating (1-5)" name={`testimonials.${index}.rating`} register={register} type="number" min="1" max="5" />
-                            <button type="button" onClick={() => removeTestimonial(index)} className="text-red-500 text-sm">Remove Testimonial</button>
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => appendTestimonial({ name: '', role: '', company: '', content: '', avatar: '', rating: 5 })} className="text-cyan-600">Add Testimonial</button>
-                </div>
-            );
-        case 'blog':
-            return (
-                <div className="space-y-6">
-                    {blogFields.map((field, index) => (
-                        <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
-                            <Input label="Title" name={`blogPosts.${index}.title`} register={register} />
-                            <Textarea label="Excerpt" name={`blogPosts.${index}.excerpt`} register={register} rows={3} />
-                            <Textarea label="Content" name={`blogPosts.${index}.content`} register={register} rows={6} />
-                            <Input label="Date (YYYY-MM-DD)" name={`blogPosts.${index}.date`} register={register} type="date" />
-                            <Input label="Author" name={`blogPosts.${index}.author`} register={register} />
-                            <Input label="Category" name={`blogPosts.${index}.category`} register={register} />
-                            <Input label="Image URL" name={`blogPosts.${index}.image`} register={register} />
-                            <Input label="Read Time (minutes)" name={`blogPosts.${index}.readTime`} register={register} type="number" />
-                            <button type="button" onClick={() => removeBlog(index)} className="text-red-500 text-sm">Remove Blog Post</button>
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => appendBlog({ id: `blog-${Date.now()}`, title: '', excerpt: '', content: '', date: new Date().toISOString().split('T')[0], author: '', category: '', image: '', readTime: 5 })} className="text-cyan-600">Add Blog Post</button>
-                </div>
-            );
-        case 'gallery':
-            return (
-                <div className="space-y-6">
-                    {galleryFields.map((field, index) => (
-                        <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
-                            <Input label="Title" name={`gallery.${index}.title`} register={register} />
-                            <Textarea label="Description" name={`gallery.${index}.description`} register={register} rows={3} />
-                            <Input label="Image URL" name={`gallery.${index}.image`} register={register} />
-                            <Input label="Category" name={`gallery.${index}.category`} register={register} />
-                            <button type="button" onClick={() => removeGallery(index)} className="text-red-500 text-sm">Remove Gallery Item</button>
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => appendGallery({ id: `gallery-${Date.now()}`, title: '', description: '', image: '', category: '' })} className="text-cyan-600">Add Gallery Item</button>
-                </div>
-            );
-        case 'certifications':
-            return <Textarea label="Certifications (one per line)" name="certifications" register={register} rows={10} />;
-        case 'organizations':
-            return <Textarea label="Organizations (one per line)" name="organizations" register={register} rows={5} />;
+      case 'stats':
+        return (
+          <div className="space-y-6">
+            {statsFields.length > 0 ? (
+              <>
+                {statsFields.map((field, index) => (
+                  <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 grid grid-cols-3 gap-2 bg-slate-50">
+                    <Input label="Label" name={`stats.${index}.label`} register={register} help="e.g., Projects Done, Happy Clients" />
+                    <Input label="Value" name={`stats.${index}.value`} register={register} type="number" help="Numeric value only." />
+                    <Input label="Suffix" name={`stats.${index}.suffix`} register={register} help="e.g., +, %, km" />
+                    <button type="button" onClick={() => removeStat(index)} className="text-red-500 text-sm col-span-3">Remove Stat</button>
+                  </div>
+                ))}
+                <button type="button" onClick={() => appendStat({ label: '', value: 0, suffix: '' })} className="text-cyan-600">Add Stat</button>
+              </>
+            ) : (
+              <EmptyState
+                title="No Stats recorded"
+                description="Quantify your impact with impressive numbers and milestones."
+                icon="fa-chart-line"
+                onAction={() => appendStat({ label: '', value: 0, suffix: '' })}
+              />
+            )}
+          </div>
+        );
+      case 'showcase':
+        return (
+          <div className="space-y-4">
+            <h3 className="font-semibold text-lg text-slate-800">Project Showcase</h3>
+            <Input label="Title" name="showcase.title" register={register} />
+            <Textarea label="Description" name="showcase.description" register={register} />
+            <div className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+              <h4 className="font-semibold text-slate-700">Before</h4>
+              <Textarea label="Description" name="showcase.before.description" register={register} />
+              <Input label="Image URLs (comma separated)" name="showcase.before.imageUrls" register={register} />
+            </div>
+            <div className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+              <h4 className="font-semibold text-slate-700">After</h4>
+              <Textarea label="Description" name="showcase.after.description" register={register} />
+              <Input label="Image URLs (comma separated)" name="showcase.after.imageUrls" register={register} />
+            </div>
+          </div>
+        )
+      case 'locations':
+        return (
+          <div className="space-y-6">
+            {locFields.map((field, index) => (
+              <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+                <Input label="Name" name={`locations.${index}.name`} register={register} />
+                <Input label="Latitude" name={`locations.${index}.position.0`} register={register} type="number" step="any" />
+                <Input label="Longitude" name={`locations.${index}.position.1`} register={register} type="number" step="any" />
+                <Textarea label="Description" name={`locations.${index}.description`} register={register} />
+                <button type="button" onClick={() => removeLoc(index)} className="text-red-500 text-sm">Remove Location</button>
+              </div>
+            ))}
+            <button type="button" onClick={() => appendLoc({ name: '', position: [0, 0], description: '' })} className="text-cyan-600">Add Location</button>
+          </div>
+        );
+      case 'testimonials':
+        return (
+          <div className="space-y-6">
+            {testimonialFields.length > 0 ? (
+              <>
+                {testimonialFields.map((field, index) => (
+                  <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+                    <Input label="Name" name={`testimonials.${index}.name`} register={register} />
+                    <Input label="Role" name={`testimonials.${index}.role`} register={register} />
+                    <Input label="Company" name={`testimonials.${index}.company`} register={register} />
+                    <Textarea label="Content" name={`testimonials.${index}.content`} register={register} rows={4} help="The recommendation text." />
+                    <Input label="Avatar URL" name={`testimonials.${index}.avatar`} register={register} help="Link to a profile picture." />
+                    <Input label="Rating (1-5)" name={`testimonials.${index}.rating`} register={register} type="number" min="1" max="5" />
+                    <button type="button" onClick={() => removeTestimonial(index)} className="text-red-500 text-sm">Remove Testimonial</button>
+                  </div>
+                ))}
+                <button type="button" onClick={() => appendTestimonial({ name: '', role: '', company: '', content: '', avatar: '', rating: 5 })} className="text-cyan-600">Add Testimonial</button>
+              </>
+            ) : (
+              <EmptyState
+                title="No Testimonials"
+                description="Display social proof from colleagues and clients to build trust."
+                icon="fa-quote-left"
+                onAction={() => appendTestimonial({ name: '', role: '', company: '', content: '', avatar: '', rating: 5 })}
+              />
+            )}
+          </div>
+        );
+      case 'blog':
+        return (
+          <div className="space-y-6">
+            {blogFields.length > 0 ? (
+              <>
+                {blogFields.map((field, index) => (
+                  <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+                    <Input label="Title" name={`blogPosts.${index}.title`} register={register} />
+                    <Textarea label="Excerpt" name={`blogPosts.${index}.excerpt`} register={register} rows={3} help="A short summary shown in the blog list." />
+                    <Textarea label="Content" name={`blogPosts.${index}.content`} register={register} rows={6} help="The main body of your post. Supports Markdown-like structure." />
+                    <Input label="Date (YYYY-MM-DD)" name={`blogPosts.${index}.date`} register={register} type="date" />
+                    <Input label="Author" name={`blogPosts.${index}.author`} register={register} />
+                    <Input label="Category" name={`blogPosts.${index}.category`} register={register} help="e.g., Engineering, Personal, Water Resources" />
+                    <Input label="Image URL" name={`blogPosts.${index}.image`} register={register} help="Cover image for the post." />
+                    <Input label="Read Time (minutes)" name={`blogPosts.${index}.readTime`} register={register} type="number" />
+                    <button type="button" onClick={() => removeBlog(index)} className="text-red-500 text-sm">Remove Blog Post</button>
+                  </div>
+                ))}
+                <button type="button" onClick={() => appendBlog({ id: `blog-${Date.now()}`, title: '', excerpt: '', content: '', date: new Date().toISOString().split('T')[0], author: '', category: '', image: '', readTime: 5 })} className="text-cyan-600">Add Blog Post</button>
+              </>
+            ) : (
+              <EmptyState
+                title="No Blog Posts"
+                description="Share your thoughts, tutorials, or project updates with your audience."
+                icon="fa-blog"
+                onAction={() => appendBlog({ id: `blog-${Date.now()}`, title: '', excerpt: '', content: '', date: new Date().toISOString().split('T')[0], author: '', category: '', image: '', readTime: 5 })}
+              />
+            )}
+          </div>
+        );
+      case 'gallery':
+        return (
+          <div className="space-y-6">
+            {galleryFields.length > 0 ? (
+              <>
+                {galleryFields.map((field, index) => (
+                  <div key={field.id} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50">
+                    <Input label="Title" name={`gallery.${index}.title`} register={register} />
+                    <Textarea label="Description" name={`gallery.${index}.description`} register={register} rows={3} />
+                    <Input label="Image URL" name={`gallery.${index}.image`} register={register} help="Direct link to the image file." />
+                    <Input label="Category" name={`gallery.${index}.category`} register={register} help="Used for filtering your gallery." />
+                    <button type="button" onClick={() => removeGallery(index)} className="text-red-500 text-sm">Remove Gallery Item</button>
+                  </div>
+                ))}
+                <button type="button" onClick={() => appendGallery({ id: `gallery-${Date.now()}`, title: '', description: '', image: '', category: '' })} className="text-cyan-600">Add Gallery Item</button>
+              </>
+            ) : (
+              <EmptyState
+                title="Gallery is empty"
+                description="Showcase your on-site photos, design sketches, or team moments."
+                icon="fa-images"
+                onAction={() => appendGallery({ id: `gallery-${Date.now()}`, title: '', description: '', image: '', category: '' })}
+              />
+            )}
+          </div>
+        );
+      case 'certifications':
+        return <Textarea label="Certifications (one per line)" name="certifications" register={register} rows={10} />;
+      case 'organizations':
+        return <Textarea label="Organizations (one per line)" name="organizations" register={register} rows={5} />;
       default:
         return null;
     }
@@ -466,11 +566,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-      <div 
+      <div
         className="bg-white rounded-lg shadow-2xl w-full max-w-6xl h-[90vh] flex flex-col"
         onClick={e => e.stopPropagation()}
       >
-        <div className="sticky top-0 bg-white border-b border-slate-200 p-4 flex justify-between items-center">
+        <div className="sticky top-0 bg-white border-b border-slate-200 p-4 flex justify-between items-center z-30">
           <div className="flex items-center space-x-4">
             <h2 className="text-xl font-bold text-slate-800">Admin Dashboard</h2>
             {import.meta.env.VITE_USE_SUPABASE === 'true' && (
@@ -484,6 +584,24 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
           </button>
         </div>
 
+        {/* Welcome Overlay */}
+        {showWelcome && (
+          <div className="absolute inset-x-0 top-16 bottom-0 z-40 bg-white/95 flex items-center justify-center p-8 backdrop-blur-sm">
+            <div className="max-w-md text-center">
+              <div className="w-20 h-20 bg-cyan-100 text-cyan-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
+                <i className="fas fa-magic"></i>
+              </div>
+              <h3 className="text-2xl font-bold text-slate-800 mb-4 tracking-tight">Welcome to your Dashboard!</h3>
+              <p className="text-slate-600 mb-8 leading-relaxed">
+                This is where you manage all your portfolio content. Changes are saved locally or to Supabase. Look for the <i className="fas fa-question-circle text-cyan-500 text-xs"></i> icons for help with specific fields.
+              </p>
+              <Button variant="primary" onClick={dismissWelcome} fullWidth>
+                Get Started
+              </Button>
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-grow overflow-hidden">
           {/* Sidebar */}
           <aside className="w-1/4 border-r border-slate-200 overflow-y-auto p-4 bg-slate-50">
@@ -492,11 +610,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
                 <button
                   key={section.id}
                   onClick={() => setActiveTab(section.id)}
-                  className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-left transition-colors ${
-                    activeTab === section.id
-                      ? 'bg-cyan-100 text-cyan-700'
-                      : 'text-slate-600 hover:bg-slate-100'
-                  }`}
+                  className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-md text-left transition-colors ${activeTab === section.id
+                    ? 'bg-cyan-100 text-cyan-700'
+                    : 'text-slate-600 hover:bg-slate-100'
+                    }`}
                 >
                   <i className={`fas ${section.icon} mr-3 w-5 text-center`}></i>
                   {section.name}
@@ -514,29 +631,29 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
         </div>
 
         <div className="flex justify-between items-center p-4 border-t border-slate-200 flex-shrink-0 bg-slate-50">
+          <button
+            type="button"
+            onClick={handleReset}
+            className="px-4 py-2 text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
+          >
+            Reset to Default
+          </button>
+          <div className="space-x-4">
             <button
-                type="button"
-                onClick={handleReset}
-                className="px-4 py-2 text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 text-sm font-medium rounded-md text-slate-700 bg-slate-100 hover:bg-slate-200"
             >
-                Reset to Default
+              Cancel
             </button>
-            <div className="space-x-4">
-                <button
-                    type="button"
-                    onClick={onClose}
-                    className="px-4 py-2 text-sm font-medium rounded-md text-slate-700 bg-slate-100 hover:bg-slate-200"
-                >
-                    Cancel
-                </button>
-                <button
-                    type="submit"
-                    form="admin-form"
-                    className="px-4 py-2 text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700"
-                >
-                    Save Changes
-                </button>
-            </div>
+            <button
+              type="submit"
+              form="admin-form"
+              className="px-4 py-2 text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700"
+            >
+              Save Changes
+            </button>
+          </div>
         </div>
       </div>
     </div>

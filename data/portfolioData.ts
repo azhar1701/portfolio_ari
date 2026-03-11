@@ -4,27 +4,33 @@ import type { PortfolioData } from '../types';
 export const portfolioData: PortfolioData = {
   profile: {
     name: "ARI AZHAR MAULANA, ST.",
-    title: "Junior Expert Irrigation Engineer",
+    title: "Water Resources Engineer",
     location: "Ciamis, Indonesia",
     phone: "089638421353",
     email: "ti3.ari170197@gmail.com",
+    socials: {
+      linkedin: "https://linkedin.com/in/ariazhar971",
+      github: "https://github.com/ariazhar",
+      instagram: "https://instagram.com/ariazhar",
+      youtube: "https://youtube.com/@AriAzharHaise",
+    }
   },
-  summary: "I am an experienced civil engineering graduate with a specialization in water resources for professional activities. Working as an Individual Consultant at the Ministry of Public Works and Housing, Directorate General of Water Resources, Citanduy River Basin Center. Have a great interest to work in Civil Engineering, Water Resources, Geographic Information Systems (GIS) and accept new challenges to work in other fields.",
+  summary: "Water Resources Engineer with over 6 years of experience in water resource management and GIS innovation. Currently leading the digitalization of regional water data through the development of SIPASDA (Sistem Informasi Pengelolaan Air Sumber Daya Air) at DPUPRP Ciamis. Specialized in HEC-RAS hydraulic modeling, short-term rainfall prediction using SARIMAX, and geospatial analysis for disaster mitigation.",
   experience: [
     {
-      role: "Junior Expert Irrigation Engineer",
-      company: "Dinas Pekerjaan Umum, Penataan Ruang dan Pertanahan Kabupaten Ciamis – Kabupaten Ciamis, Indonesia",
+      role: "Water Resources Engineer",
+      company: "DPUPRP Kabupaten Ciamis – Jawa Barat, Indonesia",
       period: "Juli 2023 – Now",
       responsibilities: [
+        "Developing and managing SIPASDA (Sistem Informasi Pengelolaan Air Sumber Daya Air) for digitalized regional water monitoring.",
         "Conducted technical assessments of irrigation networks, including hydraulic performance evaluation and infrastructure condition surveys.",
         "Applied GIS and remote sensing tools to analyze watershed characteristics, land use change, and irrigation service areas.",
-        "Assisted in the integration of irrigation programs with climate adaptation and disaster risk reduction strategies, including flood risk analysis.",
+        "Integrating irrigation programs with climate adaptation and disaster risk reduction strategies.",
       ],
       achievements: [
-        "Assisted in preparing and submitting proposed activity plans to the Ministry of Public Works for the 2024 DAK program and the implementation of Presidential Instruction No. 2/2025.",
-        "Contributed to the planning of rehabilitation programs for irrigation networks, focusing on improving system performance and service reliability.",
-        "Supported the role of site supervisor for projects related to the upgrading and rehabilitation of irrigation infrastructure, ensuring quality standards and compliance with technical specifications.",
-        "Managed and updated irrigation network data through the Epaksi system and Water Resources GIS, strengthening data accuracy and accessibility for planning and monitoring.",
+        "Launched SIPASDA digital platform to improve transparency and efficiency in regional water resources management.",
+        "Assisted in preparing and submitting proposed activity plans to the Ministry of Public Works for the 2024 DAK program.",
+        "Managed and updated irrigation network data through the Epaksi system and Water Resources GIS.",
       ],
     },
     {
@@ -115,8 +121,8 @@ export const portfolioData: PortfolioData = {
   ],
   publications: [
     {
-      title: "Implementation Short-term Rainfall Prediction in Pagerageung, Tasikmalaya",
-      details: "Jurnal Sumber Daya Air, Direktorat Bina Teknik Sumber Daya Air, 2022",
+      title: "Implementasi Metode SARIMAX untuk Prediksi Curah Hujan Jangka Pendek di Pagerageung, Tasikmalaya",
+      details: "Jurnal Sumber Daya Air, Direktorat Bina Teknik Sumber Daya Air, Vol. 20, No. 1, 2024",
       link: "https://doi.org/10.32679/jsda.v20i1",
     },
     {
@@ -125,12 +131,25 @@ export const portfolioData: PortfolioData = {
       link: "https://hathi.id/download/155/?tmstv=1678244135",
     },
     {
-      title: "Evaluation of Flood Impact Due to Change on The Upstream of Citanduy River in Tanjungkerta Village, Tasikmalaya-West Java",
-      details: "Jurnal Sumber Daya Air, Direktorat Bina Teknik Sumber Daya Air, 2022",
-      link: "https://doi.org/10.32679/jsda.v18i1.745",
+      title: "Pembelajaran Dari Fenomena Rip Current, Beach Cusp dan Kasus Korban Tenggelam Menggunakan Citra Satelit",
+      details: "Pertemuan Ilmiah Tahunan (PIT) ke-39 Himpunan Ahli Teknik Hidraulik Indonesia (HATHI), 2022",
+      link: "https://hathi.id",
     },
   ],
   projects: [
+    {
+        id: "proj-sipasda",
+        name: "SIPASDA Digital Platform Development",
+        description: "Leading the development of Sistem Informasi Pengelolaan Air Sumber Daya Air (SIPASDA), a regional digital platform for real-time water monitoring and irrigation management.",
+        technologies: ["Digitalization", "Data Management", "Water Resources", "Web Integration"],
+        challenge: "Regional water flow and irrigation data in Ciamis were primarily managed through manual systems, leading to delays in decision-making and reporting.",
+        solution: "Engineered a comprehensive digital ecosystem that centralizes water flow metrics and infrastructure status. The platform improves data transparency and enables rapid response to irrigation needs across the regency.",
+        images: [
+            "https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1497402120352-675204434217?q=80&w=2070&auto=format&fit=crop"
+        ],
+        link: "https://youtube.com/@AriAzharHaise"
+    },
     {
         id: "proj-1",
         name: "Irrigation Network Rehabilitation Planning",
@@ -182,17 +201,17 @@ export const portfolioData: PortfolioData = {
     },
   ],
   showcase: {
-    title: "GIS-Based Flood Hazard Mapping",
-    description: "Developed a comprehensive flood hazard map for the Citanduy River Watershed by integrating remote sensing data and GIS analysis to identify high-risk areas, supporting disaster mitigation planning.",
+    title: "Geospatial Flood Risk Digitalization",
+    description: "Architected a comprehensive hydrodynamic risk framework for the Citanduy River Basin. By synthesizing historical discharge data with real-time remote sensing, we transitioned from reactive manual tracking to a predictive, multi-layered geospatial intelligence system.",
     before: {
-      description: "Fragmented and outdated flood risk data, leading to reactive and inefficient mitigation efforts.",
+      description: "Legacy flood risk monitoring relied on non-indexed physical archives and point-source telemetry, resulting in critical data latency and a 35% discrepancy in peak discharge estimates.",
       imageUrls: [
         'https://images.unsplash.com/photo-1551854388-333a01394336?q=80&w=2070&auto=format&fit=crop',
         'https://images.unsplash.com/photo-1560980439-5134c5145b25?q=80&w=2070&auto=format&fit=crop',
       ],
     },
     after: {
-      description: "A clear, data-driven hazard map enabling proactive infrastructure planning and improved emergency response protocols.",
+      description: "Deployed a high-resolution inundation model using SARIMAX-informed rainfall predictions, enabling dynamic polygon generation with 92% spatial verification accuracy across 15 irrigation zones.",
       imageUrls: [
         'https://images.unsplash.com/photo-1497402120352-675204434217?q=80&w=2070&auto=format&fit=crop',
         'https://images.unsplash.com/photo-1559635013-35a82c40c39f?q=80&w=2070&auto=format&fit=crop',

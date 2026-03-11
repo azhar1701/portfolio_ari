@@ -1,8 +1,9 @@
-
 import React from 'react';
 import type { Education as EducationType } from '../types';
 import Section from './Section';
 import SkeletonLoader from './SkeletonLoader';
+import Card from './ui/Card';
+import { SubHeading } from './ui/Typography';
 
 interface EducationProps {
   education: EducationType[] | null;
@@ -18,24 +19,25 @@ const EducationSkeleton: React.FC = () => (
 
 const Education: React.FC<EducationProps> = ({ education }) => {
   return (
-    <Section id="education" title="Education" iconClass="fas fa-graduation-cap">
-      {education ? education.map((edu, index) => (
-        <div key={index} className="mb-6 last:mb-0 group">
-          <div className="flex justify-between items-start">
-            <div>
-              <h3 className="text-lg font-extrabold text-text-primary group-hover:text-brand-accent transition-colors leading-tight tracking-tight">{edu.institution}</h3>
-              <p className="text-md font-bold text-text-secondary mt-1 tracking-tight">{edu.degree}</p>
-              {edu.gpa && (
-                <p className="text-[10px] font-extrabold text-brand-accent uppercase tracking-widest mt-3 flex items-center">
-                  <i className="fas fa-star mr-1.5 text-[10px]"></i>
-                  GPA: {edu.gpa}
-                </p>
-              )}
+    <Section id="education" title="Academic Background" iconClass="fas fa-user-graduate">
+      <div className="space-y-6">
+        {education ? education.map((edu, index) => (
+          <Card key={index} variant="default" className="group">
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+              <div>
+                <h3 className="text-xl font-bold text-text-primary group-hover:text-brand-accent transition-colors leading-tight tracking-tight">{edu.institution}</h3>
+                <p className="text-lg font-bold text-text-secondary mt-1 tracking-tight">{edu.degree}</p>
+                {edu.gpa && (
+                  <SubHeading color="accent" className="mt-4" icon={<i className="fas fa-star text-xs"></i>}>
+                    GPA: {edu.gpa}
+                  </SubHeading>
+                )}
+              </div>
+              <p className="text-sm font-bold text-text-muted bg-bg-canvas px-4 py-1.5 rounded-full border border-border-subtle whitespace-nowrap">{edu.period}</p>
             </div>
-            <p className="text-sm font-bold text-text-muted bg-bg-app px-3 py-1 rounded-md border border-border-subtle">{edu.period}</p>
-          </div>
-        </div>
-      )) : <EducationSkeleton />}
+          </Card>
+        )) : <EducationSkeleton />}
+      </div>
     </Section>
   );
 };

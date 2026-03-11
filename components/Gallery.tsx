@@ -39,7 +39,7 @@ const Gallery: React.FC<GalleryProps> = ({ gallery }) => {
 
   return (
     <>
-      <Section id="gallery" title="Project Gallery" iconClass="fas fa-images">
+      <Section id="gallery" title="Visual Documentation" iconClass="fas fa-microscope">
         {gallery ? (
           <div className="space-y-6">
             <div className="flex flex-wrap gap-2">
@@ -47,9 +47,9 @@ const Gallery: React.FC<GalleryProps> = ({ gallery }) => {
                 <button
                   key={category}
                   onClick={() => setFilter(category)}
-                  className={`px-4 py-2 rounded-lg text-xs font-extrabold uppercase tracking-widest transition-all ${filter === category
-                      ? 'bg-brand-accent-soft text-brand-accent-text border border-brand-accent/20'
-                      : 'bg-bg-app text-text-secondary hover:bg-border-subtle/50 border border-transparent'
+                  className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${filter === category
+                    ? 'bg-brand-accent-soft text-brand-accent-text border border-brand-accent/20'
+                    : 'bg-bg-app text-text-secondary hover:bg-border-subtle/50 border border-transparent'
                     }`}
                 >
                   {category}
@@ -61,20 +61,19 @@ const Gallery: React.FC<GalleryProps> = ({ gallery }) => {
               {filteredImages.map((image) => (
                 <div
                   key={image.id}
-                  className="relative group cursor-pointer overflow-hidden rounded-lg aspect-square"
+                  className="relative group cursor-pointer overflow-hidden rounded-lg aspect-square bg-slate-100"
                   onClick={() => setSelectedImage(image)}
                 >
                   <img
-                    src={image.image || image.url}
+                    src={image.image || image.url || ''}
                     alt={image.title}
                     className="w-full h-full object-cover transition-transform group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                    <i className="fas fa-expand text-white opacity-0 group-hover:opacity-100 transition-opacity text-xl"></i>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
-                    <h4 className="text-white font-extrabold text-sm tracking-tight">{image.title}</h4>
-                    <span className="text-brand-accent-text text-[10px] font-extrabold uppercase tracking-widest">{image.category}</span>
+                    <h4 className="text-white font-bold text-sm tracking-tight">{image.title}</h4>
+                    <span className="text-brand-accent-text text-xs font-bold uppercase tracking-widest">{image.category}</span>
                   </div>
                 </div>
               ))}

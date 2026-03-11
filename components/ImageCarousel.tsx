@@ -30,11 +30,12 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, projectName }) =>
     };
 
     return (
-        <div className="relative group w-full aspect-video rounded-lg overflow-hidden mb-4">
+        <div className="relative group w-full aspect-video rounded-lg overflow-hidden mb-4 bg-slate-100 flex items-center justify-center">
             <img 
                 src={images[currentIndex]} 
                 alt={`${projectName} - Image ${currentIndex + 1}`}
-                className="w-full h-full object-cover duration-500 transition-all"
+                className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+                key={images[currentIndex]}
             />
             {/* Left Arrow */}
             {images.length > 1 && (

@@ -6,25 +6,28 @@ interface SectionProps {
   title: string;
   children: React.ReactNode;
   iconClass: string;
+  noContainer?: boolean;
 }
 
-const Section: React.FC<SectionProps> = ({ id, title, children, iconClass }) => {
+const Section: React.FC<SectionProps> = ({ id, title, children, iconClass, noContainer }) => {
   return (
     <section
       id={id}
-      className="py-8 sm:py-12 lg:py-16"
+      className="py-20 sm:py-28 lg:py-32 will-change-transform-opacity"
       data-aos="fade-up"
-      data-aos-duration="800"
+      data-aos-duration="1000"
     >
-      <div className="flex items-center mb-6 lg:mb-8">
-        <i className={`${iconClass} text-2xl sm:text-3xl text-brand-accent mr-3 sm:mr-4`}></i>
-        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-text-primary border-b-2 border-brand-accent pb-2 tracking-tight">
+      <div className="mb-12 sm:mb-16">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary tracking-tighter">
           {title}
         </h2>
+        <div className="h-1.5 w-16 bg-brand-accent mt-5 rounded-full opacity-80"></div>
       </div>
-      <div className="bg-bg-canvas rounded-lg shadow-subtle border border-border-subtle p-4 sm:p-6 lg:p-8">
-        {children}
-      </div>
+      {noContainer ? children : (
+        <div className="bg-bg-canvas rounded-[2.5rem] shadow-subtle border border-border-subtle/50 p-8 sm:p-16 lg:p-20">
+          {children}
+        </div>
+      )}
     </section>
   );
 };

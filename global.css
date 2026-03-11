@@ -1,37 +1,44 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 @theme {
-    /* Font Families */
-    --font-heading: "Outfit", sans-serif;
-    --font-body: "Hanken Grotesk", sans-serif;
+    /* High-Precision Engineering Typography */
+    --font-heading: "Geist", sans-serif;
+    --font-body: "Inter", sans-serif;
+    --font-mono: "IBM Plex Mono", monospace;
 
-    /* Fluid Type Scale (Modular Scale) */
-    /* Mobile: 16px, Desktop: 18px base */
-    --text-xs: clamp(0.69rem, 0.05cqi + 0.68rem, 0.72rem);
-    --text-sm: clamp(0.78rem, 0.13cqi + 0.75rem, 0.85rem);
-    --text-base: clamp(0.88rem, 0.25cqi + 0.81rem, 1rem);
-    --text-lg: clamp(1.1rem, 0.44cqi + 0.99rem, 1.31rem);
-    --text-xl: clamp(1.38rem, 0.74cqi + 1.19rem, 1.72rem);
-    --text-2xl: clamp(1.72rem, 1.19cqi + 1.42rem, 2.26rem);
-    --text-3xl: clamp(2.15rem, 1.86cqi + 1.68rem, 2.96rem);
-    --text-4xl: clamp(2.69rem, 2.87cqi + 1.97rem, 3.89rem);
-    --text-5xl: clamp(3.36rem, 4.34cqi + 2.27rem, 5.11rem);
+    /* Tight Typographic Scale */
+    --text-xs: clamp(0.7rem, 0.05cqi + 0.68rem, 0.75rem);
+    --text-sm: clamp(0.8rem, 0.1cqi + 0.78rem, 0.88rem);
+    --text-base: clamp(0.9rem, 0.2cqi + 0.85rem, 1rem);
+    --text-lg: clamp(1.1rem, 0.4cqi + 1rem, 1.25rem);
+    --text-xl: clamp(1.25rem, 0.6cqi + 1.15rem, 1.5rem);
+    --text-2xl: clamp(1.5rem, 1cqi + 1.3rem, 2rem);
+    --text-3xl: clamp(2rem, 1.5cqi + 1.6rem, 2.75rem);
+    --text-4xl: clamp(2.5rem, 2.5cqi + 1.8rem, 3.5rem);
+    --text-5xl: clamp(3rem, 4cqi + 2rem, 4.5rem);
 
-    /* Semantic Colors */
-    --color-bg-app: light-dark(#f8fafc, #0f172a);
-    --color-bg-canvas: light-dark(#ffffff, #1e293b);
-    --color-text-primary: light-dark(#1e293b, #f1f5f9);
-    --color-text-secondary: light-dark(#475569, #94a3b8);
-    --color-text-muted: light-dark(#64748b, #64748b);
+    /* Perceptually Uniform Semantic Colors - Standardized Light Mode */
+    --color-bg-app: #f8fafc;
+    --color-bg-canvas: #ffffff;
+    --color-text-primary: #1e293b;
+    --color-text-secondary: #475569;
+    --color-text-muted: #64748b;
 
+    /* Primary: Cyan (Engineering Focus) */
     --color-brand-accent: #0891b2;
     --color-brand-accent-hover: #0e7490;
-    --color-brand-accent-soft: light-dark(#ecfeff, #164e63);
-    --color-brand-accent-text: light-dark(#0e7490, #22d3ee);
+    --color-brand-accent-soft: oklch(96% 0.04 190);
+    --color-brand-accent-text: oklch(45% 0.16 190);
 
-    --color-border-subtle: light-dark(#e2e8f0, #334155);
-    --color-border-accent: light-dark(#67e8f9, #0891b2);
+    /* Secondary: Slate (Precision Neutrals) */
+    --color-brand-neutral: oklch(60% 0.02 250);
+    --color-brand-neutral-soft: oklch(96% 0.01 250);
+    --color-brand-neutral-text: oklch(45% 0.02 250);
+
+    /* Borders */
+    --color-border-subtle: #e2e8f0;
+    --color-border-accent: var(--color-brand-accent);
 
     --shadow-subtle: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -55,14 +62,14 @@
         }
     }
 
-    /* Robust text handling */
+    /* Robust text handling - Standardized Light */
     html {
         -webkit-text-size-adjust: 100%;
         word-break: break-word;
         overflow-wrap: break-word;
         background-color: var(--color-bg-app);
         color: var(--color-text-primary);
-        color-scheme: light dark;
+        color-scheme: light;
         transition: background-color 0.3s ease, color 0.3s ease;
         font-family: var(--font-body);
         font-feature-settings: "cv02", "cv03", "cv04", "cv11";
@@ -77,20 +84,95 @@
     h5,
     h6 {
         font-family: var(--font-heading);
-        font-weight: 700;
+        font-weight: 600;
         letter-spacing: -0.02em;
-        line-height: 1.1;
-    }
-
-    /* Sync .dark class with color-scheme */
-    html.dark {
-        color-scheme: dark;
+        line-height: 1.15;
     }
 
     body {
         background-color: var(--color-bg-app);
         color: var(--color-text-primary);
         min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* Fix Leaflet map overflow on small screens */
+    .leaflet-container {
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
+
+    .leaflet-proxy,
+    .leaflet-pane,
+    .leaflet-top,
+    .leaflet-bottom {
+        max-width: 100vw !important;
+    }
+
+    /* Print Styles */
+    @media print {
+        @page {
+            margin: 15mm;
+            size: auto;
+        }
+
+        header,
+        footer,
+        .back-to-top,
+        button:not(.print-visible),
+        nav,
+        .no-print,
+        #summary,
+        #stats,
+        #experience,
+        #showcase,
+        #projects,
+        #skills,
+        #testimonials,
+        #blog,
+        #gallery,
+        #contact,
+        .welcome-guide,
+        .onboarding-tour {
+            display: none !important;
+        }
+
+        /* Only show the resume section when printing */
+        #resume {
+            display: block !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            background: white !important;
+        }
+
+        #resume > div > div:first-child,
+        #resume > div > div:last-child {
+            display: none !important; /* Hide the UI containers inside Section */
+        }
+
+        body,
+        html {
+            background: white !important;
+            color: black !important;
+            overflow: visible !important;
+            height: auto !important;
+            width: 100% !important;
+        }
+
+        section {
+            break-inside: avoid;
+            margin-bottom: 0 !important;
+            padding: 0 !important;
+        }
+
+        .bg-bg-canvas {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
     }
 
     /* Prevent focus content shift */
@@ -117,5 +199,42 @@
 
     .pe-4 {
         padding-inline-end: 1rem;
+    }
+
+    /* GPU Acceleration & Animation Utilities */
+    .will-change-transform-opacity {
+        will-change: transform, opacity;
+    }
+
+    .force-gpu {
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        perspective: 1000px;
+    }
+
+    /* Safe Area Utilities for Mobile */
+    .pb-safe {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .pt-safe {
+        padding-top: env(safe-area-inset-top);
+    }
+
+    /* Refined AOS transitions to ensure compositor-only properties */
+    [data-aos] {
+        transition-property: transform, opacity !important;
+        will-change: transform, opacity;
+    }
+
+    /* Touch Optimization */
+    @media (hover: none) {
+        .group:hover .group-hover\:opacity-100 {
+            opacity: 1 !important;
+        }
+        
+        button, a {
+            -webkit-tap-highlight-color: transparent;
+        }
     }
 }

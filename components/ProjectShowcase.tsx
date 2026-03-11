@@ -42,15 +42,15 @@ const Carousel: React.FC<CarouselProps> = ({ images, title, description }) => {
 
   return (
     <div className="w-full group/carousel">
-      <h4 className="font-bold text-lg text-text-primary mb-3 flex items-center">
-        <i className="fas fa-camera mr-2 text-brand-accent/50 text-xs"></i>
+      <h4 className="text-xs font-bold text-text-primary uppercase tracking-widest mb-4 border-b border-border-subtle/30 pb-1 w-fit">
         {title}
       </h4>
-      <div className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-subtle border border-border-subtle group">
-        <div
-          style={{ backgroundImage: `url(${images[currentIndex]})` }}
-          className="w-full h-full bg-center bg-cover duration-500 transition-all hover:scale-105"
-        ></div>
+      <div className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-subtle border border-border-subtle group bg-bg-app">
+        <img
+          src={images[currentIndex]}
+          alt={`${title} - View ${currentIndex + 1}`}
+          className="w-full h-full object-cover duration-500 transition-all hover:scale-105"
+        />
         {/* Navigation Arrows */}
         <button
           onClick={goToPrevious}
@@ -86,11 +86,11 @@ const ProjectShowcase: React.FC<{ showcase: ShowcaseType | null }> = ({ showcase
   if (!showcase && showcase !== null) return null;
 
   return (
-    <Section id="showcase" title="Project Showcase" iconClass="fas fa-images">
+    <Section id="showcase" title="Project Showcase" iconClass="fas fa-eye" noContainer>
       {showcase ? (
         <div className="space-y-8 bg-bg-canvas p-6 sm:p-10 rounded-2xl border border-border-subtle shadow-subtle">
           <div className="max-w-3xl">
-            <h3 className="text-2xl md:text-4xl font-extrabold text-text-primary mb-4 tracking-tight">{showcase.title}</h3>
+            <h3 className="text-2xl md:text-4xl font-bold text-text-primary mb-4 tracking-tight">{showcase.title}</h3>
             <p className="text-text-secondary md:text-lg leading-relaxed font-medium">{showcase.description}</p>
           </div>
           <div className="grid md:grid-cols-2 gap-10 pt-6 border-t border-border-subtle/50">
