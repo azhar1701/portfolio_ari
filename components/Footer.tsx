@@ -11,7 +11,7 @@ const Footer: React.FC<FooterProps> = ({ data, onOpenAdmin }) => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-bg-canvas border-t border-border-subtle pt-16 pb-8 mt-20 transition-colors duration-300 print:hidden">
+    <footer className="bg-bg-canvas border-t border-border-subtle pt-16 pb-24 lg:pb-8 mt-20 transition-colors duration-300 print:hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
           {/* Column 1: Identity */}

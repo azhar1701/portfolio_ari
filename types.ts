@@ -1,4 +1,6 @@
 
+/// <reference types="vite/client" />
+
 export interface Testimonial {
   id?: string;
   name: string;
@@ -46,6 +48,7 @@ export interface Profile {
     github?: string;
     twitter?: string;
     instagram?: string;
+    youtube?: string;
   };
 }
 

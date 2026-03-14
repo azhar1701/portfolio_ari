@@ -17,6 +17,7 @@ export interface Database {
           location: string
           phone: string
           email: string
+          socials: Json | null
           created_at: string
           updated_at: string
         }
@@ -27,6 +28,7 @@ export interface Database {
           location: string
           phone: string
           email: string
+          socials?: Json | null
           created_at?: string
           updated_at?: string
         }
@@ -37,6 +39,7 @@ export interface Database {
           location?: string
           phone?: string
           email?: string
+          socials?: Json | null
           updated_at?: string
         }
       }

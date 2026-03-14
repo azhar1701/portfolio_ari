@@ -162,7 +162,7 @@ const App: React.FC = () => {
     <div className="min-h-screen">
       <ReadingProgressBar />
       <Header profile={profile} navLinks={navLinks} data={data} />
-      <main className="w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pt-32">
+      <main className="w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pt-24 md:pt-32 pb-20 lg:pb-0">
         <div className="max-w-7xl mx-auto">
           <Summary content={summary} />
           <Stats stats={stats} />

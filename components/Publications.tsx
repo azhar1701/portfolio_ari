@@ -8,17 +8,6 @@ interface PublicationsProps {
   publications: Publication[] | null;
 }
 
-const PublicationsSkeleton: React.FC = () => (
-  <div className="space-y-4">
-    {[...Array(2)].map((_, i) => (
-      <div key={i} className="p-4 border-l-4 border-border-subtle bg-bg-canvas rounded space-y-2 opacity-60">
-        <SkeletonLoader className="h-5 w-full bg-border-subtle rounded" />
-        <SkeletonLoader className="h-4 w-3/4 bg-border-subtle/50 rounded" />
-        <SkeletonLoader className="h-4 w-1/4 bg-border-subtle/30 rounded" />
-      </div>
-    ))}
-  </div>
-);
 
 const Publications: React.FC<PublicationsProps> = ({ publications }) => {
   return (
@@ -41,7 +30,12 @@ const Publications: React.FC<PublicationsProps> = ({ publications }) => {
             </div>
           ))}
         </div>
-      ) : <PublicationsSkeleton />}
+      ) : (
+        <div className="space-y-4">
+          <SkeletonLoader.Block lines={3} />
+          <SkeletonLoader.Block lines={3} />
+        </div>
+      )}
     </Section>
   );
 };

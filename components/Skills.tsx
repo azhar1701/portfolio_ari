@@ -10,20 +10,6 @@ interface SkillsProps {
   skills: SkillCategory[] | null;
 }
 
-const SkillsSkeleton: React.FC = () => (
-  <div className="space-y-6">
-    {[...Array(3)].map((_, i) => (
-      <div key={i}>
-        <SkeletonLoader className="h-6 w-1/3 bg-border-subtle rounded mb-4" />
-        <div className="flex flex-wrap gap-2">
-          <SkeletonLoader className="h-8 w-24 bg-border-subtle/50 rounded-md" />
-          <SkeletonLoader className="h-8 w-32 bg-border-subtle/50 rounded-md" />
-          <SkeletonLoader className="h-8 w-28 bg-border-subtle/50 rounded-md" />
-        </div>
-      </div>
-    ))}
-  </div>
-);
 
 const Skills: React.FC<SkillsProps> = ({ skills }) => {
   return (
@@ -69,7 +55,20 @@ const Skills: React.FC<SkillsProps> = ({ skills }) => {
               );
             })}
           </div>
-        ) : <SkillsSkeleton />}
+        ) : (
+          <div className="space-y-6">
+            {[...Array(3)].map((_, i) => (
+              <div key={i}>
+                <SkeletonLoader className="h-6 w-1/3 bg-border-subtle rounded mb-4" />
+                <div className="flex flex-wrap gap-2">
+                  <SkeletonLoader className="h-8 w-24 bg-border-subtle/50 rounded-md" />
+                  <SkeletonLoader className="h-8 w-32 bg-border-subtle/50 rounded-md" />
+                  <SkeletonLoader className="h-8 w-28 bg-border-subtle/50 rounded-md" />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </Section>
   );

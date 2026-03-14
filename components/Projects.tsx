@@ -12,18 +12,6 @@ interface ProjectsProps {
     projects: Project[] | null;
 }
 
-const ProjectsSkeleton: React.FC = () => (
-    <div className="space-y-6">
-        {[...Array(2)].map((_, i) => (
-            <div key={i} className="bg-slate-50 border border-slate-200 p-6 rounded-lg space-y-3">
-                <SkeletonLoader className="h-6 w-3/4 rounded" />
-                <SkeletonLoader className="h-4 w-full rounded" />
-                <SkeletonLoader className="h-4 w-5/6 rounded" />
-                <SkeletonLoader className="h-4 w-1/4 rounded mt-2" />
-            </div>
-        ))}
-    </div>
-);
 
 
 const Projects: React.FC<ProjectsProps> = ({ projects }) => {
@@ -154,7 +142,7 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                         })}
                     </div>
                 ) : (
-                    <ProjectsSkeleton />
+                    <SkeletonLoader.CardGrid items={2} columns={2} />
                 )}
             </div>
         </Section>

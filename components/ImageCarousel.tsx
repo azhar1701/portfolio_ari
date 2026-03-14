@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 
 interface ImageCarouselProps {
     images: string[];
-    projectName: string;
+    projectName?: string;
+    title?: string;
+    description?: string;
 }
 
-const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, projectName }) => {
+const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, projectName, title, description }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     if (!images || images.length === 0) {
@@ -29,44 +31,57 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, projectName }) =>
         setCurrentIndex(slideIndex);
     };
 
+    const altText = title
+        ? `${title} - View ${currentIndex + 1}`
+        : `${projectName} - Image ${currentIndex + 1}`;
+
     return (
-        <div className="relative group w-full aspect-video rounded-lg overflow-hidden mb-4 bg-slate-100 flex items-center justify-center">
-            <img 
-                src={images[currentIndex]} 
-                alt={`${projectName} - Image ${currentIndex + 1}`}
-                className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
-                key={images[currentIndex]}
-            />
-            {/* Left Arrow */}
+        <div className="w-full group/carousel">
+            {title && (
+                <h4 className="text-xs font-bold text-text-primary uppercase tracking-widest mb-4 border-b border-border-subtle/30 pb-1 w-fit">
+                    {title}
+                </h4>
+            )}
+            <div className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-subtle border border-border-subtle group bg-bg-app">
+                <img
+                    src={images[currentIndex]}
+                    alt={altText}
+                    className="w-full h-full object-cover duration-500 transition-all hover:scale-105"
+                    key={images[currentIndex]}
+                />
+                {images.length > 1 && (
+                    <>
+                        <button
+                            onClick={goToPrevious}
+                            className="absolute top-1/2 -translate-y-1/2 left-4 text-xl rounded-full p-2 bg-black/40 text-white backdrop-blur-sm opacity-0 group-hover/carousel:opacity-100 transition-all hover:bg-black/60"
+                            aria-label="Previous image"
+                        >
+                            <i className="fas fa-chevron-left"></i>
+                        </button>
+                        <button
+                            onClick={goToNext}
+                            className="absolute top-1/2 -translate-y-1/2 right-4 text-xl rounded-full p-2 bg-black/40 text-white backdrop-blur-sm opacity-0 group-hover/carousel:opacity-100 transition-all hover:bg-black/60"
+                            aria-label="Next image"
+                        >
+                            <i className="fas fa-chevron-right"></i>
+                        </button>
+                    </>
+                )}
+            </div>
             {images.length > 1 && (
-                <>
-                    <button 
-                        onClick={goToPrevious} 
-                        aria-label="Previous image"
-                        className="hidden group-hover:block absolute top-1/2 -translate-y-1/2 left-3 text-2xl rounded-full p-2 bg-black/40 text-white cursor-pointer transition-opacity duration-300"
-                    >
-                        <i className="fas fa-chevron-left"></i>
-                    </button>
-                    {/* Right Arrow */}
-                    <button 
-                        onClick={goToNext} 
-                        aria-label="Next image"
-                        className="hidden group-hover:block absolute top-1/2 -translate-y-1/2 right-3 text-2xl rounded-full p-2 bg-black/40 text-white cursor-pointer transition-opacity duration-300"
-                    >
-                        <i className="fas fa-chevron-right"></i>
-                    </button>
-                     {/* Dot Indicators */}
-                    <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
-                        {images.map((_, slideIndex) => (
-                            <button 
-                                key={slideIndex} 
-                                onClick={() => goToSlide(slideIndex)}
-                                className={`w-2 h-2 rounded-full transition-all duration-300 ${currentIndex === slideIndex ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/75'}`}
-                                aria-label={`Go to image ${slideIndex + 1}`}
-                            ></button>
-                        ))}
-                    </div>
-                </>
+                <div className="flex justify-center py-4 space-x-2.5">
+                    {images.map((_, slideIndex) => (
+                        <button
+                            key={slideIndex}
+                            onClick={() => goToSlide(slideIndex)}
+                            className={`transition-all duration-300 ${currentIndex === slideIndex ? 'w-8 h-2 bg-brand-accent rounded-full' : 'w-2 h-2 bg-text-muted/30 rounded-full hover:bg-brand-accent/50 hover:w-4'}`}
+                            aria-label={`Go to image ${slideIndex + 1}`}
+                        ></button>
+                    ))}
+                </div>
+            )}
+            {description && (
+                <p className="text-text-secondary text-sm font-medium leading-relaxed italic">{description}</p>
             )}
         </div>
     );

@@ -8,16 +8,6 @@ interface CertificationsProps {
   certifications: string[] | null;
 }
 
-const CertificationsSkeleton: React.FC = () => (
-  <div className="space-y-3">
-    {[...Array(4)].map((_, i) => (
-      <div key={i} className="flex items-center">
-        <SkeletonLoader className="h-2 w-2 bg-slate-200 rounded-full mr-3" />
-        <SkeletonLoader className="h-4 w-5/6 bg-slate-200 rounded" />
-      </div>
-    ))}
-  </div>
-);
 
 const Certifications: React.FC<CertificationsProps> = ({ certifications }) => {
   return (
@@ -36,7 +26,7 @@ const Certifications: React.FC<CertificationsProps> = ({ certifications }) => {
             </Card>
           ))}
         </div>
-      ) : <CertificationsSkeleton />}
+      ) : <SkeletonLoader.List items={4} />}
     </Section>
   );
 };

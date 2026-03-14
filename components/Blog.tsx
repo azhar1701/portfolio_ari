@@ -7,17 +7,6 @@ interface BlogProps {
   blogPosts: BlogPost[] | null;
 }
 
-const BlogSkeleton: React.FC = () => (
-  <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-    {[...Array(3)].map((_, i) => (
-      <div key={i} className="bg-slate-50 p-4 sm:p-6 rounded-lg space-y-3">
-        <SkeletonLoader className="h-5 sm:h-6 w-3/4 rounded" />
-        <SkeletonLoader className="h-4 w-full rounded" />
-        <SkeletonLoader className="h-4 w-1/2 rounded" />
-      </div>
-    ))}
-  </div>
-);
 
 const BlogModal: React.FC<{ post: BlogPost; onClose: () => void }> = ({ post, onClose }) => (
   <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
@@ -93,7 +82,7 @@ const Blog: React.FC<BlogProps> = ({ blogPosts }) => {
             ))}
           </div>
         ) : (
-          <BlogSkeleton />
+          <SkeletonLoader.CardGrid items={3} />
         )}
       </Section>
 

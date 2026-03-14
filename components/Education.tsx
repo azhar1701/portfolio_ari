@@ -9,13 +9,6 @@ interface EducationProps {
   education: EducationType[] | null;
 }
 
-const EducationSkeleton: React.FC = () => (
-  <div className="space-y-2">
-    <SkeletonLoader className="h-6 w-3/4 bg-slate-200 rounded" />
-    <SkeletonLoader className="h-5 w-1/2 bg-slate-200 rounded" />
-    <SkeletonLoader className="h-4 w-1/4 bg-slate-200 rounded" />
-  </div>
-)
 
 const Education: React.FC<EducationProps> = ({ education }) => {
   return (
@@ -36,7 +29,7 @@ const Education: React.FC<EducationProps> = ({ education }) => {
               <p className="text-sm font-bold text-text-muted bg-bg-canvas px-4 py-1.5 rounded-full border border-border-subtle whitespace-nowrap">{edu.period}</p>
             </div>
           </Card>
-        )) : <EducationSkeleton />}
+        )) : <SkeletonLoader.Block lines={3} />}
       </div>
     </Section>
   );

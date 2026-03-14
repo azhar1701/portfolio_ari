@@ -52,9 +52,9 @@ const Header: React.FC<HeaderProps> = ({ profile, navLinks, data }) => {
             <span className="font-bold text-lg relative z-10">{profile.name.charAt(0)}</span>
             <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
           </div>
-          <div className="hidden md:block text-left">
-            <h1 className="text-base font-bold text-text-primary leading-none tracking-tight">{profile.name}</h1>
-            <p className="text-[10px] text-brand-accent font-bold uppercase tracking-[0.2em] mt-1 opacity-80 lg:block hidden">{profile.title}</p>
+          <div className="hidden sm:block text-left">
+            <h1 className="text-sm sm:text-base font-bold text-text-primary leading-none tracking-tight">{profile.name}</h1>
+            <p className="text-[9px] sm:text-[10px] text-brand-accent font-bold uppercase tracking-[0.2em] mt-1 opacity-80 lg:block hidden">{profile.title}</p>
           </div>
         </button>
 
@@ -84,10 +84,10 @@ const Header: React.FC<HeaderProps> = ({ profile, navLinks, data }) => {
 
           <a
             href={`mailto:${profile.email}`}
-            className="bg-brand-accent hover:bg-brand-accent-hover text-white px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] rounded-full shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:scale-95 duration-300 flex items-center justify-center space-x-2"
+            className="bg-brand-accent hover:bg-brand-accent-hover text-white px-4 sm:px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.2em] rounded-full shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:scale-95 duration-300 flex items-center justify-center space-x-2"
           >
             <i className="fas fa-paper-plane text-[10px]"></i>
-            <span>Connect</span>
+            <span className="hidden sm:inline">Connect</span>
           </a>
 
           {/* Mobile Toggle */}

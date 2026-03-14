@@ -28,7 +28,7 @@ const Summary: React.FC<SummaryProps> = ({ content }) => {
 
             {/* Narrative & Specs Column */}
             <div className="lg:col-span-7" data-aos="fade-left">
-              <div className="bg-bg-app/50 p-10 md:p-16 rounded-[2.5rem] border border-border-subtle/30 shadow-subtle">
+              <div className="bg-bg-app/50 p-6 sm:p-10 md:p-16 rounded-3xl md:rounded-[2.5rem] border border-border-subtle/30 shadow-subtle">
                 <p className="text-xl md:text-2xl text-text-secondary leading-relaxed font-medium mb-12 tracking-tight">
                   {content}
                 </p>

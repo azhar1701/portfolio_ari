@@ -7,14 +7,6 @@ interface OrganizationsProps {
   organizations: string[] | null;
 }
 
-const OrganizationsSkeleton: React.FC = () => (
-  <div className="space-y-3">
-    <div className="flex items-center">
-      <SkeletonLoader className="h-2 w-2 bg-slate-200 rounded-full mr-3" />
-      <SkeletonLoader className="h-4 w-3/4 bg-slate-200 rounded" />
-    </div>
-  </div>
-);
 
 const Organizations: React.FC<OrganizationsProps> = ({ organizations }) => {
   return (
@@ -28,7 +20,7 @@ const Organizations: React.FC<OrganizationsProps> = ({ organizations }) => {
             </li>
           ))}
         </ul>
-      ) : <OrganizationsSkeleton />}
+      ) : <SkeletonLoader.List items={1} />}
     </Section>
   );
 };

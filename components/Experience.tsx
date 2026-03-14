@@ -2,7 +2,6 @@ import React from 'react';
 import type { Experience as ExperienceType } from '../types';
 import Section from './Section';
 import SkeletonLoader from './SkeletonLoader';
-import Card from './ui/Card';
 import { SubHeading } from './ui/Typography';
 
 interface ExperienceProps {
@@ -27,7 +26,7 @@ const TimelineItem: React.FC<{ item: ExperienceType }> = ({ item }) => {
 
         {/* Content & Outcomes Column */}
         <div className="lg:col-span-8 space-y-6">
-          <div className="bg-bg-app/50 p-10 md:p-16 rounded-[2.5rem] border border-border-subtle/30 group-hover:border-brand-accent/20 transition-colors">
+          <div className="bg-bg-app/50 p-6 sm:p-10 md:p-16 rounded-3xl md:rounded-[2.5rem] border border-border-subtle/30 group-hover:border-brand-accent/20 transition-colors">
             <h4 className="text-2xl font-bold text-text-primary mb-10 tracking-tight flex items-center">
               <span className="w-2.5 h-2.5 bg-brand-accent rounded-full mr-4 opacity-60 shadow-sm shadow-brand-accent"></span>
               {item.role}
@@ -66,21 +65,6 @@ const TimelineItem: React.FC<{ item: ExperienceType }> = ({ item }) => {
   );
 };
 
-const ExperienceSkeleton: React.FC = () => (
-  <div className="space-y-12">
-    {[...Array(2)].map((_, i) => (
-      <div key={i} className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <div className="lg:col-span-4">
-          <SkeletonLoader className="h-4 w-1/3 mb-2 rounded" />
-          <SkeletonLoader className="h-6 w-3/4 rounded" />
-        </div>
-        <div className="lg:col-span-8">
-          <SkeletonLoader className="h-64 w-full rounded-2xl" />
-        </div>
-      </div>
-    ))}
-  </div>
-);
 
 
 const Experience: React.FC<ExperienceProps> = ({ experience }) => {
@@ -96,7 +80,7 @@ const Experience: React.FC<ExperienceProps> = ({ experience }) => {
               />
             ))}
           </div>
-        ) : <ExperienceSkeleton />}
+        ) : <SkeletonLoader.Timeline items={2} />}
       </div>
     </Section>
   );

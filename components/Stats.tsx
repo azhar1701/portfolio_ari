@@ -76,16 +76,6 @@ const StatItem: React.FC<{ stat: Stat }> = ({ stat }) => {
   );
 };
 
-const StatsSkeleton: React.FC = () => (
-  <div className="flex flex-wrap gap-12">
-    {[...Array(4)].map((_, i) => (
-      <div key={i} className="w-32">
-        <SkeletonLoader className="h-10 w-20 rounded" />
-        <SkeletonLoader className="h-3 w-24 mt-4 rounded" />
-      </div>
-    ))}
-  </div>
-);
 
 const Stats: React.FC<{ stats: Stat[] | null }> = ({ stats }) => {
   return (
@@ -99,7 +89,16 @@ const Stats: React.FC<{ stats: Stat[] | null }> = ({ stats }) => {
             />
           ))}
         </div>
-      ) : <StatsSkeleton />}
+      ) : (
+        <div className="flex flex-wrap gap-12">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="w-32">
+              <SkeletonLoader className="h-10 w-20 rounded" />
+              <SkeletonLoader className="h-3 w-24 mt-4 rounded" />
+            </div>
+          ))}
+        </div>
+      )}
     </Section>
   );
 };

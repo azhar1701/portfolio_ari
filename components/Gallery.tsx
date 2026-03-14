@@ -7,13 +7,6 @@ interface GalleryProps {
   gallery: GalleryImage[] | null;
 }
 
-const GallerySkeleton: React.FC = () => (
-  <div className="grid sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6">
-    {[...Array(8)].map((_, i) => (
-      <SkeletonLoader key={i} className="aspect-square rounded-lg" />
-    ))}
-  </div>
-);
 
 const ImageModal: React.FC<{ image: GalleryImage; onClose: () => void }> = ({ image, onClose }) => (
   <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
@@ -80,7 +73,7 @@ const Gallery: React.FC<GalleryProps> = ({ gallery }) => {
             </div>
           </div>
         ) : (
-          <GallerySkeleton />
+          <SkeletonLoader.SquareGrid items={8} />
         )}
       </Section>
 

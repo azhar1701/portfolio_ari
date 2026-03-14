@@ -9,20 +9,22 @@ import SkeletonLoader from './SkeletonLoader';
 const RecenterAutomatically = ({ locations, forcePosition }: { locations: LocationPoint[], forcePosition?: [number, number] }) => {
     const map = useMap();
     useEffect(() => {
-        if (forcePosition) {
+        if (forcePosition && forcePosition.length >= 2 && forcePosition[0] !== null && forcePosition[1] !== null) {
             map.setView(forcePosition, 12, { animate: true });
         } else if (locations && locations.length > 0) {
-            const bounds = locations.map(loc => loc.position);
-            map.fitBounds(bounds, { padding: [50, 50] });
+            const validBounds = locations
+                .filter(loc => loc.position && loc.position.length >= 2 && loc.position[0] !== null && loc.position[1] !== null)
+                .map(loc => loc.position);
+            
+            if (validBounds.length > 0) {
+                map.fitBounds(validBounds, { padding: [50, 50] });
+            }
         }
     }, [locations, map, forcePosition]);
     return null;
 };
 
 
-const MapSkeleton: React.FC = () => (
-    <SkeletonLoader className="h-full w-full bg-slate-200 rounded-[2.5rem]" />
-);
 
 
 const MapSection: React.FC<{ locations: LocationPoint[] | null }> = ({ locations }) => {
@@ -41,7 +43,7 @@ const MapSection: React.FC<{ locations: LocationPoint[] | null }> = ({ locations
     };
 
     if (!isClient) {
-        return <Section id="locations" title="Geospatial Index" iconClass="fas fa-location-dot" noContainer><div className="h-96 w-full"><MapSkeleton /></div></Section>;
+        return <Section id="locations" title="Geospatial Index" iconClass="fas fa-location-dot" noContainer><div className="h-96 w-full"><SkeletonLoader className="h-full w-full rounded-[2.5rem]" /></div></Section>;
     }
 
     // Default center if no locations are available
@@ -73,7 +75,9 @@ const MapSection: React.FC<{ locations: LocationPoint[] | null }> = ({ locations
                                 <div className="flex justify-between items-start mb-2">
                                     <h4 className="text-base font-bold text-text-primary tracking-tight group-hover:text-brand-accent transition-colors">{loc.name}</h4>
                                     <span className="font-mono text-[10px] text-brand-accent font-bold opacity-60 pt-1">
-                                        {loc.position[0].toFixed(3)}, {loc.position[1].toFixed(3)}
+                                        {loc.position && loc.position.length >= 2 
+                                            ? `${loc.position[0].toFixed(3)}, ${loc.position[1].toFixed(3)}` 
+                                            : 'N/A'}
                                     </span>
                                 </div>
                                 <p className="text-sm text-text-secondary leading-relaxed font-medium pr-4 line-clamp-2">
@@ -100,9 +104,11 @@ const MapSection: React.FC<{ locations: LocationPoint[] | null }> = ({ locations
                                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 />
-                                {locations.map((loc, index) => (
+                                {locations
+                                    .filter(loc => loc.position && loc.position.length >= 2 && loc.position[0] !== null && loc.position[1] !== null)
+                                    .map((loc, index) => (
                                     <Marker 
-                                        key={index} 
+                                        key={`${loc.name}-${index}`} 
                                         position={loc.position}
                                         eventHandlers={{
                                             click: () => setActiveLocation(loc.name),
@@ -118,7 +124,7 @@ const MapSection: React.FC<{ locations: LocationPoint[] | null }> = ({ locations
                                 ))}
                                 <RecenterAutomatically locations={locations} forcePosition={mapCenter} />
                             </MapContainer>
-                        ) : <MapSkeleton />}
+                        ) : <SkeletonLoader className="h-full w-full rounded-[2.5rem]" />}
                     </div>
                 </div>
             </div>
