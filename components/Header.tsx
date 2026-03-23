@@ -42,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({ profile, navLinks, data }) => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 print:hidden ${isScrolled ? 'bg-bg-canvas/80 backdrop-blur-md shadow-subtle py-3' : 'bg-transparent py-6'}`}>
       <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Brand Signature */}
+        {/* Logo */}
         <button 
           className="flex items-center space-x-3 group relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent rounded-xl p-1 -m-1" 
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -58,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({ profile, navLinks, data }) => {
           </div>
         </button>
 
-        {/* Strategic Navigation - Icon-only for desktop precision */}
+        {/* Main Navigation - Icon-only for desktop */}
         <nav className="hidden lg:flex items-center space-x-1 bg-bg-app/40 backdrop-blur-sm px-2 py-1 rounded-full border border-border-subtle/30" aria-label="Main Navigation">
           {navLinks.map((link) => (
             <a

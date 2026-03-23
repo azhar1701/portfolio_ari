@@ -57,12 +57,12 @@ const WelcomeGuide: React.FC<WelcomeGuideProps> = ({ onStartTour }) => {
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-bold text-text-primary tracking-tight">Welcome!</h3>
-                                    <p className="text-xs font-bold text-brand-accent uppercase tracking-widest">Aha moment awaits</p>
+                                    <p className="text-xs font-bold text-brand-accent uppercase tracking-widest">Quick tour</p>
                                 </div>
                             </div>
 
                             <p className="text-sm text-text-secondary leading-relaxed mb-6">
-                                I'm <strong>Ari</strong>, a Water Resources Engineer & Web Developer. Would you like a 1-minute tour of my key projects and impact?
+                                I'm <strong>Ari</strong>, a Water Resources Engineer & Web Developer. Would you like a 1-minute tour of my key projects and work?
                             </p>
 
                             <div className="flex flex-col space-y-3">

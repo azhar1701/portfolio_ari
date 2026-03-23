@@ -13,21 +13,21 @@ interface AdminDashboardProps {
 }
 
 const sections = [
-  { id: 'profile', name: 'Identity', icon: 'fa-id-card' },
+  { id: 'profile', name: 'Profile', icon: 'fa-id-card' },
   { id: 'summary', name: 'Summary', icon: 'fa-compass-drafting' },
-  { id: 'experience', name: 'Trajectory', icon: 'fa-route' },
-  { id: 'projects', name: 'Portfolio', icon: 'fa-diagram-project' },
-  { id: 'skills', name: 'Arsenal', icon: 'fa-gears' },
-  { id: 'testimonials', name: 'Feedback', icon: 'fa-quote-left' },
-  { id: 'blog', name: 'Insights', icon: 'fa-lightbulb' },
-  { id: 'gallery', name: 'Visual Docs', icon: 'fa-microscope' },
-  { id: 'education', name: 'Background', icon: 'fa-user-graduate' },
-  { id: 'stats', name: 'Metrics', icon: 'fa-wave-square' },
+  { id: 'experience', name: 'Experience', icon: 'fa-route' },
+  { id: 'projects', name: 'Projects', icon: 'fa-diagram-project' },
+  { id: 'skills', name: 'Skills', icon: 'fa-gears' },
+  { id: 'testimonials', name: 'Testimonials', icon: 'fa-quote-left' },
+  { id: 'blog', name: 'Blog', icon: 'fa-lightbulb' },
+  { id: 'gallery', name: 'Gallery', icon: 'fa-microscope' },
+  { id: 'education', name: 'Education', icon: 'fa-user-graduate' },
+  { id: 'stats', name: 'Stats', icon: 'fa-wave-square' },
   { id: 'showcase', name: 'Showcase', icon: 'fa-eye' },
-  { id: 'locations', name: 'Geospatial', icon: 'fa-location-dot' },
+  { id: 'locations', name: 'Locations', icon: 'fa-location-dot' },
   { id: 'publications', name: 'Publications', icon: 'fa-file-lines' },
-  { id: 'certifications', name: 'Credentials', icon: 'fa-award' },
-  { id: 'organizations', name: 'Institutions', icon: 'fa-building-columns' },
+  { id: 'certifications', name: 'Certifications', icon: 'fa-award' },
+  { id: 'organizations', name: 'Organizations', icon: 'fa-building-columns' },
 ];
 
 const Input = ({ label, name, register, help, ...props }: { label: string, name: string, register: any, help?: string, [key: string]: any }) => (
@@ -87,7 +87,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
     // Deep copy data to avoid mutating the original state
     const formValues = JSON.parse(JSON.stringify(data));
 
-    // Transform array data into strings for form inputs, with defensive checks for data integrity
+    // Convert array data to strings for form inputs
     if (Array.isArray(formValues.experience)) {
       formValues.experience.forEach(exp => {
         if (Array.isArray(exp.responsibilities)) exp.responsibilities = exp.responsibilities.join('\n');
@@ -150,7 +150,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
       // Deep copy form data to process it for saving
       const processedData = JSON.parse(JSON.stringify(formData));
 
-      // Transform string fields back into arrays, ensuring no corruption occurs.
+      // Convert string fields back into arrays.
       if (Array.isArray(processedData.experience)) {
         processedData.experience.forEach(exp => {
           if (typeof exp.responsibilities === 'string') exp.responsibilities = exp.responsibilities.split('\n').filter(Boolean);
@@ -261,7 +261,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
             </div>
             
             <div className="pt-6 border-t border-slate-100">
-              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-6">Technical Ecosystem</h4>
+              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-6">Social Links</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Input label="LinkedIn Profile URL" name="profile.socials.linkedin" register={register} placeholder="https://linkedin.com/in/..." />
                 <Input label="GitHub Handle URL" name="profile.socials.github" register={register} placeholder="https://github.com/..." />
@@ -293,7 +293,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
             ) : (
               <EmptyState
                 title="No Experience listed"
-                description="Add your professional trajectory to showcase your career growth."
+                description="Add your work history here."
                 icon="fa-briefcase"
                 onAction={() => appendExp({ role: '', company: '', period: '', responsibilities: [], achievements: [] })}
               />
@@ -322,7 +322,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
             ) : (
               <EmptyState
                 title="No Projects added"
-                description="Showcase your best work to demonstrate your capabilities."
+                description="Add your projects here."
                 icon="fa-diagram-project"
                 onAction={() => appendProj({ id: `proj-${Date.now()}`, name: '', description: '', technologies: [], challenge: '', solution: '', images: [], link: '' })}
               />
@@ -422,7 +422,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
             ) : (
               <EmptyState
                 title="No Stats recorded"
-                description="Quantify your impact with impressive numbers and milestones."
+                description="Add numbers to highlight your work."
                 icon="fa-chart-line"
                 onAction={() => appendStat({ label: '', value: 0, suffix: '' })}
               />
@@ -550,7 +550,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
             ) : (
               <EmptyState
                 title="Gallery is empty"
-                description="Showcase your on-site photos, design sketches, or team moments."
+                description="Add photos, sketches, or team moments."
                 icon="fa-images"
                 onAction={() => appendGallery({ id: `gallery-${Date.now()}`, title: '', description: '', image: '', category: '' })}
               />

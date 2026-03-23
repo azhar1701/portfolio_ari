@@ -48,14 +48,14 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <Section id="contact" title="Collaboration" iconClass="fas fa-handshake-angle" noContainer>
+    <Section id="contact" title="Contact" iconClass="fas fa-handshake-angle" noContainer>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 max-w-6xl mx-auto">
         {/* Left Side: Professional Metadata */}
         <div className="lg:col-span-5 space-y-10" data-aos="fade-right">
           <div>
-            <h3 className="text-2xl font-bold text-text-primary tracking-tight mb-4">Let's build the future of water resources together.</h3>
+            <h3 className="text-2xl font-bold text-text-primary tracking-tight mb-4">Get in touch</h3>
             <p className="text-text-secondary leading-relaxed font-medium">
-              I am currently open to technical consultations, research partnerships, and project collaborations in water resource engineering and GIS innovation.
+              Open to consulting, research partnerships, and project work in water resources and GIS.
             </p>
           </div>
 
@@ -82,12 +82,12 @@ const ContactForm: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Side: Precision Form */}
+        {/* Right Side: Form */}
         <div className="lg:col-span-7" data-aos="fade-left">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8" noValidate>
             <div className="relative group">
               <label htmlFor="name" className={`absolute left-0 transition-all duration-300 pointer-events-none ${hasName ? '-top-6 text-[10px] text-brand-accent font-bold uppercase tracking-widest' : 'top-3 text-sm text-text-muted'}`}>
-                Full Professional Name
+                Name
               </label>
               <input
                 type="text"
@@ -100,7 +100,7 @@ const ContactForm: React.FC = () => {
 
             <div className="relative group">
               <label htmlFor="email" className={`absolute left-0 transition-all duration-300 pointer-events-none ${hasEmail ? '-top-6 text-[10px] text-brand-accent font-bold uppercase tracking-widest' : 'top-3 text-sm text-text-muted'}`}>
-                Email for Technical Brief
+                Email
               </label>
               <input
                 type="email"
@@ -116,7 +116,7 @@ const ContactForm: React.FC = () => {
 
             <div className="relative group">
               <label htmlFor="message" className={`absolute left-0 transition-all duration-300 pointer-events-none ${hasMessage ? '-top-6 text-[10px] text-brand-accent font-bold uppercase tracking-widest' : 'top-3 text-sm text-text-muted'}`}>
-                Collaboration Proposal / Inquiry
+                Message
               </label>
               <textarea
                 id="message"
@@ -133,14 +133,14 @@ const ContactForm: React.FC = () => {
               className="relative w-full lg:w-fit px-12 py-4 bg-brand-accent text-white font-bold text-xs uppercase tracking-[0.2em] rounded-xl shadow-md hover:shadow-xl hover:bg-brand-accent-hover transition-all transform active:scale-95 disabled:bg-text-muted overflow-hidden"
             >
               <span className="relative z-10 flex items-center justify-center">
-                {status === 'loading' ? 'Processing...' : status === 'success' ? 'Verified' : 'Initiate Connection'}
+                {status === 'loading' ? 'Sending...' : status === 'success' ? 'Sent!' : 'Send Message'}
                 <i className={`fas ${status === 'loading' ? 'fa-spinner fa-spin' : status === 'success' ? 'fa-check-double' : 'fa-arrow-right'} ml-3`}></i>
               </span>
             </button>
 
             {status === 'success' && (
               <div className="p-4 bg-green-500/5 border border-green-500/20 rounded-xl">
-                <p className="text-xs text-green-600 font-bold text-center">Inquiry logged successfully.</p>
+                <p className="text-xs text-green-600 font-bold text-center">Message sent — I'll reply soon.</p>
               </div>
             )}
           </form>

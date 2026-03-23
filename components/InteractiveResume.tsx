@@ -101,7 +101,7 @@ const InteractiveResume: React.FC<InteractiveResumeProps> = ({ data }) => {
               {/* Sidebar Column */}
               <div className="col-span-1 space-y-10">
                 <section>
-                  <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-4 border-b border-slate-100 pb-2">Technical Arsenal</h2>
+                  <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-4 border-b border-slate-100 pb-2">Skills</h2>
                   <div className="space-y-6">
                     {data.skills.map((skillCat, index) => (
                       <div key={index}>
@@ -130,7 +130,7 @@ const InteractiveResume: React.FC<InteractiveResumeProps> = ({ data }) => {
                 </section>
 
                 <section>
-                  <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-4 border-b border-slate-100 pb-2">Credentials</h2>
+                  <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-4 border-b border-slate-100 pb-2">Certifications</h2>
                   <div className="space-y-2">
                     {data.certifications.slice(0, 5).map((cert, index) => (
                       <div key={index} className="flex items-start text-[11px] leading-tight text-slate-600">

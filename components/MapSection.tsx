@@ -43,21 +43,21 @@ const MapSection: React.FC<{ locations: LocationPoint[] | null }> = ({ locations
     };
 
     if (!isClient) {
-        return <Section id="locations" title="Geospatial Index" iconClass="fas fa-location-dot" noContainer><div className="h-96 w-full"><SkeletonLoader className="h-full w-full rounded-[2.5rem]" /></div></Section>;
+        return <Section id="locations" title="Locations" iconClass="fas fa-location-dot" noContainer><div className="h-96 w-full"><SkeletonLoader className="h-full w-full rounded-[2.5rem]" /></div></Section>;
     }
 
     // Default center if no locations are available
     const defaultCenter: [number, number] = [-7.33, 108.35]; // Ciamis, Indonesia
 
     return (
-        <Section id="locations" title="Geospatial Index" iconClass="fas fa-location-dot" noContainer>
+        <Section id="locations" title="Locations" iconClass="fas fa-location-dot" noContainer>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 max-w-6xl mx-auto">
-                {/* Left Side: Technical Registry */}
+                {/* Left Side: Location List */}
                 <div className="lg:col-span-5 space-y-8" data-aos="fade-right">
                     <div>
-                        <h3 className="text-2xl font-bold text-text-primary tracking-tight mb-4">Regional Project Footprint</h3>
+                        <h3 className="text-2xl font-bold text-text-primary tracking-tight mb-4">Project Locations</h3>
                         <p className="text-text-secondary leading-relaxed font-medium">
-                            Strategic water resource management sites and research zones indexed by technical geospatial data.
+                            Places where I've worked on water resource projects and field research.
                         </p>
                     </div>
 
@@ -90,7 +90,7 @@ const MapSection: React.FC<{ locations: LocationPoint[] | null }> = ({ locations
                     </div>
                 </div>
 
-                {/* Right Side: High-Precision Viewport */}
+                {/* Right Side: Map */}
                 <div className="lg:col-span-7" data-aos="fade-left">
                     <div className="relative h-[350px] lg:h-[480px] w-full rounded-[2rem] overflow-hidden shadow-lg border border-border-subtle/50 bg-bg-app flex items-center justify-center z-0">
                         {locations ? (

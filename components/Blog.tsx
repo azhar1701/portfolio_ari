@@ -52,7 +52,7 @@ const Blog: React.FC<BlogProps> = ({ blogPosts }) => {
 
   return (
     <>
-      <Section id="blog" title="Engineering Insights" iconClass="fas fa-lightbulb">
+      <Section id="blog" title="Blog" iconClass="fas fa-lightbulb">
         {blogPosts ? (
           <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
             {blogPosts.map((post) => (

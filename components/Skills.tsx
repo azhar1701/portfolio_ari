@@ -13,7 +13,7 @@ interface SkillsProps {
 
 const Skills: React.FC<SkillsProps> = ({ skills }) => {
   return (
-    <Section id="skills" title="Technical Arsenal" iconClass="fas fa-gears" noContainer>
+    <Section id="skills" title="Skills" iconClass="fas fa-gears" noContainer>
       <div className="max-w-6xl mx-auto border-t border-border-subtle/50">
         {skills ? (
           <div className="divide-y divide-border-subtle/30">

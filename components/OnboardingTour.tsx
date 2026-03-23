@@ -14,7 +14,7 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({ run, onFinish }) => {
             content: (
                 <div className="text-left">
                     <h4 className="font-bold text-brand-accent uppercase tracking-widest text-xs mb-2">My Mission</h4>
-                    <p className="text-sm leading-relaxed text-slate-700">This is where I define my core engineering philosophy—bridging the gap between <strong>water resources</strong> and <strong>digital innovation</strong>.</p>
+                    <p className="text-sm leading-relaxed text-slate-700">A quick intro — what I do in <strong>water resources</strong> and <strong>GIS</strong>, and what I'm working on now.</p>
                 </div>
             ),
             disableBeacon: true,
@@ -24,8 +24,8 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({ run, onFinish }) => {
             target: '#experience',
             content: (
                 <div className="text-left">
-                    <h4 className="font-bold text-brand-accent-text uppercase tracking-widest text-xs mb-2">Professional Growth</h4>
-                    <p className="text-sm leading-relaxed text-slate-700">Explore my career timeline, from managing large-scale irrigation projects to pioneering digital field tracking.</p>
+                    <h4 className="font-bold text-brand-accent-text uppercase tracking-widest text-xs mb-2">Career Timeline</h4>
+                    <p className="text-sm leading-relaxed text-slate-700">My work history — from managing irrigation projects to building digital field-tracking tools.</p>
                 </div>
             ),
         },
@@ -33,7 +33,7 @@ const OnboardingTour: React.FC<OnboardingTourProps> = ({ run, onFinish }) => {
             target: '#projects',
             content: (
                 <div className="text-left">
-                    <h4 className="font-bold text-brand-accent-text uppercase tracking-widest text-xs mb-2">Impactful Work</h4>
+                    <h4 className="font-bold text-brand-accent-text uppercase tracking-widest text-xs mb-2">Featured Projects</h4>
                     <p className="text-sm leading-relaxed text-slate-700">Detailed case studies of my technical solutions. Click any project to see the challenge and the result.</p>
                 </div>
             ),

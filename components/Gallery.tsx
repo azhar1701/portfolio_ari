@@ -32,7 +32,7 @@ const Gallery: React.FC<GalleryProps> = ({ gallery }) => {
 
   return (
     <>
-      <Section id="gallery" title="Visual Documentation" iconClass="fas fa-microscope">
+      <Section id="gallery" title="Gallery" iconClass="fas fa-images">
         {gallery ? (
           <div className="space-y-6">
             <div className="flex flex-wrap gap-2">

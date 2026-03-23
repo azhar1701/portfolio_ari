@@ -20,12 +20,12 @@ const ProjectShowcase: React.FC<{ showcase: ShowcaseType | null }> = ({ showcase
           </div>
           <div className="grid md:grid-cols-2 gap-10 pt-6 border-t border-border-subtle/50">
             <ImageCarousel
-              title="Legacy System"
+              title="Before"
               images={showcase.before.imageUrls}
               description={showcase.before.description}
             />
             <ImageCarousel
-              title="Modernized Platform"
+              title="After"
               images={showcase.after.imageUrls}
               description={showcase.after.description}
             />

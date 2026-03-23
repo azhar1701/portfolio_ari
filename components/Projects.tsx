@@ -26,7 +26,7 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
     }
 
     return (
-        <Section id="projects" title="Technical Portfolio" iconClass="fas fa-diagram-project" noContainer>
+        <Section id="projects" title="Projects" iconClass="fas fa-diagram-project" noContainer>
             <div className="max-w-6xl mx-auto">
                 {projects ? (
                     <div className="space-y-12">
@@ -97,12 +97,12 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
 
                                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                                                         <div className="space-y-4">
-                                                            <SubHeading color="accent" icon={<i className="fas fa-exclamation-circle text-[10px]"></i>}>The Challenge</SubHeading>
+                                                            <SubHeading color="accent" icon={<i className="fas fa-exclamation-circle text-[10px]"></i>}>Problem</SubHeading>
                                                             <p className="text-base text-text-secondary leading-relaxed font-medium">{project.challenge}</p>
                                                         </div>
 
                                                         <div className="space-y-4">
-                                                            <SubHeading color="accent" icon={<i className="fas fa-check-circle text-[10px]"></i>}>The Solution</SubHeading>
+                                                            <SubHeading color="accent" icon={<i className="fas fa-check-circle text-[10px]"></i>}>Solution</SubHeading>
                                                             <p className="text-base text-text-secondary leading-relaxed font-medium">{project.solution}</p>
                                                         </div>
                                                     </div>

@@ -79,7 +79,7 @@ const StatItem: React.FC<{ stat: Stat }> = ({ stat }) => {
 
 const Stats: React.FC<{ stats: Stat[] | null }> = ({ stats }) => {
   return (
-    <Section id="stats" title="Metrics" iconClass="fas fa-wave-square" noContainer>
+    <Section id="stats" title="By the Numbers" iconClass="fas fa-wave-square" noContainer>
       {stats ? (
         <div className="flex flex-wrap gap-y-8">
           {stats.map((stat, index) => (

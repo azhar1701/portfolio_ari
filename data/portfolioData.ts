@@ -15,7 +15,7 @@ export const portfolioData: PortfolioData = {
       youtube: "https://youtube.com/@AriAzharHaise",
     }
   },
-  summary: "Water Resources Engineer with over 6 years of experience in water resource management and GIS innovation. Currently leading the digitalization of regional water data through the development of SIPASDA (Sistem Informasi Pengelolaan Air Sumber Daya Air) at DPUPRP Ciamis. Specialized in HEC-RAS hydraulic modeling, short-term rainfall prediction using SARIMAX, and geospatial analysis for disaster mitigation.",
+  summary: "Water resources engineer, 6+ years. I build SIPASDA — a system that brings Ciamis's irrigation and water data online — and do hydraulic modeling (HEC-RAS), rainfall prediction (SARIMAX), and GIS work for flood and disaster planning.",
   experience: [
     {
       role: "Water Resources Engineer",
@@ -140,10 +140,10 @@ export const portfolioData: PortfolioData = {
     {
         id: "proj-sipasda",
         name: "SIPASDA Digital Platform Development",
-        description: "Leading the development of Sistem Informasi Pengelolaan Air Sumber Daya Air (SIPASDA), a regional digital platform for real-time water monitoring and irrigation management.",
+        description: "Building SIPASDA — a web platform that tracks water flow and irrigation status across the Ciamis regency in real time.",
         technologies: ["Digitalization", "Data Management", "Water Resources", "Web Integration"],
         challenge: "Regional water flow and irrigation data in Ciamis were primarily managed through manual systems, leading to delays in decision-making and reporting.",
-        solution: "Engineered a comprehensive digital ecosystem that centralizes water flow metrics and infrastructure status. The platform improves data transparency and enables rapid response to irrigation needs across the regency.",
+        solution: "Built a central dashboard that pulls water-flow readings and infrastructure reports into one place, so field teams and planners can act on current data instead of waiting for monthly summaries.",
         images: [
             "https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop",
             "https://images.unsplash.com/photo-1497402120352-675204434217?q=80&w=2070&auto=format&fit=crop"
@@ -153,10 +153,10 @@ export const portfolioData: PortfolioData = {
     {
         id: "proj-1",
         name: "Irrigation Network Rehabilitation Planning",
-        description: "Contributed to the strategic planning of rehabilitation programs for major irrigation networks, focusing on enhancing system performance and service reliability.",
+        description: "Planned where to fix aging irrigation canals first — which stretches lose the most water and serve the most farmers.",
         technologies: ["AutoCAD", "GIS", "HEC-RAS", "Project Management"],
         challenge: "Many existing irrigation networks were outdated and inefficient, leading to water loss and unreliable supply for agriculture, especially during dry seasons. The primary challenge was to prioritize rehabilitation efforts with a limited budget to achieve the maximum positive impact.",
-        solution: "A data-driven approach was implemented using GIS to map the entire network and overlay it with data on infrastructure condition, crop water requirements, and community feedback. This allowed for the identification of critical bottlenecks and high-impact areas for rehabilitation, ensuring resources were allocated effectively.",
+        solution: "Mapped every canal in GIS and layered in condition surveys, crop water needs, and farmer complaints. That showed us which repairs to prioritise so the budget did the most good.",
         images: [
             "https://images.unsplash.com/photo-1549925247-21932398913a?q=80&w=2070&auto=format&fit=crop",
             "https://images.unsplash.com/photo-1596229948034-de5de01d4d8a?q=80&w=2070&auto=format&fit=crop"
@@ -168,8 +168,8 @@ export const portfolioData: PortfolioData = {
         name: "Citanduy River Basin SIH3 Management",
         description: "Managed the information system for Hydrology, Hydrometeorology, and Hydrogeology (SIH3) for the Citanduy river basin, including stakeholder coordination and data management.",
         technologies: ["Data Management", "GIS", "Stakeholder Coordination", "SIH3 Platform"],
-        challenge: "Data related to water resources was fragmented across multiple departments and stakeholders, often in inconsistent formats. This made comprehensive basin-wide analysis and informed decision-making difficult and time-consuming.",
-        solution: "Led the initiative to centralize and standardize data collection through the SIH3 platform. Developed and implemented a Cooperation Agreement (PKS) among key stakeholders to ensure consistent data sharing protocols. This created a single source of truth, enabling more accurate hydrological modeling and resource planning.",
+        challenge: "Data related to water resources was fragmented across multiple departments and stakeholders, often in inconsistent formats. This made full basin-wide analysis and informed decision-making difficult and time-consuming.",
+        solution: "Got the agencies sharing data through one platform (SIH3) by drafting a formal cooperation agreement. Once everyone reported in the same format, basin-wide analysis actually became possible.",
         images: [
             "https://images.unsplash.com/photo-1588622146633-4927c9eb4482?q=80&w=1974&auto=format&fit=crop",
             "https://images.unsplash.com/photo-1559027225-099d4f009f53?q=80&w=2070&auto=format&fit=crop"
@@ -201,17 +201,17 @@ export const portfolioData: PortfolioData = {
     },
   ],
   showcase: {
-    title: "Geospatial Flood Risk Digitalization",
-    description: "Architected a comprehensive hydrodynamic risk framework for the Citanduy River Basin. By synthesizing historical discharge data with real-time remote sensing, we transitioned from reactive manual tracking to a predictive, multi-layered geospatial intelligence system.",
+    title: "Flood Risk Mapping for the Citanduy Basin",
+    description: "Built a GIS-based flood risk system for the Citanduy River Basin. Combined historical discharge records with satellite imagery to replace manual tracking with predictive flood maps.",
     before: {
-      description: "Legacy flood risk monitoring relied on non-indexed physical archives and point-source telemetry, resulting in critical data latency and a 35% discrepancy in peak discharge estimates.",
+      description: "Flood monitoring ran on paper archives and scattered sensors. Data came in late, and peak discharge estimates were off by roughly 35%.",
       imageUrls: [
         'https://images.unsplash.com/photo-1551854388-333a01394336?q=80&w=2070&auto=format&fit=crop',
         'https://images.unsplash.com/photo-1560980439-5134c5145b25?q=80&w=2070&auto=format&fit=crop',
       ],
     },
     after: {
-      description: "Deployed a high-resolution inundation model using SARIMAX-informed rainfall predictions, enabling dynamic polygon generation with 92% spatial verification accuracy across 15 irrigation zones.",
+      description: "Using SARIMAX rainfall forecasts, we generated flood inundation maps with 92% spatial accuracy across 15 irrigation zones.",
       imageUrls: [
         'https://images.unsplash.com/photo-1497402120352-675204434217?q=80&w=2070&auto=format&fit=crop',
         'https://images.unsplash.com/photo-1559635013-35a82c40c39f?q=80&w=2070&auto=format&fit=crop',
@@ -224,7 +224,7 @@ export const portfolioData: PortfolioData = {
       name: "Dr. Ahmad Wijaya",
       role: "Senior Water Resources Engineer",
       company: "Ministry of Public Works",
-      content: "Ari has exceptional skills in GIS analysis and water resource management. His technical expertise and dedication to quality work make him a valuable team member.",
+      content: "Ari knows GIS inside and out and doesn't cut corners. Reliable person to have on a water-resources project.",
       rating: 5,
     },
     {
@@ -232,7 +232,7 @@ export const portfolioData: PortfolioData = {
       name: "Siti Nurhaliza",
       role: "Project Manager",
       company: "Citanduy River Basin Center",
-      content: "Working with Ari on irrigation projects has been excellent. His attention to detail and problem-solving abilities are outstanding.",
+      content: "On irrigation projects, Ari catches problems early and figures out practical fixes. Good to work with.",
       rating: 5,
     },
   ],
@@ -240,8 +240,8 @@ export const portfolioData: PortfolioData = {
     {
       id: "blog-1",
       title: "Modern Approaches to Irrigation System Design",
-      excerpt: "Exploring innovative techniques in irrigation planning using GIS and remote sensing technologies.",
-      content: "In recent years, the field of irrigation engineering has evolved significantly with the integration of Geographic Information Systems (GIS) and remote sensing technologies...",
+      excerpt: "Practical methods in irrigation planning using GIS and remote sensing technologies.",
+      content: "GIS and remote sensing are changing how we plan irrigation systems. This post walks through the tools and methods I use in the field...",
       date: "2024-01-15",
       author: "Ari Azhar Maulana",
       category: "Engineering",
@@ -252,8 +252,8 @@ export const portfolioData: PortfolioData = {
     {
       id: "blog-2",
       title: "Flood Risk Assessment Using HEC-RAS",
-      excerpt: "A comprehensive guide to hydraulic modeling for flood analysis in river basins.",
-      content: "Flood risk assessment is crucial for sustainable water resource management. This article discusses the application of HEC-RAS software...",
+      excerpt: "A practical guide to hydraulic modeling for flood analysis in river basins.",
+      content: "Understanding flood risk starts with good hydraulic modeling. Here I walk through how I use HEC-RAS for flood analysis in river basins...",
       date: "2023-12-10",
       author: "Ari Azhar Maulana",
       category: "Analysis",
@@ -282,7 +282,7 @@ export const portfolioData: PortfolioData = {
       id: "img-3",
       image: "https://images.unsplash.com/photo-1497402120352-675204434217?q=80&w=2070&auto=format&fit=crop",
       title: "Water Resource Planning",
-      description: "Strategic planning session for water resource management",
+      description: "Planning session for water resource management",
       category: "Planning",
     },
   ],

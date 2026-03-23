@@ -80,7 +80,7 @@ const validateAndSanitizeData = (data: any): PortfolioData | null => {
 
 /**
  * Fetches portfolio data, prioritizing data from localStorage.
- * Includes a robust, recursive validation and sanitization step to prevent app crashes from deep data corruption.
+ * Includes a recursive validation step to prevent crashes from corrupted data.
  * @returns A promise that resolves with the valid portfolio data.
  */
 export const fetchPortfolioData = async (): Promise<PortfolioData> => {

@@ -64,8 +64,8 @@ const App: React.FC = () => {
   const navLinks = [
     { name: 'Summary', href: '#summary', icon: 'fas fa-compass-drafting' },
     { name: 'Portfolio', href: '#projects', icon: 'fas fa-diagram-project' },
-    { name: 'Trajectory', href: '#experience', icon: 'fas fa-route' },
-    { name: 'Insights', href: '#blog', icon: 'fas fa-lightbulb' },
+    { name: 'Experience', href: '#experience', icon: 'fas fa-route' },
+    { name: 'Blog', href: '#blog', icon: 'fas fa-lightbulb' },
     { name: 'Contact', href: '#contact', icon: 'fas fa-envelope-open-text' },
   ];
 

@@ -9,7 +9,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ navLinks }) => {
   const mobileLinks = [
     { name: 'Summary', href: '#summary', icon: 'fa-compass-drafting' },
     { name: 'Portfolio', href: '#projects', icon: 'fa-diagram-project' },
-    { name: 'Trajectory', href: '#experience', icon: 'fa-route' },
+    { name: 'Experience', href: '#experience', icon: 'fa-route' },
     { name: 'Contact', href: '#contact', icon: 'fa-envelope-open-text' },
   ];
 

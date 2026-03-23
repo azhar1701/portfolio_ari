@@ -17,11 +17,11 @@ const Summary: React.FC<SummaryProps> = ({ content }) => {
             <div className="lg:col-span-5" data-aos="fade-right">
               <div className="sticky top-32">
                 <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary tracking-tighter leading-[1.1] mb-10">
-                  Bridging <span className="text-brand-accent">Infrastructure</span> with Digital Intelligence.
+                  Water engineering meets <span className="text-brand-accent">GIS</span>.
                 </h3>
                 <div className="flex items-center space-x-4">
                   <div className="h-px w-12 bg-brand-accent/40"></div>
-                  <p className="font-mono text-[10px] font-bold text-text-muted uppercase tracking-[0.3em]">Engineering Summary v4.2</p>
+                  <p className="font-mono text-[10px] font-bold text-text-muted uppercase tracking-[0.3em]">About</p>
                 </div>
               </div>
             </div>
@@ -45,7 +45,7 @@ const Summary: React.FC<SummaryProps> = ({ content }) => {
                   <div className="flex items-start">
                     <div className="w-1 h-10 bg-brand-accent/20 mr-6 mt-1 rounded-full"></div>
                     <div>
-                      <p className="font-mono text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] mb-2">Innovation Lead</p>
+                      <p className="font-mono text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] mb-2">Current Project</p>
                       <p className="text-sm font-bold text-text-primary uppercase tracking-widest">SIPASDA Platform</p>
                     </div>
                   </div>

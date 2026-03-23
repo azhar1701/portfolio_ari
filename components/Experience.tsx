@@ -33,9 +33,9 @@ const TimelineItem: React.FC<{ item: ExperienceType }> = ({ item }) => {
             </h4>
 
             <div className="space-y-10">
-              {/* Strategic Focus */}
+              {/* Responsibilities */}
               <div>
-                <h5 className="font-mono text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] mb-6">Strategic Focus</h5>
+                <h5 className="font-mono text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] mb-6">Responsibilities</h5>
                 <ul className="space-y-4">
                   {item.responsibilities.map((resp, index) => (
                     <li key={index} className="text-base text-text-secondary leading-relaxed pl-6 relative before:content-[''] before:absolute before:left-0 before:top-[0.7rem] before:w-2 before:h-[1px] before:bg-brand-accent/40">{resp}</li>
@@ -43,10 +43,10 @@ const TimelineItem: React.FC<{ item: ExperienceType }> = ({ item }) => {
                 </ul>
               </div>
 
-              {/* Technical Outcomes */}
+              {/* Key Results */}
               {item.achievements && item.achievements.length > 0 && (
                 <div className="pt-10 border-t border-border-subtle/20">
-                  <h5 className="font-mono text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] mb-6">Technical Outcomes</h5>
+                  <h5 className="font-mono text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] mb-6">Key Results</h5>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     {item.achievements.map((achievement, index) => (
                       <div key={index} className="flex items-start bg-bg-canvas p-6 rounded-2xl border border-border-subtle/20 shadow-subtle hover:shadow-md transition-all duration-300">
@@ -69,7 +69,7 @@ const TimelineItem: React.FC<{ item: ExperienceType }> = ({ item }) => {
 
 const Experience: React.FC<ExperienceProps> = ({ experience }) => {
   return (
-    <Section id="experience" title="Trajectory" iconClass="fas fa-route" noContainer>
+    <Section id="experience" title="Experience" iconClass="fas fa-route" noContainer>
       <div className="max-w-6xl mx-auto">
         {experience ? (
           <div className="space-y-16">
