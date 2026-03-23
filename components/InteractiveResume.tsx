@@ -52,100 +52,94 @@ const InteractiveResume: React.FC<InteractiveResumeProps> = ({ data }) => {
         </div>
 
         <div className="print:block hidden">
-          <div className="bg-white p-10 max-w-5xl mx-auto text-text-primary font-sans">
-            {/* Header */}
-            <div className="border-b-2 border-slate-900 pb-8 mb-8 flex justify-between items-end">
-              <div>
-                <h1 className="text-4xl font-bold tracking-tight text-text-primary mb-1">{data.profile.name}</h1>
-                <p className="text-xl font-medium text-brand-accent-hover uppercase tracking-widest">{data.profile.title}</p>
-              </div>
-              <div className="text-right text-sm space-y-1 text-text-secondary font-medium">
-                <p>{data.profile.location}</p>
-                <p>{data.profile.email}</p>
-                <p>{data.profile.phone}</p>
+          <div className="bg-white p-10 max-w-4xl mx-auto text-text-primary font-sans">
+            {/* ATS Header */}
+            <div className="text-center pb-6 mb-6 border-b-2 border-border-subtle">
+              <h1 className="text-4xl font-bold text-text-primary mb-2">{data.profile.name}</h1>
+              <p className="text-xl font-medium text-text-secondary mb-3">{data.profile.title}</p>
+              <div className="text-sm font-medium text-text-secondary">
+                {data.profile.location} • {data.profile.phone} • {data.profile.email} • {data.profile.socials.linkedin}
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-12">
-              {/* Main Column */}
-              <div className="col-span-2 space-y-10">
-                <section>
-                  <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-text-muted mb-4 border-b border-border-subtle pb-2">Profile</h2>
-                  <p className="text-text-secondary leading-relaxed text-base">{data.summary}</p>
-                </section>
+            <div className="space-y-8">
+              {/* Profile Summary */}
+              <section>
+                <h2 className="text-lg font-bold uppercase tracking-widest text-text-primary mb-3 border-b border-border-subtle pb-1">Professional Summary</h2>
+                <p className="text-text-secondary leading-relaxed text-sm">{data.summary}</p>
+              </section>
 
-                <section>
-                  <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-text-muted mb-6 border-b border-border-subtle pb-2">Experience</h2>
-                  <div className="space-y-8">
-                    {data.experience.map((exp, index) => (
-                      <div key={index}>
-                        <div className="flex justify-between items-baseline mb-2">
-                          <h3 className="font-bold text-lg text-text-primary">{exp.role}</h3>
-                          <span className="text-sm font-bold text-text-muted whitespace-nowrap ml-4">{exp.period}</span>
-                        </div>
-                        <p className="text-brand-accent-hover font-bold text-sm mb-3 uppercase tracking-wide">{exp.company}</p>
-                        <ul className="space-y-2">
-                          {exp.responsibilities.map((resp, i) => (
-                            <li key={i} className="text-text-secondary text-sm leading-relaxed flex items-start">
-                              <span className="text-brand-accent mr-2 mt-1.5 w-1 h-1 bg-brand-accent rounded-full flex-shrink-0"></span>
-                              {resp}
-                            </li>
-                          ))}
-                        </ul>
+              {/* Experience */}
+              <section>
+                <h2 className="text-lg font-bold uppercase tracking-widest text-text-primary mb-4 border-b border-border-subtle pb-1">Experience</h2>
+                <div className="space-y-6">
+                  {data.experience.map((exp, index) => (
+                    <div key={index}>
+                      <div className="flex justify-between items-baseline mb-1">
+                        <h3 className="font-bold text-base text-text-primary">{exp.role}</h3>
+                        <span className="text-sm font-bold text-text-primary">{exp.period}</span>
                       </div>
-                    ))}
-                  </div>
-                </section>
-              </div>
+                      <p className="text-text-secondary font-bold text-sm mb-3">{exp.company}</p>
+                      <ul className="list-disc pl-5 space-y-1.5">
+                        {exp.responsibilities.map((resp, i) => (
+                          <li key={i} className="text-text-secondary text-sm leading-relaxed">
+                            {resp}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </section>
 
-              {/* Sidebar Column */}
-              <div className="col-span-1 space-y-10">
-                <section>
-                  <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-text-muted mb-4 border-b border-border-subtle pb-2">Skills</h2>
-                  <div className="space-y-6">
-                    {data.skills.map((skillCat, index) => (
-                      <div key={index}>
-                        <h4 className="font-bold text-xs text-text-primary uppercase tracking-wider mb-2">{skillCat.category}</h4>
-                        <div className="flex flex-wrap gap-1.5">
-                          {skillCat.skills.map(skill => (
-                            <span key={skill} className="text-[11px] font-medium text-text-secondary border border-border-subtle px-2 py-0.5 rounded leading-none">{skill}</span>
-                          ))}
-                        </div>
+              {/* Education */}
+              <section>
+                <h2 className="text-lg font-bold uppercase tracking-widest text-text-primary mb-4 border-b border-border-subtle pb-1">Education</h2>
+                <div className="space-y-4">
+                  {data.education.map((edu, index) => (
+                    <div key={index} className="flex justify-between items-baseline">
+                      <div>
+                        <h3 className="font-bold text-base text-text-primary">{edu.institution}</h3>
+                        <p className="text-sm text-text-secondary">{edu.degree}</p>
                       </div>
-                    ))}
-                  </div>
-                </section>
+                      <div className="text-right">
+                        <p className="text-sm font-bold text-text-primary">{edu.period}</p>
+                        <p className="text-sm text-text-secondary">GPA: {edu.gpa}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
 
-                <section>
-                  <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-text-muted mb-4 border-b border-border-subtle pb-2">Education</h2>
-                  <div className="space-y-4">
-                    {data.education.map((edu, index) => (
-                      <div key={index}>
-                        <h4 className="font-bold text-sm text-text-primary leading-tight">{edu.institution}</h4>
-                        <p className="text-xs text-text-secondary font-medium mt-1">{edu.degree}</p>
-                        <p className="text-[11px] text-text-muted mt-0.5">{edu.period} • GPA {edu.gpa}</p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
+              {/* Skills */}
+              <section>
+                <h2 className="text-lg font-bold uppercase tracking-widest text-text-primary mb-4 border-b border-border-subtle pb-1">Technical Skills</h2>
+                <div className="space-y-2">
+                  {data.skills.map((skillCat, index) => (
+                    <div key={index} className="text-sm">
+                      <span className="font-bold text-text-primary mr-2">{skillCat.category}:</span>
+                      <span className="text-text-secondary">{skillCat.skills.join(', ')}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
 
-                <section>
-                  <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-text-muted mb-4 border-b border-border-subtle pb-2">Certifications</h2>
-                  <div className="space-y-2">
-                    {data.certifications.slice(0, 5).map((cert, index) => (
-                      <div key={index} className="flex items-start text-[11px] leading-tight text-text-secondary">
-                        <i className="fas fa-check-circle text-brand-accent mr-2 mt-0.5"></i>
-                        <span>{cert}</span>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              </div>
+              {/* Certifications */}
+              <section>
+                <h2 className="text-lg font-bold uppercase tracking-widest text-text-primary mb-4 border-b border-border-subtle pb-1">Certifications</h2>
+                <ul className="list-disc pl-5 space-y-1.5">
+                  {data.certifications.map((cert, index) => (
+                    <li key={index} className="text-text-secondary text-sm leading-relaxed">
+                      {cert}
+                    </li>
+                  ))}
+                </ul>
+              </section>
             </div>
-            
+
             {/* Print Footer */}
-            <div className="mt-12 pt-6 border-t border-border-subtle text-center">
-              <p className="text-[10px] text-text-muted font-medium uppercase tracking-[0.3em]">Generated via Portfolio Portal • {new Date().toLocaleDateString()}</p>
+            <div className="mt-10 pt-4 border-t border-border-subtle text-center">
+              <p className="text-xs text-text-muted uppercase tracking-widest">Compiled directly via the Portfolio Platform</p>
             </div>
           </div>
         </div>

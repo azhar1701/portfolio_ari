@@ -175,7 +175,7 @@ const App: React.FC = () => {
           <Testimonials testimonials={testimonials} />
           <Blog blogPosts={blogPosts} />
           <Gallery gallery={gallery} />
-          <InteractiveResume data={data} />
+          {/* <InteractiveResume data={data} /> */}
           <EducationComponent education={education} />
           <Certifications certifications={certifications} />
           <Publications publications={publications} />
