@@ -13,7 +13,7 @@ const SkeletonLoader: React.FC<SkeletonProps> & {
 } = ({ className }) => {
   return (
     <div className="animate-pulse">
-      <div className={`${className || ''} bg-slate-200 dark:bg-slate-800 rounded-md`}></div>
+      <div className={`${className || ''} bg-border-subtle dark:bg-slate-800 rounded-md`}></div>
     </div>
   );
 };
@@ -34,7 +34,7 @@ SkeletonLoader.CardGrid = ({ items = 3, columns = 3 }) => {
   return (
     <div className={`grid ${colClass} gap-4 sm:gap-6`}>
       {[...Array(items)].map((_, i) => (
-        <div key={i} className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 sm:p-6 rounded-lg space-y-3">
+        <div key={i} className="bg-bg-app dark:bg-slate-900 border border-border-subtle dark:border-slate-800 p-4 sm:p-6 rounded-lg space-y-3">
           <SkeletonLoader className="h-5 sm:h-6 w-3/4" />
           <SkeletonLoader className="h-4 w-full" />
           <SkeletonLoader className="h-4 w-1/2" />

@@ -16,6 +16,7 @@ export const portfolioData: PortfolioData = {
     }
   },
   summary: "Water resources engineer, 6+ years. I build SIPASDA — a system that brings Ciamis's irrigation and water data online — and do hydraulic modeling (HEC-RAS), rainfall prediction (SARIMAX), and GIS work for flood and disaster planning.",
+  summaryImage: "/images/summary_hero.png",
   experience: [
     {
       role: "Water Resources Engineer",
@@ -46,28 +47,28 @@ export const portfolioData: PortfolioData = {
       achievements: [],
     },
     {
-        role: "Design Planning Professional",
-        company: "Design Planning Professionals",
-        period: "May 2021 - Dec 2021",
-        responsibilities: [
-            "Coordination across technical units and identification of data needs from various sources.",
-            "Carry out design analysis.",
-            "Preparing design documents and drawings.",
-            "Prepare design recommendation report.",
-        ],
-        achievements: [],
+      role: "Design Planning Professional",
+      company: "Design Planning Professionals",
+      period: "May 2021 - Dec 2021",
+      responsibilities: [
+        "Coordination across technical units and identification of data needs from various sources.",
+        "Carry out design analysis.",
+        "Preparing design documents and drawings.",
+        "Prepare design recommendation report.",
+      ],
+      achievements: [],
     },
     {
-        role: "Water Resource Information System Officer",
-        company: "Kementerian PUPR, BBWS Citanduy",
-        period: "Apr 2018 – Apr 2021",
-        responsibilities: [
-            "Controlling proposal documents from the community.",
-            "Carry out preliminary survey activities, process survey data and make survey result reports.",
-            "Carry out administrative work for technical work.",
-            "Support all activities in the Integrated Water Resources Infrastructure Development Division.",
-        ],
-        achievements: [],
+      role: "Water Resource Information System Officer",
+      company: "Kementerian PUPR, BBWS Citanduy",
+      period: "Apr 2018 – Apr 2021",
+      responsibilities: [
+        "Controlling proposal documents from the community.",
+        "Carry out preliminary survey activities, process survey data and make survey result reports.",
+        "Carry out administrative work for technical work.",
+        "Support all activities in the Integrated Water Resources Infrastructure Development Division.",
+      ],
+      achievements: [],
     }
   ],
   education: [
@@ -138,43 +139,43 @@ export const portfolioData: PortfolioData = {
   ],
   projects: [
     {
-        id: "proj-sipasda",
-        name: "SIPASDA Digital Platform Development",
-        description: "Building SIPASDA — a web platform that tracks water flow and irrigation status across the Ciamis regency in real time.",
-        technologies: ["Digitalization", "Data Management", "Water Resources", "Web Integration"],
-        challenge: "Regional water flow and irrigation data in Ciamis were primarily managed through manual systems, leading to delays in decision-making and reporting.",
-        solution: "Built a central dashboard that pulls water-flow readings and infrastructure reports into one place, so field teams and planners can act on current data instead of waiting for monthly summaries.",
-        images: [
-            "https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1497402120352-675204434217?q=80&w=2070&auto=format&fit=crop"
-        ],
-        link: "https://youtube.com/@AriAzharHaise"
+      id: "proj-sipasda",
+      name: "SIPASDA Digital Platform Development",
+      description: "Building SIPASDA — a web platform that tracks water flow and irrigation status across the Ciamis regency in real time.",
+      technologies: ["Digitalization", "Data Management", "Water Resources", "Web Integration"],
+      challenge: "Regional water flow and irrigation data in Ciamis were primarily managed through manual systems, leading to delays in decision-making and reporting.",
+      solution: "Built a central dashboard that pulls water-flow readings and infrastructure reports into one place, so field teams and planners can act on current data instead of waiting for monthly summaries.",
+      images: [
+        "/images/project_sipasda.png",
+        "/images/project_sih3.png"
+      ],
+      link: "https://youtube.com/@AriAzharHaise"
     },
     {
-        id: "proj-1",
-        name: "Irrigation Network Rehabilitation Planning",
-        description: "Planned where to fix aging irrigation canals first — which stretches lose the most water and serve the most farmers.",
-        technologies: ["AutoCAD", "GIS", "HEC-RAS", "Project Management"],
-        challenge: "Many existing irrigation networks were outdated and inefficient, leading to water loss and unreliable supply for agriculture, especially during dry seasons. The primary challenge was to prioritize rehabilitation efforts with a limited budget to achieve the maximum positive impact.",
-        solution: "Mapped every canal in GIS and layered in condition surveys, crop water needs, and farmer complaints. That showed us which repairs to prioritise so the budget did the most good.",
-        images: [
-            "https://images.unsplash.com/photo-1549925247-21932398913a?q=80&w=2070&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1596229948034-de5de01d4d8a?q=80&w=2070&auto=format&fit=crop"
-        ],
-        link: "#experience"
+      id: "proj-1",
+      name: "Irrigation Network Rehabilitation Planning",
+      description: "Planned where to fix aging irrigation canals first — which stretches lose the most water and serve the most farmers.",
+      technologies: ["AutoCAD", "GIS", "HEC-RAS", "Project Management"],
+      challenge: "Many existing irrigation networks were outdated and inefficient, leading to water loss and unreliable supply for agriculture, especially during dry seasons. The primary challenge was to prioritize rehabilitation efforts with a limited budget to achieve the maximum positive impact.",
+      solution: "Mapped every canal in GIS and layered in condition surveys, crop water needs, and farmer complaints. That showed us which repairs to prioritise so the budget did the most good.",
+      images: [
+        "/images/gallery_survey.png",
+        "/images/project_default.png"
+      ],
+      link: "#experience"
     },
     {
-        id: "proj-2",
-        name: "Citanduy River Basin SIH3 Management",
-        description: "Managed the information system for Hydrology, Hydrometeorology, and Hydrogeology (SIH3) for the Citanduy river basin, including stakeholder coordination and data management.",
-        technologies: ["Data Management", "GIS", "Stakeholder Coordination", "SIH3 Platform"],
-        challenge: "Data related to water resources was fragmented across multiple departments and stakeholders, often in inconsistent formats. This made full basin-wide analysis and informed decision-making difficult and time-consuming.",
-        solution: "Got the agencies sharing data through one platform (SIH3) by drafting a formal cooperation agreement. Once everyone reported in the same format, basin-wide analysis actually became possible.",
-        images: [
-            "https://images.unsplash.com/photo-1588622146633-4927c9eb4482?q=80&w=1974&auto=format&fit=crop",
-            "https://images.unsplash.com/photo-1559027225-099d4f009f53?q=80&w=2070&auto=format&fit=crop"
-        ],
-        link: "#experience"
+      id: "proj-2",
+      name: "Citanduy River Basin SIH3 Management",
+      description: "Managed the information system for Hydrology, Hydrometeorology, and Hydrogeology (SIH3) for the Citanduy river basin, including stakeholder coordination and data management.",
+      technologies: ["Data Management", "GIS", "Stakeholder Coordination", "SIH3 Platform"],
+      challenge: "Data related to water resources was fragmented across multiple departments and stakeholders, often in inconsistent formats. This made full basin-wide analysis and informed decision-making difficult and time-consuming.",
+      solution: "Got the agencies sharing data through one platform (SIH3) by drafting a formal cooperation agreement. Once everyone reported in the same format, basin-wide analysis actually became possible.",
+      images: [
+        "/images/project_sih3.png",
+        "/images/gallery_planning.png"
+      ],
+      link: "#experience"
     }
   ],
   stats: [
@@ -206,15 +207,15 @@ export const portfolioData: PortfolioData = {
     before: {
       description: "Flood monitoring ran on paper archives and scattered sensors. Data came in late, and peak discharge estimates were off by roughly 35%.",
       imageUrls: [
-        'https://images.unsplash.com/photo-1551854388-333a01394336?q=80&w=2070&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1560980439-5134c5145b25?q=80&w=2070&auto=format&fit=crop',
+        '/images/showcase_before.png',
+        '/images/project_default.png',
       ],
     },
     after: {
       description: "Using SARIMAX rainfall forecasts, we generated flood inundation maps with 92% spatial accuracy across 15 irrigation zones.",
       imageUrls: [
-        'https://images.unsplash.com/photo-1497402120352-675204434217?q=80&w=2070&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1559635013-35a82c40c39f?q=80&w=2070&auto=format&fit=crop',
+        '/images/showcase_after.png',
+        '/images/gallery_mapping.png',
       ],
     },
   },
@@ -224,6 +225,7 @@ export const portfolioData: PortfolioData = {
       name: "Dr. Ahmad Wijaya",
       role: "Senior Water Resources Engineer",
       company: "Ministry of Public Works",
+      avatar: "/images/avatar_ahmad.png",
       content: "Ari knows GIS inside and out and doesn't cut corners. Reliable person to have on a water-resources project.",
       rating: 5,
     },
@@ -232,6 +234,7 @@ export const portfolioData: PortfolioData = {
       name: "Siti Nurhaliza",
       role: "Project Manager",
       company: "Citanduy River Basin Center",
+      avatar: "/images/avatar_siti.png",
       content: "On irrigation projects, Ari catches problems early and figures out practical fixes. Good to work with.",
       rating: 5,
     },
@@ -245,6 +248,7 @@ export const portfolioData: PortfolioData = {
       date: "2024-01-15",
       author: "Ari Azhar Maulana",
       category: "Engineering",
+      image: "/images/blog_irrigation.png",
       tags: ["Irrigation", "GIS", "Engineering"],
       readTime: 5,
       featured: true,
@@ -257,6 +261,7 @@ export const portfolioData: PortfolioData = {
       date: "2023-12-10",
       author: "Ari Azhar Maulana",
       category: "Analysis",
+      image: "/images/blog_hecras.png",
       tags: ["Flood Analysis", "HEC-RAS", "Modeling"],
       readTime: 7,
       featured: false,
@@ -265,7 +270,7 @@ export const portfolioData: PortfolioData = {
   gallery: [
     {
       id: "img-1",
-      image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop",
+      image: "/images/gallery_survey.png",
       title: "Irrigation Canal Survey",
       description: "Field survey of irrigation infrastructure in Ciamis region",
       category: "Field Work",
@@ -273,14 +278,14 @@ export const portfolioData: PortfolioData = {
     },
     {
       id: "img-2",
-      image: "https://images.unsplash.com/photo-1559635013-35a82c40c39f?q=80&w=2070&auto=format&fit=crop",
+      image: "/images/gallery_mapping.png",
       title: "GIS Mapping Analysis",
       description: "Digital mapping and analysis of watershed characteristics",
       category: "Technical",
     },
     {
       id: "img-3",
-      image: "https://images.unsplash.com/photo-1497402120352-675204434217?q=80&w=2070&auto=format&fit=crop",
+      image: "/images/gallery_planning.png",
       title: "Water Resource Planning",
       description: "Planning session for water resource management",
       category: "Planning",

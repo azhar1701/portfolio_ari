@@ -29,16 +29,20 @@ export class SupabaseService {
     if (blogRes.error) throw blogRes.error;
     if (galleryRes.error) throw galleryRes.error;
 
-    // Use default data if Supabase is empty or has issues
+    // Use default data if Supabase is completely empty (unseeded)
+    if (!profileRes.data && !portfolioRes.data) {
+      return staticPortfolioData;
+    }
+
     const profileData = profileRes.data || staticPortfolioData.profile;
     const portfolioDataRow = portfolioRes.data || { summary: staticPortfolioData.summary, data: {} };
     const blogData = blogRes.data || [];
     const galleryData = galleryRes.data || [];
     const testimonialsData = testimonialsRes.data || [];
-    
+
     // The data field in portfolioDataRow contains the rest of the portfolio structure
     const portfolioData = (portfolioDataRow as any).data || {};
-    
+
     return {
       profile: {
         name: profileData.name,
@@ -83,6 +87,28 @@ export class SupabaseService {
     };
   }
 
+  // Storage Operations
+  static async uploadImage(file: File, bucket: string = 'portfolio-images'): Promise<string> {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+    const filePath = `public/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from(bucket)
+      .upload(filePath, file);
+
+    if (uploadError) {
+      console.error('Supabase upload error:', uploadError);
+      throw new Error(`Failed to upload image: ${uploadError.message}`);
+    }
+
+    const { data } = supabase.storage
+      .from(bucket)
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
+  }
+
   static async savePortfolioData(data: PortfolioData): Promise<void> {
     const { profile, summary, testimonials, blogPosts, gallery, ...portfolioData } = data;
 
@@ -100,10 +126,10 @@ export class SupabaseService {
     const { error: portfolioError } = await supabase
       // @ts-ignore
       .from('portfolio_data')
-      .upsert({ 
+      .upsert({
         id: '00000000-0000-0000-0000-000000000001',
-        summary, 
-        data: portfolioData 
+        summary,
+        data: portfolioData
       });
     if (portfolioError) throw portfolioError;
 
@@ -119,7 +145,7 @@ export class SupabaseService {
   static async saveTestimonials(testimonials: Testimonial[]): Promise<void> {
     // Delete existing
     await supabase.from('testimonials').delete().neq('id', '');
-    
+
     if (testimonials.length > 0) {
       // @ts-ignore
       const { error } = await supabase.from('testimonials').insert(
@@ -141,7 +167,7 @@ export class SupabaseService {
   static async saveBlogPosts(blogPosts: BlogPost[]): Promise<void> {
     // Delete existing
     await supabase.from('blog_posts').delete().neq('id', '');
-    
+
     if (blogPosts.length > 0) {
       // @ts-ignore
       const { error } = await supabase.from('blog_posts').insert(
@@ -167,7 +193,7 @@ export class SupabaseService {
   static async saveGallery(gallery: GalleryImage[]): Promise<void> {
     // Delete existing
     await supabase.from('gallery').delete().neq('id', '');
-    
+
     if (gallery.length > 0) {
       // @ts-ignore
       const { error } = await supabase.from('gallery').insert(

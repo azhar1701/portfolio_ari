@@ -143,6 +143,7 @@ const App: React.FC = () => {
   const {
     profile,
     summary,
+    summaryImage,
     stats,
     experience,
     showcase,
@@ -164,7 +165,7 @@ const App: React.FC = () => {
       <Header profile={profile} navLinks={navLinks} data={data} />
       <main className="w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pt-24 md:pt-32 pb-20 lg:pb-0">
         <div className="max-w-7xl mx-auto">
-          <Summary content={summary} />
+          <Summary content={summary} image={summaryImage} />
           <Stats stats={stats} />
           <ExperienceComponent experience={experience} />
           <ProjectShowcase showcase={showcase} />

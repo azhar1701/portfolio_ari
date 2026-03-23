@@ -27,7 +27,7 @@ const DatabaseStatus: React.FC = () => {
     return (
       <div className="flex items-center space-x-2 text-sm">
         <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-        <span className="text-gray-600">Local Storage</span>
+        <span className="text-text-muted">Local Storage</span>
       </div>
     );
   }

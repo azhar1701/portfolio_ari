@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion, Variants } from 'framer-motion';
 import type { Experience as ExperienceType } from '../types';
 import Section from './Section';
 import SkeletonLoader from './SkeletonLoader';
@@ -8,11 +9,19 @@ interface ExperienceProps {
   experience: ExperienceType[] | null;
 }
 
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+};
+
 const TimelineItem: React.FC<{ item: ExperienceType }> = ({ item }) => {
   return (
-    <div
-      className="group relative pb-16 last:pb-0"
-      data-aos="fade-up"
+    <motion.div
+      variants={itemVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      className="group relative pb-8 last:pb-0"
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
         {/* Date & Entity Column */}
@@ -26,7 +35,7 @@ const TimelineItem: React.FC<{ item: ExperienceType }> = ({ item }) => {
 
         {/* Content & Outcomes Column */}
         <div className="lg:col-span-8 space-y-6">
-          <div className="bg-bg-app/50 p-6 sm:p-10 md:p-16 rounded-3xl md:rounded-[2.5rem] border border-border-subtle/30 group-hover:border-brand-accent/20 transition-colors">
+          <div className="bg-bg-app p-6 sm:p-10 md:p-16 rounded-3xl md:rounded-[2.5rem] border border-border-subtle group-hover:border-brand-accent/30 shadow-subtle transition-colors">
             <h4 className="text-2xl font-bold text-text-primary mb-10 tracking-tight flex items-center">
               <span className="w-2.5 h-2.5 bg-brand-accent rounded-full mr-4 opacity-60 shadow-sm shadow-brand-accent"></span>
               {item.role}
@@ -50,7 +59,7 @@ const TimelineItem: React.FC<{ item: ExperienceType }> = ({ item }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     {item.achievements.map((achievement, index) => (
                       <div key={index} className="flex items-start bg-bg-canvas p-6 rounded-2xl border border-border-subtle/20 shadow-subtle hover:shadow-md transition-all duration-300">
-                        <i className="fas fa-arrow-up-right-dots text-brand-accent/40 mr-4 mt-1.5 text-xs"></i>
+                        <i className="fas fa-check-circle text-brand-accent/60 mr-4 mt-1.5 text-xs"></i>
                         <span className="text-sm text-text-primary leading-relaxed font-medium">{achievement}</span>
                       </div>
                     ))}
@@ -61,7 +70,7 @@ const TimelineItem: React.FC<{ item: ExperienceType }> = ({ item }) => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -72,7 +81,7 @@ const Experience: React.FC<ExperienceProps> = ({ experience }) => {
     <Section id="experience" title="Experience" iconClass="fas fa-route" noContainer>
       <div className="max-w-6xl mx-auto">
         {experience ? (
-          <div className="space-y-16">
+          <div className="space-y-8">
             {experience.map((item, index) => (
               <TimelineItem
                 key={index}

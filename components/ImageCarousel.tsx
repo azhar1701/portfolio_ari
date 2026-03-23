@@ -48,6 +48,12 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, projectName, titl
                     alt={altText}
                     className="w-full h-full object-cover duration-500 transition-all hover:scale-105"
                     key={images[currentIndex]}
+                    onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        if (!target.src.includes('1559635013-35a82c40c39f')) {
+                            target.src = 'https://images.unsplash.com/photo-1559635013-35a82c40c39f?q=80&w=2070&auto=format&fit=crop';
+                        }
+                    }}
                 />
                 {images.length > 1 && (
                     <>

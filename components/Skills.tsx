@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion, Variants } from 'framer-motion';
 import Section from './Section';
 import type { SkillCategory } from '../types';
 import SkeletonLoader from './SkeletonLoader';
@@ -10,19 +11,39 @@ interface SkillsProps {
   skills: SkillCategory[] | null;
 }
 
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+};
+
 
 const Skills: React.FC<SkillsProps> = ({ skills }) => {
   return (
     <Section id="skills" title="Skills" iconClass="fas fa-gears" noContainer>
       <div className="max-w-6xl mx-auto border-t border-border-subtle/50">
         {skills ? (
-          <div className="divide-y divide-border-subtle/30">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="divide-y divide-border-subtle/30"
+          >
             {skills.map((category, index) => {
               const categoryIndex = (index + 1).toString().padStart(2, '0');
               return (
-                <div
+                <motion.div
+                  variants={itemVariants}
                   key={category.category}
-                  className="py-10 lg:py-14 lg:grid lg:grid-cols-12 lg:gap-12 items-baseline group hover:bg-bg-app/30 transition-colors px-4 -mx-4 rounded-xl"
+                  className="py-6 lg:py-8 lg:grid lg:grid-cols-12 lg:gap-12 items-baseline group hover:bg-bg-app transition-colors px-4 -mx-4 rounded-xl"
                 >
                   {/* Category Identifier */}
                   <div className="lg:col-span-4 mb-6 lg:mb-0">
@@ -39,22 +60,20 @@ const Skills: React.FC<SkillsProps> = ({ skills }) => {
                   <div className="lg:col-span-8">
                     <div className="flex flex-wrap gap-x-8 gap-y-4">
                       {category.skills.map((skill) => (
-                        <div 
+                        <Badge
                           key={skill}
-                          className="flex items-center space-x-2.5"
+                          variant="soft"
+                          className="font-mono text-xs font-semibold py-1.5 px-3 bg-bg-canvas border border-border-subtle"
                         >
-                          <div className="w-1 h-1 bg-brand-accent rounded-full opacity-40"></div>
-                          <span className="font-mono text-sm text-text-secondary group-hover:text-text-primary transition-colors font-medium">
-                            {skill}
-                          </span>
-                        </div>
+                          {skill}
+                        </Badge>
                       ))}
                     </div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         ) : (
           <div className="space-y-6">
             {[...Array(3)].map((_, i) => (

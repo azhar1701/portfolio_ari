@@ -11,13 +11,13 @@ interface GalleryProps {
 const ImageModal: React.FC<{ image: GalleryImage; onClose: () => void }> = ({ image, onClose }) => (
   <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
     <div className="relative max-w-4xl max-h-[90vh]" onClick={e => e.stopPropagation()}>
-      <button onClick={onClose} className="absolute -top-10 right-0 text-white hover:text-gray-300">
+      <button onClick={onClose} className="absolute -top-10 right-0 text-white hover:text-text-muted">
         <i className="fas fa-times text-2xl"></i>
       </button>
       <img src={image.image || image.url} alt={image.title} className="max-w-full max-h-full object-contain rounded-lg" />
       <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-4 rounded-b-lg">
         <h3 className="font-semibold">{image.title}</h3>
-        <p className="text-sm text-gray-300">{image.description}</p>
+        <p className="text-sm text-text-muted">{image.description}</p>
       </div>
     </div>
   </div>
@@ -54,13 +54,19 @@ const Gallery: React.FC<GalleryProps> = ({ gallery }) => {
               {filteredImages.map((image) => (
                 <div
                   key={image.id}
-                  className="relative group cursor-pointer overflow-hidden rounded-lg aspect-square bg-slate-100"
+                  className="relative group cursor-pointer overflow-hidden rounded-lg aspect-square bg-border-subtle"
                   onClick={() => setSelectedImage(image)}
                 >
                   <img
                     src={image.image || image.url || ''}
                     alt={image.title}
                     className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      if (!target.src.includes('1559635013-35a82c40c39f')) {
+                        target.src = 'https://images.unsplash.com/photo-1559635013-35a82c40c39f?q=80&w=2070&auto=format&fit=crop';
+                      }
+                    }}
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
                   </div>

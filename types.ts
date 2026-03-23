@@ -90,34 +90,35 @@ export interface SkillCategory {
 }
 
 export interface Stat {
-    label: string;
-    value: number;
-    suffix?: string;
+  label: string;
+  value: number;
+  suffix?: string;
 }
 
 export interface LocationPoint {
-    name: string;
-    position: [number, number]; // [lat, lng]
-    description: string;
+  name: string;
+  position: [number, number]; // [lat, lng]
+  description: string;
 }
 
 export interface ProjectShowcase {
-    title: string;
+  title: string;
+  description: string;
+  before: {
     description: string;
-    before: {
-        description: string;
-        imageUrls: string[];
-    };
-    after: {
-        description: string;
-        imageUrls: string[];
-    };
+    imageUrls: string[];
+  };
+  after: {
+    description: string;
+    imageUrls: string[];
+  };
 }
 
 
 export interface PortfolioData {
   profile: Profile;
   summary: string;
+  summaryImage?: string;
   experience: Experience[];
   education: Education[];
   skills: SkillCategory[];

@@ -24,9 +24,9 @@ const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
   return (
     <Section id="testimonials" title="Testimonials" iconClass="fas fa-quote-left">
       {testimonials ? (
-        <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
+        <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 -mx-4 px-4 sm:mx-0 sm:px-0 hide-scrollbar mt-4">
           {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="bg-bg-canvas p-6 sm:p-8 rounded-xl border border-border-subtle shadow-subtle hover:shadow-md transition-all duration-300 flex flex-col">
+            <div key={testimonial.id} className="min-w-[300px] w-[85vw] sm:w-[400px] snap-center bg-bg-canvas p-6 sm:p-8 rounded-xl border border-border-subtle shadow-subtle hover:shadow-md transition-all duration-300 flex flex-col flex-shrink-0">
               <div className="mb-6 flex justify-between items-start">
                 <StarRating rating={testimonial.rating} />
                 <i className="fas fa-quote-right text-brand-accent/20 text-3xl"></i>

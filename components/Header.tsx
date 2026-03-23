@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import type { Profile } from '../types';
 import SearchBar from './SearchBar';
 import type { PortfolioData } from '../types';
@@ -40,11 +41,16 @@ const Header: React.FC<HeaderProps> = ({ profile, navLinks, data }) => {
   }, [navLinks]);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 print:hidden ${isScrolled ? 'bg-bg-canvas/80 backdrop-blur-md shadow-subtle py-3' : 'bg-transparent py-6'}`}>
+    <motion.header
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-500 print:hidden ${isScrolled ? 'bg-bg-app border-b border-border-subtle shadow-md py-3' : 'bg-transparent py-6'}`}
+    >
       <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Logo */}
-        <button 
-          className="flex items-center space-x-3 group relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent rounded-xl p-1 -m-1" 
+        <button
+          className="flex items-center space-x-3 group relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent rounded-xl p-1 -m-1"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           aria-label="Scroll to top"
         >
@@ -59,21 +65,31 @@ const Header: React.FC<HeaderProps> = ({ profile, navLinks, data }) => {
         </button>
 
         {/* Main Navigation - Icon-only for desktop */}
-        <nav className="hidden lg:flex items-center space-x-1 bg-bg-app/40 backdrop-blur-sm px-2 py-1 rounded-full border border-border-subtle/30" aria-label="Main Navigation">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              title={link.name}
-              aria-label={link.name}
-              className={`w-10 h-10 rounded-full transition-all duration-150 flex items-center justify-center group/nav ${activeSection === link.href
-                ? 'text-brand-accent bg-bg-canvas shadow-sm'
-                : 'text-text-secondary hover:text-brand-accent hover:bg-bg-canvas/50'
-                }`}
-            >
-              {link.icon && <i className={`${link.icon} text-sm transition-transform duration-150 group-hover/nav:scale-110`}></i>}
-            </a>
-          ))}
+        <nav className="hidden lg:flex items-center space-x-1 bg-bg-canvas px-2 py-1 rounded-full border border-border-subtle shadow-sm" aria-label="Main Navigation">
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.href;
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                title={link.name}
+                aria-label={link.name}
+                className={`relative w-10 h-10 rounded-full transition-colors duration-300 flex items-center justify-center group/nav z-10 ${isActive ? 'text-brand-accent' : 'text-text-secondary hover:text-text-primary'}`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="activeHeaderNav"
+                    className="absolute inset-0 bg-brand-accent/15 rounded-full z-[-1]"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+                {link.icon && <i className={`${link.icon} text-sm relative z-10 transition-transform duration-300 group-hover/nav:scale-110`}></i>}
+                <span className="absolute top-12 px-2.5 py-1 bg-text-primary text-bg-canvas text-[10px] font-bold uppercase tracking-widest rounded opacity-0 group-hover/nav:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-md">
+                  {link.name}
+                </span>
+              </a>
+            )
+          })}
         </nav>
 
         {/* Utility Actions */}
@@ -124,7 +140,7 @@ const Header: React.FC<HeaderProps> = ({ profile, navLinks, data }) => {
           ))}
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 };
 
