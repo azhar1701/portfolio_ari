@@ -62,23 +62,29 @@ const createGisIcon = (isActive: boolean) => {
 };
 
 const BASEMAPS = {
-  carto: {
-    name: 'CartoDB Precision',
-    url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-    attribution: '&copy; OpenStreetMap &copy; CARTO',
+  googleRoad: {
+    name: 'Google Maps Road',
+    url: 'https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
+    subdomains: ['0', '1', '2', '3'],
+    attribution: '&copy; <a href="https://maps.google.com" target="_blank" rel="noopener">Google Maps</a>',
+    maxZoom: 20,
   },
-  osm: {
-    name: 'OpenStreetMap Topo',
-    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    attribution: '&copy; OpenStreetMap contributors',
+  googleHybrid: {
+    name: 'Google Satellite Hybrid',
+    url: 'https://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+    subdomains: ['0', '1', '2', '3'],
+    attribution: '&copy; <a href="https://maps.google.com" target="_blank" rel="noopener">Google Maps & Satellite</a>',
+    maxZoom: 20,
   },
 };
+
+type BasemapKey = 'googleRoad' | 'googleHybrid';
 
 const MapSection: React.FC<{ locations: LocationPoint[] | null }> = ({ locations }) => {
   const [isClient, setIsClient] = useState(false);
   const [mapCenter, setMapCenter] = useState<[number, number] | undefined>(undefined);
   const [activeLocation, setActiveLocation] = useState<string | null>(null);
-  const [activeBasemap, setActiveBasemap] = useState<'carto' | 'osm'>('carto');
+  const [activeBasemap, setActiveBasemap] = useState<BasemapKey>('googleRoad');
 
   useEffect(() => {
     setIsClient(true);
@@ -192,25 +198,27 @@ const MapSection: React.FC<{ locations: LocationPoint[] | null }> = ({ locations
             <div className="flex items-center space-x-1.5 bg-bg-app p-1 rounded-xl border border-border-subtle">
               <button
                 type="button"
-                onClick={() => setActiveBasemap('carto')}
-                className={`px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
-                  activeBasemap === 'carto'
+                onClick={() => setActiveBasemap('googleRoad')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+                  activeBasemap === 'googleRoad'
                     ? 'bg-brand-accent text-white shadow-sm'
                     : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
-                CartoDB Precision
+                <i className="fas fa-map text-xs"></i>
+                <span>Google Maps</span>
               </button>
               <button
                 type="button"
-                onClick={() => setActiveBasemap('osm')}
-                className={`px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
-                  activeBasemap === 'osm'
+                onClick={() => setActiveBasemap('googleHybrid')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+                  activeBasemap === 'googleHybrid'
                     ? 'bg-brand-accent text-white shadow-sm'
                     : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
-                OpenStreetMap
+                <i className="fas fa-satellite text-xs"></i>
+                <span>Google Satellite</span>
               </button>
             </div>
           </div>
@@ -224,8 +232,11 @@ const MapSection: React.FC<{ locations: LocationPoint[] | null }> = ({ locations
                 className="h-full w-full z-10"
               >
                 <TileLayer
+                  key={activeBasemap}
                   attribution={BASEMAPS[activeBasemap].attribution}
                   url={BASEMAPS[activeBasemap].url}
+                  subdomains={BASEMAPS[activeBasemap].subdomains}
+                  maxZoom={BASEMAPS[activeBasemap].maxZoom}
                 />
                 {locations
                   .filter(loc => loc.position && loc.position.length >= 2 && loc.position[0] !== null && loc.position[1] !== null)

@@ -13,7 +13,7 @@ const Section: React.FC<SectionProps> = ({ id, title, children, iconClass, noCon
   return (
     <section
       id={id}
-      className="py-8 sm:py-12 lg:py-16 will-change-transform-opacity"
+      className="py-8 sm:py-12 lg:py-16"
     >
       <div className="mb-10 sm:mb-14">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary tracking-tighter">

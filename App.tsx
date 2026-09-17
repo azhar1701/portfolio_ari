@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import AOS from 'aos';
 import { fetchPortfolioData, savePortfolioData, resetPortfolioData } from './services/contentService';
 import type { PortfolioData } from './types';
@@ -6,6 +6,8 @@ import { ToastProvider, useToast } from './contexts/ToastContext';
 
 import Loader from './components/Loader';
 import Error from './components/Error';
+import ErrorBoundary from './components/ErrorBoundary';
+import SkeletonLoader from './components/SkeletonLoader';
 import Header from './components/Header';
 import Summary from './components/Summary';
 import ExperienceComponent from './components/Experience';
@@ -16,12 +18,9 @@ import Publications from './components/Publications';
 import Organizations from './components/Organizations';
 import Projects from './components/Projects';
 import Stats from './components/Stats';
-import MapSection from './components/MapSection';
-import ProjectShowcase from './components/ProjectShowcase';
 import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
 import BackToTopButton from './components/BackToTopButton';
-import AdminDashboard from './components/AdminDashboard';
 import AdminLogin from './components/AdminLogin';
 import Testimonials from './components/Testimonials';
 import Blog from './components/Blog';
@@ -29,6 +28,11 @@ import Gallery from './components/Gallery';
 import InteractiveResume from './components/InteractiveResume';
 import MobileNav from './components/MobileNav';
 import ReadingProgressBar from './components/ReadingProgressBar';
+
+// Code-split heavy interactive modules for fast First Contentful Paint
+const MapSection = React.lazy(() => import('./components/MapSection'));
+const ProjectShowcase = React.lazy(() => import('./components/ProjectShowcase'));
+const AdminDashboard = React.lazy(() => import('./components/AdminDashboard'));
 
 const PortfolioApp: React.FC = () => {
   const [data, setData] = useState<PortfolioData | null>(null);
@@ -165,8 +169,14 @@ const PortfolioApp: React.FC = () => {
           <Summary content={summary} image={summaryImage} />
           <Stats stats={stats} />
           <ExperienceComponent experience={experience} />
-          <ProjectShowcase showcase={showcase} />
-          <MapSection locations={locations} />
+          <Suspense fallback={null}>
+            <ProjectShowcase showcase={showcase} />
+          </Suspense>
+          <ErrorBoundary fallbackTitle="Geospatial Hub Offline" fallbackMessage="The interactive GIS map is temporarily unavailable. All field survey locations remain accessible.">
+            <Suspense fallback={<SkeletonLoader className="h-96 w-full max-w-6xl mx-auto rounded-3xl" />}>
+              <MapSection locations={locations} />
+            </Suspense>
+          </ErrorBoundary>
           <Projects projects={projects} />
           <Skills skills={skills} />
           <InteractiveResume data={data} />
@@ -187,13 +197,17 @@ const PortfolioApp: React.FC = () => {
         onClose={() => setIsLoginOpen(false)}
         onLogin={handleLogin}
       />
-      <AdminDashboard
-        isOpen={isAdminOpen}
-        onClose={() => setIsAdminOpen(false)}
-        data={data}
-        onSave={handleSaveData}
-        onReset={handleResetData}
-      />
+      {isAdminOpen && (
+        <Suspense fallback={null}>
+          <AdminDashboard
+            isOpen={isAdminOpen}
+            onClose={() => setIsAdminOpen(false)}
+            data={data}
+            onSave={handleSaveData}
+            onReset={handleResetData}
+          />
+        </Suspense>
+      )}
       <MobileNav navLinks={navLinks} />
     </div>
   );

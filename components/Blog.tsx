@@ -8,44 +8,71 @@ interface BlogProps {
 }
 
 
-const BlogModal: React.FC<{ post: BlogPost; onClose: () => void }> = ({ post, onClose }) => (
-  <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div className="bg-bg-canvas rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-border-subtle">
-      <div className="sticky top-0 bg-bg-canvas/80 backdrop-blur-sm border-b border-border-subtle p-5 flex justify-between items-center z-10">
-        <h2 className="text-xl sm:text-2xl font-bold text-text-primary tracking-tight">{post.title}</h2>
-        <button onClick={onClose} className="p-2 rounded-full text-text-muted hover:bg-bg-app transition-colors" aria-label="Close modal">
-          <i className="fas fa-times text-xl"></i>
-        </button>
-      </div>
-      <div className="p-6 sm:p-8">
-        <div className="flex flex-wrap items-center text-sm text-text-secondary mb-6 gap-x-4 gap-y-2">
-          <span className="flex items-center"><i className="far fa-calendar-alt mr-2"></i>{new Date(post.date).toLocaleDateString()}</span>
-          <span className="flex items-center"><i className="far fa-clock mr-2"></i>{post.readTime} min read</span>
-          {post.author && (
-            <span className="flex items-center"><i className="far fa-user mr-2"></i>{post.author}</span>
-          )}
-          {post.category && (
-            <span className="bg-brand-accent-soft text-brand-accent-text px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-widest">
-              {post.category}
-            </span>
-          )}
+const BlogModal: React.FC<{ post: BlogPost; onClose: () => void }> = ({ post, onClose }) => {
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = 'auto';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[9990] flex items-center justify-center p-4 sm:p-6"
+      role="dialog"
+      aria-modal="true"
+    >
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-slate-950/75 backdrop-blur-md"
+        aria-hidden="true"
+        onClick={onClose}
+      />
+      {/* Modal */}
+      <div className="relative w-full max-w-3xl max-h-[90vh] bg-bg-canvas rounded-2xl border border-border-subtle shadow-xl flex flex-col overflow-hidden">
+        <div className="sticky top-0 bg-bg-canvas border-b border-border-subtle px-6 py-4 flex justify-between items-center z-10 shrink-0">
+          <h2 className="text-lg sm:text-xl font-bold text-text-primary tracking-tight pr-4">{post.title}</h2>
+          <button
+            onClick={onClose}
+            className="w-9 h-9 rounded-xl bg-bg-app hover:bg-red-50 text-text-muted hover:text-red-500 border border-border-subtle transition-all flex items-center justify-center shrink-0 cursor-pointer"
+            aria-label="Close"
+          >
+            <i className="fas fa-xmark"></i>
+          </button>
         </div>
-        <div className="prose prose-slate max-w-none text-text-secondary leading-relaxed">
-          {post.content.split('\n').map((paragraph, index) => (
-            <p key={index} className="mb-4">{paragraph}</p>
-          ))}
-        </div>
-        <div className="flex flex-wrap gap-2 mt-8 pt-6 border-t border-border-subtle/50">
-          {post.tags?.map((tag) => (
-            <span key={tag} className="bg-bg-app text-text-secondary text-xs px-3 py-1 rounded-full border border-border-subtle font-bold uppercase tracking-widest">
-              #{tag}
-            </span>
-          ))}
+        <div className="overflow-y-auto p-6 sm:p-8">
+          <div className="flex flex-wrap items-center text-sm text-text-secondary mb-6 gap-x-4 gap-y-2">
+            <span className="flex items-center"><i className="far fa-calendar-alt mr-2"></i>{new Date(post.date).toLocaleDateString()}</span>
+            <span className="flex items-center"><i className="far fa-clock mr-2"></i>{post.readTime} min read</span>
+            {post.author && (
+              <span className="flex items-center"><i className="far fa-user mr-2"></i>{post.author}</span>
+            )}
+            {post.category && (
+              <span className="bg-brand-accent-soft text-brand-accent-text px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-widest">
+                {post.category}
+              </span>
+            )}
+          </div>
+          <div className="text-text-secondary leading-relaxed">
+            {post.content.split('\n').map((paragraph, index) => (
+              <p key={index} className="mb-4">{paragraph}</p>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-2 mt-8 pt-6 border-t border-border-subtle/50">
+            {post.tags?.map((tag) => (
+              <span key={tag} className="bg-bg-app text-text-secondary text-xs px-3 py-1 rounded-full border border-border-subtle font-bold uppercase tracking-widest">
+                #{tag}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Blog: React.FC<BlogProps> = ({ blogPosts }) => {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);

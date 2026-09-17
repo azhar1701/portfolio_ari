@@ -1,5 +1,5 @@
-
 import React, { useEffect, useState, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import type { Project } from '../types';
 
 interface ProjectModalProps {
@@ -19,7 +19,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project })
       if (event.key === 'Escape') {
         onClose();
       }
-      
+
       if (event.key === 'Tab' && modalRef.current) {
         const focusableElements = modalRef.current.querySelectorAll(
           'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -48,8 +48,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project })
       if (project?.images?.[0]) {
         setMainImage(project.images[0]);
       }
-      // Set focus to close button when opened
-      setTimeout(() => closeButtonRef.current?.focus(), 100);
+      setTimeout(() => closeButtonRef.current?.focus(), 50);
     } else {
       setShow(false);
       document.body.style.overflow = 'auto';
@@ -69,108 +68,174 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ isOpen, onClose, project })
 
   if (!project) return null;
 
-  return (
+  return ReactDOM.createPortal(
+    (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300 ${isOpen && show ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      className={`fixed inset-0 z-[9990] flex items-center justify-center p-3 sm:p-6 transition-opacity duration-300 ${
+        isOpen && show ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      }`}
       role="dialog"
       aria-modal="true"
       aria-labelledby="project-modal-title"
     >
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" aria-hidden="true" onClick={onClose}></div>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-slate-950/75 backdrop-blur-md transition-opacity"
+        aria-hidden="true"
+        onClick={onClose}
+      />
+
+      {/* Modal Dialog Container */}
       <div
         ref={modalRef}
-        className={`relative w-full max-w-4xl max-h-[90vh] bg-bg-canvas rounded-2xl shadow-2xl overflow-y-auto transform transition-all duration-300 border border-border-subtle ${isOpen && show ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
+        className={`relative w-full max-w-5xl max-h-[92vh] bg-bg-canvas border border-border-subtle rounded-2xl shadow-xl flex flex-col overflow-hidden transform transition-all duration-300 ${
+          isOpen && show ? 'scale-100 opacity-100 translate-y-0' : 'scale-95 opacity-0 translate-y-4'
+        }`}
         onClick={(e) => e.stopPropagation()}
         tabIndex={-1}
       >
-        <div className="p-6 md:p-10">
-          <div className="flex justify-between items-start mb-8">
-            <h2 id="project-modal-title" className="text-2xl md:text-4xl font-bold text-text-primary tracking-tight pr-8">
-              {project.name}
-            </h2>
-            <button
-              ref={closeButtonRef}
-              onClick={onClose}
-              className="p-2 rounded-full text-text-muted hover:bg-bg-app transition-colors focus:outline-none focus:ring-2 focus:ring-brand-accent"
-              aria-label="Close project details"
-            >
-              <i className="fas fa-times text-2xl"></i>
-            </button>
+        {/* Sticky Header Bar */}
+        <div className="bg-bg-canvas border-b border-border-subtle px-6 py-4 flex items-center justify-between shrink-0 z-30">
+          <div className="flex items-center gap-3 min-w-0 pr-4">
+            <div className="w-8 h-8 rounded-xl bg-brand-accent/10 border border-brand-accent/20 flex items-center justify-center text-brand-accent shrink-0">
+              <i className="fas fa-diagram-project text-xs"></i>
+            </div>
+            <div className="min-w-0">
+              <span className="text-[10px] font-mono font-bold text-brand-accent uppercase tracking-widest block truncate">
+                Engineering Case Study
+              </span>
+              <h2 id="project-modal-title" className="text-base sm:text-lg font-bold text-text-primary tracking-tight truncate">
+                {project.name}
+              </h2>
+            </div>
           </div>
 
-          <div className="space-y-10">
-            {/* Image Gallery */}
-            <div>
-              <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-md border border-border-subtle mb-4 bg-slate-100 flex items-center justify-center">
-                <img 
-                  src={mainImage} 
-                  alt={project.name} 
-                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
-                  key={mainImage}
-                />
-              </div>
-              {project.images.length > 1 && (
-                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide" aria-label="Project images">
-                  {project.images.map((img, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setMainImage(img)}
-                      className="flex-shrink-0"
-                      aria-label={`View image ${index + 1}`}
+          <button
+            ref={closeButtonRef}
+            onClick={onClose}
+            className="w-9 h-9 rounded-xl bg-bg-app hover:bg-red-50 text-text-muted hover:text-red-500 border border-border-subtle transition-all flex items-center justify-center shrink-0 focus:outline-none focus:ring-2 focus:ring-brand-accent/30 cursor-pointer active:scale-95"
+            aria-label="Close project modal"
+          >
+            <i className="fas fa-xmark text-base"></i>
+          </button>
+        </div>
+
+        {/* Scrollable Content Body */}
+        <div className="overflow-y-auto p-6 sm:p-8 space-y-8">
+          {/* Main Visual Showcase Container */}
+          <div className="space-y-3">
+            <div className="w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden border border-border-subtle">
+              <img
+                src={mainImage || '/images/summary_hero.png'}
+                alt={project.name}
+                className="w-full h-full object-cover transition-all duration-300"
+                key={mainImage}
+              />
+            </div>
+
+            {/* Thumbnail Navigation Bar */}
+            {project.images && project.images.length > 1 && (
+              <div className="flex gap-2.5 overflow-x-auto pb-1.5 scrollbar-thin" aria-label="Project gallery thumbnails">
+                {project.images.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setMainImage(img)}
+                    className="flex-shrink-0 cursor-pointer focus:outline-none"
+                    aria-label={`View image thumbnail ${index + 1}`}
+                  >
+                    <div
+                      className={`w-20 h-14 rounded-xl overflow-hidden border-2 transition-all ${
+                        mainImage === img
+                          ? 'border-brand-accent shadow-md scale-95'
+                          : 'border-border-subtle hover:border-brand-accent/40 opacity-70 hover:opacity-100'
+                      }`}
                     >
-                      <div className={`w-24 h-16 rounded-lg overflow-hidden border-2 transition-all bg-slate-100 ${mainImage === img ? 'border-brand-accent shadow-md scale-95' : 'border-transparent hover:border-border-subtle hover:scale-105'}`}>
-                        <img
-                          src={img}
-                          alt={`Thumbnail ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </button>
-                  ))}
+                      <img src={img} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Project Overview Statement */}
+          <div className="p-5 bg-bg-app border border-border-subtle rounded-2xl">
+            <h3 className="text-xs font-bold text-text-muted uppercase tracking-widest mb-2 flex items-center gap-2">
+              <i className="fas fa-circle-info text-brand-accent"></i>
+              Executive Overview
+            </h3>
+            <p className="text-text-secondary text-sm sm:text-base leading-relaxed">
+              {project.description}
+            </p>
+          </div>
+
+          {/* STAR Methodology Grid: The Challenge & The Solution */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Left Col: STAR Challenge & Technical Solution */}
+            <div className="lg:col-span-8 space-y-6">
+              {project.challenge && (
+                <div className="p-6 bg-bg-app border border-amber-500/30 rounded-2xl">
+                  <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-xs uppercase tracking-wider mb-3">
+                    <i className="fas fa-triangle-exclamation"></i>
+                    <span>The Engineering Challenge</span>
+                  </div>
+                  <p className="text-text-secondary text-sm leading-relaxed whitespace-pre-line">
+                    {project.challenge}
+                  </p>
+                </div>
+              )}
+
+              {project.solution && (
+                <div className="p-6 bg-bg-app border border-brand-accent/25 rounded-2xl">
+                  <div className="flex items-center gap-2 text-brand-accent font-bold text-xs uppercase tracking-wider mb-3">
+                    <i className="fas fa-lightbulb"></i>
+                    <span>Methodology & Technical Solution</span>
+                  </div>
+                  <p className="text-text-secondary text-sm leading-relaxed whitespace-pre-line">
+                    {project.solution}
+                  </p>
                 </div>
               )}
             </div>
 
-            {/* Details */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-              {/* Main content: Challenge and Solution */}
-              <div className="md:col-span-2 space-y-8">
-                <div>
-                  <h3 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4 flex items-center">
-                    <i className="fas fa-exclamation-triangle mr-2 text-xs"></i>
-                    The Challenge
-                  </h3>
-                  <p className="text-text-secondary leading-relaxed font-medium">{project.challenge}</p>
+            {/* Right Col: Technology Stack & Documentation Link */}
+            <div className="lg:col-span-4 space-y-6">
+              <div className="bg-bg-app p-6 rounded-2xl border border-border-subtle space-y-4">
+                <h4 className="text-xs font-bold text-text-muted uppercase tracking-widest border-b border-border-subtle pb-3 flex items-center gap-2">
+                  <i className="fas fa-screwdriver-wrench text-brand-accent"></i>
+                  Technologies & Tools
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {project.technologies.map((tech, index) => (
+                    <span
+                      key={index}
+                      className="bg-bg-canvas text-text-secondary text-xs font-semibold px-3 py-1.5 rounded-lg border border-border-subtle"
+                    >
+                      {tech}
+                    </span>
+                  ))}
                 </div>
-                <div>
-                  <h3 className="text-sm font-bold text-brand-accent uppercase tracking-widest mb-4 flex items-center">
-                    <i className="fas fa-lightbulb mr-2 text-xs"></i>
-                    The Solution
-                  </h3>
-                  <p className="text-text-secondary leading-relaxed font-medium">{project.solution}</p>
-                </div>
-              </div>
-              {/* Sidebar: Technologies */}
-              <div className="md:col-span-1">
-                <div className="bg-bg-app p-6 rounded-2xl border border-border-subtle h-fit">
-                  <h3 className="text-sm font-bold text-text-primary uppercase tracking-widest mb-6 border-b border-border-subtle pb-3">
-                    Technologies
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologies.map((tech, index) => (
-                      <span key={index} className="bg-bg-canvas text-text-primary text-[11px] font-bold px-3 py-1.5 rounded-lg border border-border-subtle shadow-sm uppercase tracking-wider">
-                        {tech}
-                      </span>
-                    ))}
+
+                {project.link && (
+                  <div className="pt-4 border-t border-border-subtle">
+                    <a
+                      href={project.link}
+                      target={project.link.startsWith('http') ? '_blank' : '_self'}
+                      rel="noopener noreferrer"
+                      className="w-full py-2.5 px-4 bg-brand-accent/10 hover:bg-brand-accent/20 border border-brand-accent/30 text-brand-accent rounded-xl text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2"
+                    >
+                      <span>External Documentation</span>
+                      <i className="fas fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
+  ), document.body);
 };
 
 export default ProjectModal;
