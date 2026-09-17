@@ -94,21 +94,20 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
             <AnimatePresence mode="popLayout">
               {filteredProjects.map((project, index) => {
                 const isFeatured = index === 0 && selectedFilter === 'ALL';
+                const hasImage = project.images && project.images.length > 0;
+                const displayImage = hasImage ? project.images[0] : '/images/summary_hero.png';
+
                 return (
                   <motion.div
                     layout
                     variants={itemVariants}
                     key={project.id}
-                    className={`group relative ${isFeatured ? 'lg:grid lg:grid-cols-12 lg:gap-8 items-start' : ''}`}
+                    className="group relative"
                   >
-                    {isFeatured && (
-                      <div className="hidden lg:block absolute -left-8 top-0 bottom-0 w-1 bg-brand-accent rounded-full"></div>
-                    )}
-
                     <motion.div
                       whileHover={{ y: -3 }}
                       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                      className="w-full lg:col-span-12"
+                      className="w-full"
                     >
                       <Card
                         variant="default"
@@ -117,25 +116,32 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                           isFeatured ? 'shadow-md hover:shadow-xl border-brand-accent/40 ring-1 ring-brand-accent/10' : 'shadow-sm hover:shadow-md'
                         }`}
                       >
-                        <div className={`flex flex-col ${isFeatured ? 'lg:flex-row' : ''}`}>
-                          {/* Project Preview Image */}
-                          {project.images && project.images.length > 0 && (
-                            <div className={`${isFeatured ? 'lg:basis-5/12' : 'hidden'} aspect-video overflow-hidden border-b lg:border-b-0 lg:border-r border-border-subtle bg-slate-900 relative`}>
-                              <img
-                                src={project.images[0]}
-                                alt={project.name}
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                              <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-[10px] font-mono uppercase tracking-widest font-bold">
-                                <span><i className="fas fa-microscope mr-1"></i> Technical Spec</span>
-                                <span>{project.technologies[0]}</span>
-                              </div>
+                        <div className="flex flex-col md:flex-row">
+                          {/* Project Preview Image (Available on all cards for instant recruiter visual proof) */}
+                          <div
+                            className={`aspect-video md:aspect-auto overflow-hidden border-b md:border-b-0 md:border-r border-border-subtle bg-slate-950 relative ${
+                              isFeatured ? 'md:w-5/12' : 'md:w-4/12'
+                            }`}
+                          >
+                            <img
+                              src={displayImage}
+                              alt={project.name}
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 min-h-[220px]"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent"></div>
+                            <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-[10px] font-mono uppercase tracking-widest font-bold">
+                              <span><i className="fas fa-layer-group mr-1 text-sky-400"></i> Case Study</span>
+                              <span className="bg-black/60 px-2 py-0.5 rounded backdrop-blur text-slate-200">
+                                {project.technologies[0] || 'Engineering'}
+                              </span>
                             </div>
-                          )}
+                          </div>
 
                           {/* Content Body */}
-                          <div className={`p-6 sm:p-8 ${isFeatured ? 'lg:basis-7/12 flex flex-col justify-between' : 'w-full'}`}>
+                          <div className={`p-6 sm:p-8 flex flex-col justify-between ${
+                            isFeatured ? 'md:w-7/12' : 'md:w-8/12'
+                          }`}>
                             <div>
                               <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
                                 {isFeatured ? (
@@ -144,23 +150,28 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                                   </span>
                                 ) : (
                                   <span className="text-[10px] font-mono text-text-muted font-bold uppercase tracking-widest">
-                                    Project Node #{project.id.replace('proj-', '')}
+                                    Project #{index + 1}
                                   </span>
                                 )}
+
+                                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-sky-500 bg-sky-500/10 px-2.5 py-0.5 rounded-md border border-sky-500/20">
+                                  <i className="fas fa-check-double text-[9px]"></i>
+                                  Verified Delivery
+                                </span>
                               </div>
 
                               <h3 className={`font-bold text-text-primary tracking-tight group-hover:text-brand-accent transition-colors ${
-                                isFeatured ? 'text-2xl sm:text-3xl' : 'text-xl'
+                                isFeatured ? 'text-2xl sm:text-3xl' : 'text-xl sm:text-2xl'
                               }`}>
                                 {project.name}
                               </h3>
 
-                              <p className="text-text-secondary text-sm sm:text-base leading-relaxed font-medium mt-3 mb-6">
+                              <p className="text-text-secondary text-sm sm:text-base leading-relaxed font-medium mt-3 mb-5">
                                 {project.description}
                               </p>
 
-                              {/* Tech Badges */}
-                              <div className="flex flex-wrap gap-2 mb-6">
+                              {/* Tech Stack Badges */}
+                              <div className="flex flex-wrap gap-1.5 mb-6">
                                 {project.technologies.map((tech, idx) => (
                                   <span
                                     key={idx}
@@ -172,14 +183,14 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                               </div>
                             </div>
 
-                            {/* Actions */}
+                            {/* Actions & STAR Deep Dive */}
                             <div className="pt-4 border-t border-border-subtle/50 flex flex-wrap items-center justify-between gap-4">
                               <button
                                 type="button"
                                 onClick={() => setActiveModalProject(project)}
-                                className="px-4 py-2 bg-brand-accent hover:bg-brand-accent-hover text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-sm hover:shadow-md flex items-center space-x-2 cursor-pointer active:scale-95"
+                                className="px-4 py-2.5 bg-brand-accent hover:bg-brand-accent-hover text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-sm hover:shadow-md flex items-center space-x-2 cursor-pointer active:scale-95"
                               >
-                                <span>Detail Studi Kasus</span>
+                                <span>Detail Studi Kasus (STAR)</span>
                                 <i className="fas fa-arrow-right text-[10px]"></i>
                               </button>
 
@@ -190,8 +201,8 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                                   rel="noopener noreferrer"
                                   className="text-xs font-bold text-text-secondary hover:text-brand-accent transition-colors flex items-center space-x-1.5"
                                 >
-                                  <span>Dokumentasi Terkait</span>
-                                  <i className="fas fa-external-link-alt text-[10px]"></i>
+                                  <span>Dokumentasi Eksternal</span>
+                                  <i className="fas fa-arrow-up-right-from-square text-[10px]"></i>
                                 </a>
                               )}
                             </div>
