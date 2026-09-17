@@ -1,178 +1,226 @@
-import React, { useState } from 'react';
-import { motion, Variants } from 'framer-motion';
+import React, { useState, useMemo } from 'react';
+import { motion, Variants, AnimatePresence } from 'framer-motion';
 import type { Project } from '../types';
 import Section from './Section';
 import SkeletonLoader from './SkeletonLoader';
-import ImageCarousel from './ImageCarousel';
 import Card from './ui/Card';
-import Badge from './ui/Badge';
-import Button from './ui/Button';
-import { SubHeading } from './ui/Typography';
+import ProjectModal from './ProjectModal';
 
 interface ProjectsProps {
-    projects: Project[] | null;
+  projects: Project[] | null;
 }
 
 const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.1 }
-    }
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
 };
 
 const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+  hidden: { opacity: 0, y: 25 },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } },
 };
 
+type FilterCategory = 'ALL' | 'WATER_RESOURCES' | 'GIS' | 'MODELING';
+
 const Projects: React.FC<ProjectsProps> = ({ projects }) => {
-    const [expandedProjectId, setExpandedProjectId] = useState<string | null>(null);
+  const [selectedFilter, setSelectedFilter] = useState<FilterCategory>('ALL');
+  const [activeModalProject, setActiveModalProject] = useState<Project | null>(null);
 
-    const handleToggleDetails = (projectId: string) => {
-        setExpandedProjectId(prevId => (prevId === projectId ? null : projectId));
-    };
+  const filteredProjects = useMemo(() => {
+    if (!projects) return [];
+    if (selectedFilter === 'ALL') return projects;
 
-    if (projects && projects.length === 0) {
-        return null;
-    }
+    return projects.filter((p) => {
+      const allText = `${p.name} ${p.description} ${p.technologies.join(' ')} ${p.challenge} ${p.solution}`.toLowerCase();
+      if (selectedFilter === 'WATER_RESOURCES') {
+        return allText.includes('irrigation') || allText.includes('irigasi') || allText.includes('water') || allText.includes('sipasda');
+      }
+      if (selectedFilter === 'GIS') {
+        return allText.includes('gis') || allText.includes('geospatial') || allText.includes('spasial') || allText.includes('mapping');
+      }
+      if (selectedFilter === 'MODELING') {
+        return allText.includes('hec-ras') || allText.includes('hydrology') || allText.includes('sih3') || allText.includes('modeling');
+      }
+      return true;
+    });
+  }, [projects, selectedFilter]);
 
-    return (
-        <Section id="projects" title="Projects" iconClass="fas fa-diagram-project" noContainer>
-            <div className="max-w-6xl mx-auto">
-                {projects ? (
+  if (projects && projects.length === 0) {
+    return null;
+  }
+
+  const filters: { id: FilterCategory; label: string; icon: string }[] = [
+    { id: 'ALL', label: 'Semua Proyek', icon: 'fa-layer-group' },
+    { id: 'WATER_RESOURCES', label: 'Irigasi & Sumber Daya Air', icon: 'fa-water' },
+    { id: 'GIS', label: 'GIS & Pemetaan Spasial', icon: 'fa-map' },
+    { id: 'MODELING', label: 'Pemodelan Hidraulika & SIH3', icon: 'fa-chart-line' },
+  ];
+
+  return (
+    <Section id="projects" title="Featured Engineering Case Studies" iconClass="fas fa-diagram-project" noContainer>
+      <div className="max-w-6xl mx-auto space-y-8">
+        {/* Domain Filter Bar */}
+        <div className="flex flex-wrap items-center gap-2 p-1.5 bg-bg-app rounded-2xl border border-border-subtle max-w-fit">
+          {filters.map((f) => {
+            const isActive = selectedFilter === f.id;
+            return (
+              <button
+                key={f.id}
+                onClick={() => setSelectedFilter(f.id)}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                  isActive
+                    ? 'bg-brand-accent text-white shadow-sm'
+                    : 'text-text-secondary hover:text-text-primary hover:bg-bg-canvas'
+                }`}
+              >
+                <i className={`fas ${f.icon} text-xs ${isActive ? 'text-white' : 'text-brand-accent'}`}></i>
+                <span>{f.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Projects List */}
+        {projects ? (
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="space-y-8"
+          >
+            <AnimatePresence mode="popLayout">
+              {filteredProjects.map((project, index) => {
+                const isFeatured = index === 0 && selectedFilter === 'ALL';
+                return (
+                  <motion.div
+                    layout
+                    variants={itemVariants}
+                    key={project.id}
+                    className={`group relative ${isFeatured ? 'lg:grid lg:grid-cols-12 lg:gap-8 items-start' : ''}`}
+                  >
+                    {isFeatured && (
+                      <div className="hidden lg:block absolute -left-8 top-0 bottom-0 w-1 bg-brand-accent rounded-full"></div>
+                    )}
+
                     <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, amount: 0.1 }}
-                        className="space-y-8"
+                      whileHover={{ y: -3 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      className="w-full lg:col-span-12"
                     >
-                        {projects.map((project, index) => {
-                            const isExpanded = expandedProjectId === project.id;
-                            const isFeatured = index === 0;
+                      <Card
+                        variant="default"
+                        padding="none"
+                        className={`relative overflow-hidden border-border-subtle transition-all duration-300 ${
+                          isFeatured ? 'shadow-md hover:shadow-xl border-brand-accent/40 ring-1 ring-brand-accent/10' : 'shadow-sm hover:shadow-md'
+                        }`}
+                      >
+                        <div className={`flex flex-col ${isFeatured ? 'lg:flex-row' : ''}`}>
+                          {/* Project Preview Image */}
+                          {project.images && project.images.length > 0 && (
+                            <div className={`${isFeatured ? 'lg:basis-5/12' : 'hidden'} aspect-video overflow-hidden border-b lg:border-b-0 lg:border-r border-border-subtle bg-slate-900 relative`}>
+                              <img
+                                src={project.images[0]}
+                                alt={project.name}
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                              <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-[10px] font-mono uppercase tracking-widest font-bold">
+                                <span><i className="fas fa-microscope mr-1"></i> Technical Spec</span>
+                                <span>{project.technologies[0]}</span>
+                              </div>
+                            </div>
+                          )}
 
-                            return (
-                                <motion.div
-                                    variants={itemVariants}
-                                    key={project.id}
-                                    className={`group relative ${isFeatured ? 'lg:grid lg:grid-cols-12 lg:gap-12 items-start' : ''}`}
+                          {/* Content Body */}
+                          <div className={`p-6 sm:p-8 ${isFeatured ? 'lg:basis-7/12 flex flex-col justify-between' : 'w-full'}`}>
+                            <div>
+                              <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                {isFeatured ? (
+                                  <span className="px-3 py-1 bg-brand-accent/10 text-brand-accent border border-brand-accent/20 text-[10px] font-bold uppercase tracking-widest rounded-full">
+                                    <i className="fas fa-star mr-1"></i> Featured Implementation
+                                  </span>
+                                ) : (
+                                  <span className="text-[10px] font-mono text-text-muted font-bold uppercase tracking-widest">
+                                    Project Node #{project.id.replace('proj-', '')}
+                                  </span>
+                                )}
+                              </div>
+
+                              <h3 className={`font-bold text-text-primary tracking-tight group-hover:text-brand-accent transition-colors ${
+                                isFeatured ? 'text-2xl sm:text-3xl' : 'text-xl'
+                              }`}>
+                                {project.name}
+                              </h3>
+
+                              <p className="text-text-secondary text-sm sm:text-base leading-relaxed font-medium mt-3 mb-6">
+                                {project.description}
+                              </p>
+
+                              {/* Tech Badges */}
+                              <div className="flex flex-wrap gap-2 mb-6">
+                                {project.technologies.map((tech, idx) => (
+                                  <span
+                                    key={idx}
+                                    className="px-2.5 py-1 bg-bg-app text-text-primary border border-border-subtle rounded-lg text-xs font-semibold uppercase tracking-wider"
+                                  >
+                                    {tech}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Actions */}
+                            <div className="pt-4 border-t border-border-subtle/50 flex flex-wrap items-center justify-between gap-4">
+                              <button
+                                type="button"
+                                onClick={() => setActiveModalProject(project)}
+                                className="px-4 py-2 bg-brand-accent hover:bg-brand-accent-hover text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-sm hover:shadow-md flex items-center space-x-2 cursor-pointer active:scale-95"
+                              >
+                                <span>Detail Studi Kasus</span>
+                                <i className="fas fa-arrow-right text-[10px]"></i>
+                              </button>
+
+                              {project.link && (
+                                <a
+                                  href={project.link}
+                                  target={project.link.startsWith('http') ? '_blank' : '_self'}
+                                  rel="noopener noreferrer"
+                                  className="text-xs font-bold text-text-secondary hover:text-brand-accent transition-colors flex items-center space-x-1.5"
                                 >
-                                    {/* Background Decorative element for Featured */}
-                                    {isFeatured && (
-                                        <div className="hidden lg:block absolute -left-12 top-0 bottom-0 w-1 bg-brand-accent/20 rounded-full"></div>
-                                    )}
-
-                                    <motion.div
-                                        whileHover={{ y: -4 }}
-                                        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                                        className={`w-full ${isFeatured ? 'lg:col-span-12' : ''}`}
-                                    >
-
-                                        <Card
-                                            variant="interactive"
-                                            padding="none"
-                                            onClick={() => handleToggleDetails(project.id)}
-                                            aria-expanded={isExpanded}
-                                            aria-controls={`project-details-${project.id}`}
-                                            className={`relative overflow-hidden border-border-subtle/50 transition-all duration-500 will-change-transform ${isFeatured ? 'lg:col-span-12 shadow-md hover:shadow-xl' : 'shadow-subtle'}`}
-                                        >
-                                            <div className={`flex flex-col ${isFeatured && !isExpanded ? 'lg:flex-row' : ''}`}>
-                                                {/* Project Preview Image for Featured (Visible when collapsed) */}
-                                                {isFeatured && !isExpanded && project.images && project.images.length > 0 && (
-                                                    <div className="lg:basis-2/5 aspect-video overflow-hidden border-b lg:border-b-0 lg:border-r border-border-subtle/30 bg-bg-app">
-                                                        <img
-                                                            src={project.images[0]}
-                                                            alt={project.name}
-                                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                                        />
-                                                    </div>
-                                                )}
-
-                                                <div className={`p-8 ${isFeatured && !isExpanded ? 'lg:basis-3/5 lg:flex lg:flex-col lg:justify-center' : 'w-full'}`}>
-                                                    <div className="flex justify-between items-start mb-4">
-                                                        <div>
-                                                            {isFeatured && <span className="text-[10px] font-bold text-brand-accent uppercase tracking-[0.2em] mb-2 block">Featured Case Study</span>}
-                                                            <h3 className={`font-bold text-text-primary group-hover:text-brand-accent transition-colors break-words ${isFeatured ? 'text-2xl md:text-3xl' : 'text-xl'}`}>
-                                                                {project.name}
-                                                            </h3>
-                                                        </div>
-                                                        <i
-                                                            className={`fas fa-chevron-down text-text-muted transition-transform duration-500 mt-2 ${isExpanded ? 'rotate-180 text-brand-accent' : ''}`}
-                                                            aria-hidden="true"
-                                                        ></i>
-                                                    </div>
-                                                    <p className={`text-text-secondary leading-relaxed font-medium ${isExpanded ? 'mb-0' : 'line-clamp-2 text-base'}`}>
-                                                        {project.description}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <div
-                                                id={`project-details-${project.id}`}
-                                                className={`grid transition-all duration-700 ease-in-out ${isExpanded ? 'grid-rows-[1fr] opacity-100 border-t border-border-subtle/30 bg-bg-app/30' : 'grid-rows-[0fr] opacity-0 overflow-hidden'}`}
-                                            >
-                                                <div className="overflow-hidden">
-                                                    <div className="p-8 space-y-10">
-                                                        {project.images && project.images.length > 0 && (
-                                                            <div className="rounded-2xl overflow-hidden shadow-lg border border-border-subtle/50 bg-bg-canvas">
-                                                                <ImageCarousel images={project.images} projectName={project.name} />
-                                                            </div>
-                                                        )}
-
-                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                                                            <div className="space-y-4">
-                                                                <SubHeading color="accent" icon={<i className="fas fa-exclamation-circle text-[10px]"></i>}>Problem</SubHeading>
-                                                                <p className="text-base text-text-secondary leading-relaxed font-medium">{project.challenge}</p>
-                                                            </div>
-
-                                                            <div className="space-y-4">
-                                                                <SubHeading color="accent" icon={<i className="fas fa-check-circle text-[10px]"></i>}>Solution</SubHeading>
-                                                                <p className="text-base text-text-secondary leading-relaxed font-medium">{project.solution}</p>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="pt-8 border-t border-border-subtle/30">
-                                                            <SubHeading>Technologies & Tools</SubHeading>
-                                                            <div className="flex flex-wrap gap-2.5">
-                                                                {project.technologies.map((tech, idx) => (
-                                                                    <span key={idx} className="inline-flex items-center px-3 py-1.5 bg-bg-canvas text-text-primary text-[11px] font-bold uppercase tracking-wider rounded-lg border border-border-subtle shadow-sm">
-                                                                        {tech}
-                                                                    </span>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-
-                                                        {project.link && (
-                                                            <div className="pt-4 flex justify-end">
-                                                                <Button
-                                                                    href={project.link}
-                                                                    as="a"
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                    icon={<i className="fas fa-arrow-right text-[10px]"></i>}
-                                                                    iconPosition="right"
-                                                                    className="px-8 shadow-md hover:shadow-lg"
-                                                                >
-                                                                    Technical Documentation
-                                                                </Button>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </Card>
-                                    </motion.div>
-                                </motion.div>
-                            );
-                        })}
+                                  <span>Dokumentasi Terkait</span>
+                                  <i className="fas fa-external-link-alt text-[10px]"></i>
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
                     </motion.div>
-                ) : (
-                    <SkeletonLoader.CardGrid items={2} columns={2} />
-                )}
-            </div>
-        </Section>
-    );
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </motion.div>
+        ) : (
+          <div className="space-y-6">
+            {[...Array(3)].map((_, i) => (
+              <SkeletonLoader key={i} className="h-56 w-full rounded-3xl" />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Case Study Modal */}
+      <ProjectModal
+        isOpen={!!activeModalProject}
+        onClose={() => setActiveModalProject(null)}
+        project={activeModalProject}
+      />
+    </Section>
+  );
 };
 
 export default Projects;

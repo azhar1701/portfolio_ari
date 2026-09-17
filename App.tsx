@@ -25,8 +25,6 @@ import Testimonials from './components/Testimonials';
 import Blog from './components/Blog';
 import Gallery from './components/Gallery';
 import InteractiveResume from './components/InteractiveResume';
-import WelcomeGuide from './components/WelcomeGuide';
-import OnboardingTour from './components/OnboardingTour';
 import MobileNav from './components/MobileNav';
 import ReadingProgressBar from './components/ReadingProgressBar';
 
@@ -35,7 +33,6 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isAdminOpen, setIsAdminOpen] = useState<boolean>(false);
-  const [runTour, setRunTour] = useState<boolean>(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -63,10 +60,12 @@ const App: React.FC = () => {
 
   const navLinks = [
     { name: 'Summary', href: '#summary', icon: 'fas fa-compass-drafting' },
-    { name: 'Portfolio', href: '#projects', icon: 'fas fa-diagram-project' },
+    { name: 'Projects', href: '#projects', icon: 'fas fa-diagram-project' },
+    { name: 'GIS Hub', href: '#locations', icon: 'fas fa-map-location-dot' },
+    { name: 'Resume', href: '#resume', icon: 'fas fa-file-lines' },
     { name: 'Experience', href: '#experience', icon: 'fas fa-route' },
     { name: 'Blog', href: '#blog', icon: 'fas fa-lightbulb' },
-    { name: 'Contact', href: '#contact', icon: 'fas fa-envelope-open-text' },
+    { name: 'Contact', href: '#contact', icon: 'fas fa-paper-plane' },
   ];
 
   const handleSaveData = async (updatedData: PortfolioData) => {
@@ -164,7 +163,7 @@ const App: React.FC = () => {
       <ReadingProgressBar />
       <Header profile={profile} navLinks={navLinks} data={data} />
       <main className="w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pt-24 md:pt-32 pb-20 lg:pb-0">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto space-y-16 sm:space-y-24">
           <Summary content={summary} image={summaryImage} />
           <Stats stats={stats} />
           <ExperienceComponent experience={experience} />
@@ -172,10 +171,10 @@ const App: React.FC = () => {
           <MapSection locations={locations} />
           <Projects projects={projects} />
           <Skills skills={skills} />
+          <InteractiveResume data={data} />
           <Testimonials testimonials={testimonials} />
           <Blog blogPosts={blogPosts} />
           <Gallery gallery={gallery} />
-          {/* <InteractiveResume data={data} /> */}
           <EducationComponent education={education} />
           <Certifications certifications={certifications} />
           <Publications publications={publications} />
@@ -192,8 +191,6 @@ const App: React.FC = () => {
         onSave={handleSaveData}
         onReset={handleResetData}
       />
-      <WelcomeGuide onStartTour={() => setRunTour(true)} />
-      <OnboardingTour run={runTour} onFinish={() => setRunTour(false)} />
       <MobileNav navLinks={navLinks} />
     </div>
   );

@@ -113,8 +113,8 @@
     /* Print Styles */
     @media print {
         @page {
-            margin: 15mm;
-            size: auto;
+            margin: 12mm;
+            size: A4 portrait;
         }
 
         header,
@@ -133,23 +133,21 @@
         #blog,
         #gallery,
         #contact,
-        .welcome-guide,
-        .onboarding-tour {
+        #education,
+        #certifications,
+        #publications,
+        #organizations,
+        #locations {
             display: none !important;
         }
 
-        /* Only show the resume section when printing */
+        /* Clean ATS resume display for print */
         #resume {
             display: block !important;
             margin: 0 !important;
             padding: 0 !important;
             border: none !important;
             background: white !important;
-        }
-
-        #resume > div > div:first-child,
-        #resume > div > div:last-child {
-            display: none !important; /* Hide the UI containers inside Section */
         }
 
         body,
@@ -165,12 +163,6 @@
             break-inside: avoid;
             margin-bottom: 0 !important;
             padding: 0 !important;
-        }
-
-        .bg-bg-canvas {
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
         }
     }
 

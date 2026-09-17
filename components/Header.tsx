@@ -12,7 +12,6 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ profile, navLinks, data }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -106,38 +105,6 @@ const Header: React.FC<HeaderProps> = ({ profile, navLinks, data }) => {
             <span className="hidden sm:inline">Connect</span>
           </a>
 
-          {/* Mobile Toggle */}
-          <button
-            className="lg:hidden w-10 h-10 rounded-xl text-text-secondary hover:text-brand-accent hover:bg-bg-app transition-colors border border-border-subtle/30 flex items-center justify-center"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-            aria-expanded={isMenuOpen}
-          >
-            <i className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'} text-lg`}></i>
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Navigation List */}
-      <div
-        className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out bg-bg-canvas ${isMenuOpen ? 'max-h-screen border-t border-border-subtle shadow-2xl py-6' : 'max-h-0'
-          }`}
-      >
-        <div className="px-6 space-y-2">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={`flex items-center space-x-4 px-6 py-4 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all ${activeSection === link.href
-                ? 'text-brand-accent bg-brand-accent-soft/20'
-                : 'text-text-secondary hover:bg-bg-app'
-                }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {link.icon && <i className={`${link.icon} text-base opacity-70`}></i>}
-              <span>{link.name}</span>
-            </a>
-          ))}
         </div>
       </div>
     </motion.header>
