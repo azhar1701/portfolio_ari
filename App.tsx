@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
 import { fetchPortfolioData, savePortfolioData, resetPortfolioData } from './services/contentService';
 import type { PortfolioData } from './types';
+import { ToastProvider, useToast } from './contexts/ToastContext';
 
 import Loader from './components/Loader';
 import Error from './components/Error';
@@ -21,6 +22,7 @@ import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
 import BackToTopButton from './components/BackToTopButton';
 import AdminDashboard from './components/AdminDashboard';
+import AdminLogin from './components/AdminLogin';
 import Testimonials from './components/Testimonials';
 import Blog from './components/Blog';
 import Gallery from './components/Gallery';
@@ -28,11 +30,13 @@ import InteractiveResume from './components/InteractiveResume';
 import MobileNav from './components/MobileNav';
 import ReadingProgressBar from './components/ReadingProgressBar';
 
-const App: React.FC = () => {
+const PortfolioApp: React.FC = () => {
   const [data, setData] = useState<PortfolioData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isAdminOpen, setIsAdminOpen] = useState<boolean>(false);
+  const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const loadData = async () => {
@@ -74,14 +78,14 @@ const App: React.FC = () => {
       await savePortfolioData(updatedData);
       setData(updatedData);
 
-      // Show success message
-      const message = import.meta.env.VITE_USE_SUPABASE === 'true'
-        ? 'Data saved to Supabase successfully!'
-        : 'Data saved to local storage successfully!';
-      window.alert(message);
+      const message =
+        import.meta.env.VITE_USE_SUPABASE === 'true'
+          ? 'Data synced and saved to Supabase successfully!'
+          : 'Data saved to local storage successfully!';
+      toast.success(message);
     } catch (err: any) {
       const errorMessage = err?.message || 'Failed to save data. Please try again.';
-      window.alert(`Save failed: ${errorMessage}`);
+      toast.error(`Save failed: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -93,18 +97,17 @@ const App: React.FC = () => {
       const defaultData = await resetPortfolioData();
       setData(defaultData);
 
-      // If using Supabase, also reset database
       if (import.meta.env.VITE_USE_SUPABASE === 'true') {
         await savePortfolioData(defaultData);
-        window.alert('Data reset and synced to Supabase successfully!');
+        toast.success('Data reset and synced to Supabase successfully!');
       } else {
-        window.alert('Data reset to default successfully!');
+        toast.success('Data reset to defaults successfully!');
       }
 
       return defaultData;
     } catch (err: any) {
       const errorMessage = err?.message || 'Failed to reset data. Please try again.';
-      window.alert(`Reset failed: ${errorMessage}`);
+      toast.error(`Reset failed: ${errorMessage}`);
       return null;
     } finally {
       setLoading(false);
@@ -112,32 +115,27 @@ const App: React.FC = () => {
   };
 
   const handleOpenAdminPanel = () => {
-    try {
-      const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
+    const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
+    if (!ADMIN_PASSWORD) {
+      toast.error('Admin access is not properly configured in environment.');
+      return;
+    }
+    setIsLoginOpen(true);
+  };
 
-      if (!ADMIN_PASSWORD) {
-        window.alert('Admin access is not properly configured. Please check environment variables.');
-        return;
-      }
-
-      const password = window.prompt('Enter admin password:');
-
-      if (password === null) {
-        return;
-      }
-
-      if (password === ADMIN_PASSWORD) {
-        setIsAdminOpen(true);
-      } else {
-        window.alert('Incorrect password. Access denied.');
-      }
-    } catch (err) {
-      window.alert('Unable to access admin panel. Please try again.');
+  const handleLogin = (enteredPassword: string) => {
+    const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
+    if (enteredPassword === ADMIN_PASSWORD) {
+      setIsAdminOpen(true);
+      setIsLoginOpen(false);
+      toast.success('Admin authorization verified. Welcome!');
+    } else {
+      toast.error('Incorrect password. Access denied.');
     }
   };
 
   if (loading) return <Loader />;
-  if (error || !data) return <Error message={error || "Portfolio data could not be loaded."} />;
+  if (error || !data) return <Error message={error || 'Portfolio data could not be loaded.'} />;
 
   const {
     profile,
@@ -184,6 +182,11 @@ const App: React.FC = () => {
       </main>
       <Footer data={data} onOpenAdmin={handleOpenAdminPanel} />
       <BackToTopButton />
+      <AdminLogin
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        onLogin={handleLogin}
+      />
       <AdminDashboard
         isOpen={isAdminOpen}
         onClose={() => setIsAdminOpen(false)}
@@ -193,6 +196,14 @@ const App: React.FC = () => {
       />
       <MobileNav navLinks={navLinks} />
     </div>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <ToastProvider>
+      <PortfolioApp />
+    </ToastProvider>
   );
 };
 
