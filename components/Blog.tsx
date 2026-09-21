@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import Section from './Section';
 import type { BlogPost } from '../types';
 import SkeletonLoader from './SkeletonLoader';
@@ -19,7 +20,8 @@ const BlogModal: React.FC<{ post: BlogPost; onClose: () => void }> = ({ post, on
     };
   }, [onClose]);
 
-  return (
+  return ReactDOM.createPortal(
+    (
     <div
       className="fixed inset-0 z-[9990] flex items-center justify-center p-4 sm:p-6"
       role="dialog"
@@ -71,7 +73,7 @@ const BlogModal: React.FC<{ post: BlogPost; onClose: () => void }> = ({ post, on
         </div>
       </div>
     </div>
-  );
+  ), document.body);
 };
 
 const Blog: React.FC<BlogProps> = ({ blogPosts }) => {
