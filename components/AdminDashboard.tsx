@@ -18,6 +18,7 @@ import { BlogPanel } from './admin/BlogPanel';
 import { GalleryPanel } from './admin/GalleryPanel';
 import { MiscPanel } from './admin/MiscPanel';
 import { LinkedInImportModal } from './admin/LinkedInImportModal';
+import { AIAssistantModal, AIMode } from './admin/AIAssistantModal';
 
 interface AdminDashboardProps {
   isOpen: boolean;
@@ -56,6 +57,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
   const [isResetting, setIsResetting] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [isLinkedInModalOpen, setIsLinkedInModalOpen] = useState(false);
+  const [isAiModalOpen, setIsAiModalOpen] = useState(false);
+  const [aiModalConfig, setAiModalConfig] = useState<{
+    mode: AIMode;
+    content: string;
+    context: any;
+    applyCallback: (val: any) => void;
+  }>({
+    mode: 'polish',
+    content: '',
+    context: {},
+    applyCallback: () => {},
+  });
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -295,6 +308,63 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
     toast.success('LinkedIn resume data successfully loaded into form! Review and click Save Changes.');
   };
 
+  // AI Copilot Handlers
+  const handleOpenGeneralAi = (mode: AIMode = 'polish') => {
+    setAiModalConfig({
+      mode,
+      content: '',
+      context: {},
+      applyCallback: (val) => {
+        if (typeof val === 'string') {
+          navigator.clipboard.writeText(val);
+          toast.success('Hasil AI disalin ke clipboard!');
+        }
+      },
+    });
+    setIsAiModalOpen(true);
+  };
+
+  const handleOpenSummaryAi = (content: string, type: 'summary') => {
+    setAiModalConfig({
+      mode: 'polish',
+      content,
+      context: { targetType: 'summary', fieldName: 'summary' },
+      applyCallback: (val: string) => {
+        setValue('summary', val, { shouldDirty: true });
+        toast.success('Summary berhasil diperbarui oleh AI!');
+      },
+    });
+    setIsAiModalOpen(true);
+  };
+
+  const handleOpenExperienceAi = (content: string, type: 'responsibilities' | 'achievements', fieldName: string) => {
+    setAiModalConfig({
+      mode: 'polish',
+      content,
+      context: { targetType: type, fieldName },
+      applyCallback: (val: string) => {
+        setValue(fieldName as any, val, { shouldDirty: true });
+        toast.success('Poin pengalaman berhasil diperbarui oleh AI!');
+      },
+    });
+    setIsAiModalOpen(true);
+  };
+
+  const handleOpenProjectAi = (ctx: { projectName: string; overview: string; tools: string; index: number }) => {
+    setAiModalConfig({
+      mode: 'case-study',
+      content: ctx.overview,
+      context: { projectName: ctx.projectName, tools: ctx.tools },
+      applyCallback: (val: { description?: string; challenge?: string; solution?: string }) => {
+        if (val.description) setValue(`projects.${ctx.index}.description` as any, val.description, { shouldDirty: true });
+        if (val.challenge) setValue(`projects.${ctx.index}.challenge` as any, val.challenge, { shouldDirty: true });
+        if (val.solution) setValue(`projects.${ctx.index}.solution` as any, val.solution, { shouldDirty: true });
+        toast.success('Studi kasus proyek berhasil diperbarui oleh AI!');
+      },
+    });
+    setIsAiModalOpen(true);
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -332,6 +402,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
           </div>
 
           <div className="flex items-center gap-2">
+            {/* AI Copilot button */}
+            <button
+              type="button"
+              onClick={() => handleOpenGeneralAi('polish')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-amber-300 bg-amber-950/60 hover:bg-amber-900/80 border border-amber-500/40 transition-colors shadow-sm"
+              title="AI Engineering Copilot (Impact Polish, Case Study, Translate)"
+            >
+              <i className="fas fa-wand-magic-sparkles text-xs text-amber-400"></i>
+              <span className="hidden sm:inline">AI Copilot</span>
+              <span className="sm:hidden">AI</span>
+            </button>
+
             {/* LinkedIn Import button */}
             <button
               type="button"
@@ -428,13 +510,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
           <main className="flex-1 overflow-y-auto p-5 sm:p-8 bg-slate-900/40">
             <form id="admin-main-form" onSubmit={handleSubmit(onSubmit)}>
               {activeTab === 'profile' && <ProfilePanel register={register} />}
-              {activeTab === 'summary' && <SummaryPanel register={register} setValue={setValue} watch={watch} />}
+              {activeTab === 'summary' && (
+                <SummaryPanel
+                  register={register}
+                  setValue={setValue}
+                  watch={watch}
+                  onOpenAi={handleOpenSummaryAi}
+                />
+              )}
               {activeTab === 'experience' && (
                 <ExperiencePanel
                   fields={expFields}
                   append={appendExp}
                   remove={removeExp}
                   register={register}
+                  watch={watch}
+                  onOpenAi={handleOpenExperienceAi}
                 />
               )}
               {activeTab === 'projects' && (
@@ -445,6 +536,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
                   register={register}
                   setValue={setValue}
                   watch={watch}
+                  onOpenAi={handleOpenProjectAi}
                 />
               )}
               {activeTab === 'skills' && (
@@ -597,6 +689,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
           onClose={() => setIsLinkedInModalOpen(false)}
           currentPortfolioData={watch() as PortfolioData}
           onApplyParsedData={handleApplyLinkedInData}
+        />
+
+        {/* AI Copilot Modal */}
+        <AIAssistantModal
+          isOpen={isAiModalOpen}
+          onClose={() => setIsAiModalOpen(false)}
+          initialMode={aiModalConfig.mode}
+          initialContent={aiModalConfig.content}
+          initialContext={aiModalConfig.context}
+          onApply={aiModalConfig.applyCallback}
         />
       </div>
     </div>

@@ -6,9 +6,18 @@ interface ExperiencePanelProps {
   append: (item: any) => void;
   remove: (index: number) => void;
   register: any;
+  watch?: any;
+  onOpenAi?: (content: string, type: 'responsibilities' | 'achievements', fieldName: string) => void;
 }
 
-export const ExperiencePanel: React.FC<ExperiencePanelProps> = ({ fields, append, remove, register }) => {
+export const ExperiencePanel: React.FC<ExperiencePanelProps> = ({
+  fields,
+  append,
+  remove,
+  register,
+  watch,
+  onOpenAi,
+}) => {
   return (
     <div className="space-y-6 animate-fadeIn">
       <div className="flex items-center justify-between">
@@ -49,6 +58,25 @@ export const ExperiencePanel: React.FC<ExperiencePanelProps> = ({ fields, append
               register={register}
               rows={3}
               placeholder="Designed hydrodynamic modeling system&#10;Supervised drone photogrammetry team"
+              extraAction={
+                onOpenAi && watch && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onOpenAi(
+                        watch(`experience.${index}.responsibilities`) || '',
+                        'responsibilities',
+                        `experience.${index}.responsibilities`
+                      )
+                    }
+                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-300 hover:text-amber-200 bg-amber-950/60 hover:bg-amber-900/70 border border-amber-500/40 px-2 py-0.5 rounded-lg transition-colors"
+                    title="Polish responsibilities with AI"
+                  >
+                    <i className="fas fa-wand-magic-sparkles text-[9px] text-amber-400"></i>
+                    <span>AI Polish</span>
+                  </button>
+                )
+              }
               help="Each line will be rendered as a discrete bullet point in the experience timeline."
             />
 
@@ -58,6 +86,25 @@ export const ExperiencePanel: React.FC<ExperiencePanelProps> = ({ fields, append
               register={register}
               rows={3}
               placeholder="Reduced modeling error margins by 34%&#10;Published 2 technical hydrological assessments"
+              extraAction={
+                onOpenAi && watch && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onOpenAi(
+                        watch(`experience.${index}.achievements`) || '',
+                        'achievements',
+                        `experience.${index}.achievements`
+                      )
+                    }
+                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-300 hover:text-amber-200 bg-amber-950/60 hover:bg-amber-900/70 border border-amber-500/40 px-2 py-0.5 rounded-lg transition-colors"
+                    title="Enhance achievements with XYZ formula"
+                  >
+                    <i className="fas fa-wand-magic-sparkles text-[9px] text-amber-400"></i>
+                    <span>XYZ Polish</span>
+                  </button>
+                )
+              }
               help="Each line will be highlighted as a quantifiable milestone."
             />
           </div>

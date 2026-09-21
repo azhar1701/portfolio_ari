@@ -40,22 +40,26 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
   register: any;
   help?: string;
   required?: boolean;
+  extraAction?: React.ReactNode;
 }
 
-export const Textarea: React.FC<TextareaProps> = ({ label, name, register, help, required, className = '', ...props }) => (
+export const Textarea: React.FC<TextareaProps> = ({ label, name, register, help, required, extraAction, className = '', ...props }) => (
   <div className="group/input relative space-y-1.5">
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between gap-2">
       <label htmlFor={name} className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
         {label} {required && <span className="text-rose-400">*</span>}
       </label>
-      {help && (
-        <div className="relative group/help">
-          <i className="fas fa-circle-question text-slate-500 hover:text-sky-400 cursor-help transition-colors text-xs"></i>
-          <div className="absolute bottom-full right-0 mb-2 w-52 p-2 bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-lg shadow-2xl opacity-0 group-hover/help:opacity-100 transition-opacity pointer-events-none z-30 leading-relaxed font-normal">
-            {help}
+      <div className="flex items-center gap-2">
+        {extraAction}
+        {help && (
+          <div className="relative group/help">
+            <i className="fas fa-circle-question text-slate-500 hover:text-sky-400 cursor-help transition-colors text-xs"></i>
+            <div className="absolute bottom-full right-0 mb-2 w-52 p-2 bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-lg shadow-2xl opacity-0 group-hover/help:opacity-100 transition-opacity pointer-events-none z-30 leading-relaxed font-normal">
+              {help}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
     <textarea
       id={name}

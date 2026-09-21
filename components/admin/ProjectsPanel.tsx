@@ -8,6 +8,7 @@ interface ProjectsPanelProps {
   register: any;
   setValue: any;
   watch: any;
+  onOpenAi?: (context: { projectName: string; overview: string; tools: string; index: number }) => void;
 }
 
 export const ProjectsPanel: React.FC<ProjectsPanelProps> = ({
@@ -17,6 +18,7 @@ export const ProjectsPanel: React.FC<ProjectsPanelProps> = ({
   register,
   setValue,
   watch,
+  onOpenAi,
 }) => {
   return (
     <div className="space-y-6 animate-fadeIn">
@@ -57,6 +59,26 @@ export const ProjectsPanel: React.FC<ProjectsPanelProps> = ({
               register={register}
               rows={2}
               required
+              extraAction={
+                onOpenAi && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onOpenAi({
+                        projectName: watch(`projects.${index}.name`) || '',
+                        overview: watch(`projects.${index}.description`) || '',
+                        tools: watch(`projects.${index}.technologies`) || '',
+                        index,
+                      })
+                    }
+                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-300 hover:text-amber-200 bg-amber-950/60 hover:bg-amber-900/70 border border-amber-500/40 px-2 py-0.5 rounded-lg transition-colors"
+                    title="Generate Challenge & Solution with AI"
+                  >
+                    <i className="fas fa-wand-magic-sparkles text-[9px] text-amber-400"></i>
+                    <span>Generate Case Study</span>
+                  </button>
+                )
+              }
               placeholder="High-resolution digital elevation modeling and flood risk analysis..."
             />
 
