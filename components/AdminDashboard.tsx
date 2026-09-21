@@ -17,6 +17,7 @@ import { TestimonialsPanel } from './admin/TestimonialsPanel';
 import { BlogPanel } from './admin/BlogPanel';
 import { GalleryPanel } from './admin/GalleryPanel';
 import { MiscPanel } from './admin/MiscPanel';
+import { LinkedInImportModal } from './admin/LinkedInImportModal';
 
 interface AdminDashboardProps {
   isOpen: boolean;
@@ -54,6 +55,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
   const [isSaving, setIsSaving] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [isLinkedInModalOpen, setIsLinkedInModalOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -263,6 +265,36 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
     e.target.value = '';
   };
 
+  const formatForForm = (raw: PortfolioData) => {
+    const formValues = JSON.parse(JSON.stringify(raw));
+    if (Array.isArray(formValues.experience)) {
+      formValues.experience.forEach((exp: any) => {
+        if (Array.isArray(exp.responsibilities)) exp.responsibilities = exp.responsibilities.join('\n');
+        if (Array.isArray(exp.achievements)) exp.achievements = exp.achievements.join('\n');
+      });
+    }
+    if (Array.isArray(formValues.projects)) {
+      formValues.projects.forEach((proj: any) => {
+        if (Array.isArray(proj.technologies)) proj.technologies = proj.technologies.join(', ');
+        if (Array.isArray(proj.images)) proj.images = proj.images.join(', ');
+      });
+    }
+    if (Array.isArray(formValues.skills)) {
+      formValues.skills.forEach((skillCat: any) => {
+        if (Array.isArray(skillCat.skills)) skillCat.skills = skillCat.skills.join(', ');
+      });
+    }
+    if (Array.isArray(formValues.certifications)) formValues.certifications = formValues.certifications.join('\n');
+    if (Array.isArray(formValues.organizations)) formValues.organizations = formValues.organizations.join('\n');
+    return formValues;
+  };
+
+  const handleApplyLinkedInData = (mergedData: PortfolioData) => {
+    const formatted = formatForForm(mergedData);
+    reset(formatted);
+    toast.success('LinkedIn resume data successfully loaded into form! Review and click Save Changes.');
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -300,6 +332,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
           </div>
 
           <div className="flex items-center gap-2">
+            {/* LinkedIn Import button */}
+            <button
+              type="button"
+              onClick={() => setIsLinkedInModalOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-[#0a66c2] hover:bg-[#004182] border border-[#0a66c2]/50 transition-colors shadow-sm"
+              title="Import resume from LinkedIn PDF"
+            >
+              <i className="fab fa-linkedin text-xs"></i>
+              <span className="hidden sm:inline">Import LinkedIn</span>
+              <span className="sm:hidden">LinkedIn</span>
+            </button>
+
             {/* Export JSON button */}
             <button
               type="button"
@@ -546,6 +590,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isOpen, onClose, data, 
             </button>
           </div>
         </div>
+
+        {/* LinkedIn PDF Import Modal */}
+        <LinkedInImportModal
+          isOpen={isLinkedInModalOpen}
+          onClose={() => setIsLinkedInModalOpen(false)}
+          currentPortfolioData={watch() as PortfolioData}
+          onApplyParsedData={handleApplyLinkedInData}
+        />
       </div>
     </div>
   );
