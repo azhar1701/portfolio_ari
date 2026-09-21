@@ -38,7 +38,7 @@ export const EducationPanel: React.FC<EducationPanelProps> = ({ fields, append, 
                 name={`education.${index}.institution`}
                 register={register}
                 required
-                placeholder="Institut Teknologi Bandung (ITB)"
+                placeholder="Universitas Galuh"
               />
               <Input
                 label="Degree & Major"

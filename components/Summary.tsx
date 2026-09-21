@@ -62,7 +62,7 @@ const Summary: React.FC<SummaryProps> = ({ content, image }) => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                   <div className="absolute bottom-4 left-4 right-4 text-white text-xs font-medium flex items-center justify-between">
                     <span><i className="fas fa-map-location-dot mr-1.5 text-sky-400"></i> Field Survey & Hydrodynamic Telemetry</span>
-                    <span className="font-mono text-[10px] bg-white/20 px-2 py-0.5 rounded backdrop-blur">ITB Alum</span>
+                    <span className="font-mono text-[10px] bg-white/20 px-2 py-0.5 rounded backdrop-blur">Civil Engineer</span>
                   </div>
                 </motion.div>
 
@@ -72,7 +72,7 @@ const Summary: React.FC<SummaryProps> = ({ content, image }) => {
                   <div className="flex flex-wrap gap-2">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-bg-app border border-border-subtle rounded-xl text-xs font-bold text-text-primary">
                       <i className="fas fa-graduation-cap text-sky-400 text-xs"></i>
-                      Institut Teknologi Bandung (ITB)
+                      Universitas Galuh
                     </span>
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-bg-app border border-border-subtle rounded-xl text-xs font-bold text-text-primary">
                       <i className="fas fa-shield-halved text-emerald-400 text-xs"></i>
